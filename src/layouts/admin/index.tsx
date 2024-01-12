@@ -1,41 +1,53 @@
 import React, { useState } from 'react';
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
+  DesktopOutlined,
+  FileOutlined,
+  PieChartOutlined,
   TeamOutlined,
-  UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Layout, Menu, theme, Button } from 'antd';
+import { Layout, Menu, theme, Button, Divider } from 'antd';
+import NHeader from '../../components/header';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const items: MenuProps['items'] = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ShopOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
+type MenuItem = Required<MenuProps>['items'][number];
 
-interface IAdminLayoutProps {
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode,
+  children?: MenuItem[],
+): MenuItem {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  } as MenuItem;
 }
 
-const AdminLayout: React.FC<IAdminLayoutProps> = () => {
+const items: MenuItem[] = [
+  getItem('Option 1', '1', <PieChartOutlined />),
+  getItem('Option 2', '2', <DesktopOutlined />),
+  getItem('User', 'sub1', <UserOutlined />, [
+    getItem('Tom', '3'),
+    getItem('Bill', '4'),
+    getItem('Alex', '5'),
+  ]),
+  getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+  getItem('Files', '9', <FileOutlined />),
+];
+
+interface NAdminLayoutProps {
+}
+
+const AdminLayout: React.FC<NAdminLayoutProps> = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [responsiveSide, setResponsiveSide] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -43,26 +55,28 @@ const AdminLayout: React.FC<IAdminLayoutProps> = () => {
   return (
     <Layout>
       <Sider trigger={null} collapsed={collapsed}
+        breakpoint="sm"
+        collapsedWidth={responsiveSide ? "0" : "70"}
+        onBreakpoint={(broken) => {
+          console.log(broken);
+          if (broken) {
+            setResponsiveSide(!responsiveSide);
+          }
+        }}
+        onCollapse={(collapsed, type) => {
+          return true;
+        }}
         style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }}
       >
-        {/* <h1 className="text-3xl font-bold underline text-white">
-          Hello world!
-        </h1> */}
+        <div className={`mt-[30px] flex items-center px-5 pb-20 text-center`}>
+          <div className="mt-1 ml-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 text-white">
+            Nara <span className="font-medium">ANTD</span>
+          </div>          
+        </div>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
       </Sider>
-      <Layout style={{ marginLeft: collapsed ? 70 : 200 }}>
-      <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          />
-        </Header>
+      <Layout style={{ marginLeft: collapsed ? (responsiveSide ? 0 : 70) : 200 }}>
+        <NHeader />
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <div
             style={{
