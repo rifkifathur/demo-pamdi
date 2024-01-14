@@ -5,19 +5,27 @@ import {
   MenuFoldOutlined
 } from '@ant-design/icons';
 
+type NHeaderType = {
+  isCollapsed: boolean,
+  setIsCollapsed: (isCollapsed: boolean) => void,
+}
+
 const { Header } = Layout;
 
-const NHeader = (props) => {
-  const [collapsed, setCollapsed] = useState(false);
+const NHeader = ({ isCollapsed, setIsCollapsed}: NHeaderType) => {  
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const onCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  }
   return (
     <Header style={{ padding: 0, background: colorBgContainer }}>
       <Button
         type="text"
-        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        onClick={() => setCollapsed(!collapsed)}
+        icon={isCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={onCollapse}
         style={{
           fontSize: '16px',
           width: 64,

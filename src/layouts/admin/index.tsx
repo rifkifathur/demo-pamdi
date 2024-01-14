@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import {
+  Route,
+  Routes,
+  createBrowserRouter,
+} from "react-router-dom";
+import {
   DesktopOutlined,
   FileOutlined,
   PieChartOutlined,
@@ -10,73 +15,35 @@ import {
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu, theme, Button, Divider } from 'antd';
-import NHeader from '../../components/header';
+import NHeader from '../../components/header/NHeader';
+import NSider from '../../components/sider/NSider';
+import NFooter from '../../components/footer/NFooter';
+import Dashboard from '../../views/dashboard';
 
 const { Header, Content, Footer, Sider } = Layout;
-
-type MenuItem = Required<MenuProps>['items'][number];
-
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
-
-const items: MenuItem[] = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
-];
 
 interface NAdminLayoutProps {
 }
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Dashboard />,
+  },
+]);
+
 const AdminLayout: React.FC<NAdminLayoutProps> = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const [responsiveSide, setResponsiveSide] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isResponsive, setIsResponsive] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   return (
-    <Layout>
-      <Sider trigger={null} collapsed={collapsed}
-        breakpoint="sm"
-        collapsedWidth={responsiveSide ? "0" : "70"}
-        onBreakpoint={(broken) => {
-          console.log(broken);
-          if (broken) {
-            setResponsiveSide(!responsiveSide);
-          }
-        }}
-        onCollapse={(collapsed, type) => {
-          return true;
-        }}
-        style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }}
-      >
-        <div className={`mt-[30px] flex items-center px-5 pb-20 text-center`}>
-          <div className="mt-1 ml-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 text-white">
-            Nara <span className="font-medium">ANTD</span>
-          </div>          
-        </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
-      </Sider>
-      <Layout style={{ marginLeft: collapsed ? (responsiveSide ? 0 : 70) : 200 }}>
-        <NHeader />
+    <Layout>      
+      <NSider isCollapsed={isCollapsed} isResponsive={isResponsive} setIsResponsive={setIsResponsive}/>
+      <Layout style={{ marginLeft: isCollapsed ? (isResponsive ? 0 : 70) : 200 }}>
+        <NHeader isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed}/>
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
           <div
             style={{
@@ -86,7 +53,7 @@ const AdminLayout: React.FC<NAdminLayoutProps> = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            <p>long content</p>
+            {/* <p>long content</p>
             {
               // indicates very long content
               Array.from({ length: 100 }, (_, index) => (
@@ -95,12 +62,13 @@ const AdminLayout: React.FC<NAdminLayoutProps> = () => {
                   <br />
                 </React.Fragment>
               ))
-            }
+            } */}
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+            </Routes>
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
+        <NFooter />
       </Layout>
     </Layout>
   );
