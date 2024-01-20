@@ -65,7 +65,7 @@ const NSider = ({ isCollapsed, isResponsive, setIsResponsive } : NSiderType) => 
       <div className={`mt-[30px] flex items-center px-5 pb-20 text-center`}>
         {isCollapsed ? '' : (
           <div className="mt-1 ml-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 text-white">
-            Nara <span className="font-medium">ANTD</span>
+            Nara <span className="font-medium">ANT D</span>
           </div>
         )}
       </div>
