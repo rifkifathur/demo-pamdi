@@ -62,7 +62,7 @@ const NSider = ({ isCollapsed, isResponsive, setIsResponsive } : NSiderType) => 
       }}
       style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }}
     >
-      <div className={`mt-[30px] flex items-center px-5 pb-20 text-center` }>
+      <div className={`mt-[30px] flex items-center px-5 pb-20 text-center`}>
         {isCollapsed ? '' : (
           <div className="mt-1 ml-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 text-white">
             Nara <span className="font-medium">ANTD</span>
