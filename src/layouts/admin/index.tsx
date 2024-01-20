@@ -5,9 +5,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Layout, theme } from 'antd';
-import NHeader from '../../components/header/NHeader';
-import NSider from '../../components/sider/NSider';
-import NFooter from '../../components/footer/NFooter';
+import { NFooter, NSider, NHeader } from '../../components';
 import routes from '../../routes';
 
 const { Content } = Layout;
@@ -69,4 +67,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export { AdminLayout };
