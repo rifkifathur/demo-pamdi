@@ -1,32 +1,34 @@
-import {
-    DesktopOutlined,
-    FileOutlined,
+import {    
     PieChartOutlined,
-    TeamOutlined,
-    UserOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined
+    SettingOutlined
   } from '@ant-design/icons';
 import Dashboard from './views/dashboard';
+import { Link } from 'react-router-dom';
+import User from './views/user';
 
 const routes = [
     {
+        key: "Dashboard",
         name: "Dashboard",
         path: "/",
-        icon: <DesktopOutlined />,
+        link: <Link to="/">Dashboard</Link>,
+        icon: <PieChartOutlined />,
         component: <Dashboard />,
     },
     {
+        // Jika terdapat children key path isi empty string saja, component&link kosongkan   
+        key: "Settings",     
         name: "Settings",
         path: "",
-        icon: <DesktopOutlined />,
-        component: <Dashboard />,
+        icon: <SettingOutlined />,
         children: [
             {
-                name: "Department",
-                path: "/department",
+                key: "User",
+                name: "User",
+                path: "/user",
+                link: <Link to="/user">User</Link>,
                 icon: "",
-                component: <Dashboard />,                
+                component: <User />,                
             }
         ]
     },

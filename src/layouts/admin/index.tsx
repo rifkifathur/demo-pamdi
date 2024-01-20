@@ -2,42 +2,46 @@ import React, { useState } from 'react';
 import {
   Route,
   Routes,
-  createBrowserRouter,
+  useLocation,
 } from "react-router-dom";
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Layout, Menu, theme, Button, Divider } from 'antd';
+import { Layout, theme } from 'antd';
 import NHeader from '../../components/header/NHeader';
 import NSider from '../../components/sider/NSider';
 import NFooter from '../../components/footer/NFooter';
-import Dashboard from '../../views/dashboard';
+import routes from '../../routes';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
-interface NAdminLayoutProps {
-}
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Dashboard />,
-  },
-]);
-
-const AdminLayout: React.FC<NAdminLayoutProps> = () => {
+const AdminLayout = () => {
+  const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isResponsive, setIsResponsive] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  
+  const getRoutes = (routes: RoutesType[]): any => {
+    console.log(location);
+    return routes.map((prop, key) => {
+      if (location.pathname === prop.path) {        
+        return (
+          <Route path={`${prop.path}`} element={prop.component} key={key} />
+        );
+      } else if (prop.children) {
+        return prop.children?.map((childrenProp, childrenKey) => {
+          if (location.pathname === childrenProp.path) {
+            return (
+              <Route path={`${childrenProp.path}`} element={childrenProp.component} key={childrenKey} />
+            );    
+          }
+          
+          return null;          
+        })
+      }
+      
+      return null;
+    });
+  };
 
   return (
     <Layout>      
@@ -53,18 +57,9 @@ const AdminLayout: React.FC<NAdminLayoutProps> = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            {/* <p>long content</p>
-            {
-              // indicates very long content
-              Array.from({ length: 100 }, (_, index) => (
-                <React.Fragment key={index}>
-                  {index % 20 === 0 && index ? 'more' : '...'}
-                  <br />
-                </React.Fragment>
-              ))
-            } */}
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              {getRoutes(routes)}
+              {/* <Route path="/user" element={<User />} /> */}
             </Routes>
           </div>
         </Content>
