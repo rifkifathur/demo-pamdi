@@ -50,9 +50,6 @@ const AdminLayout = () => {
           <div
             style={{
               padding: 24,
-              textAlign: 'center',
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
             }}
           >
             <Routes>

@@ -19,7 +19,6 @@ const routes = [
         // Jika terdapat children key path isi empty string saja, component&link kosongkan   
         key: "Settings",     
         name: "Settings",
-        path: "",
         icon: <SettingOutlined />,
         children: [
             {
@@ -27,8 +26,15 @@ const routes = [
                 name: "User",
                 path: "/user",
                 link: <Link to="/user">User</Link>,
-                icon: "",
                 component: <User />,                
+            },
+            {
+                key: "Create User",
+                name: "Create User",
+                path: "/user/create",
+                link: <Link to="/user/create">User</Link>,
+                component: <User />,
+                sidebar: false                
             }
         ]
     },
