@@ -11,20 +11,11 @@ declare global {
 		path?: string;
 		link?: JSX.Element;		
 		icon?: JSX.Element | string;
-		component?:  JSX.Element;				
-        children?: {
-			name: string;
-			path?: string;
-			link?: JSX.Element;	
-			icon?: string;
-			component?: JSX.Element;
-			sidebar?: boolean;
-		}[];
-		sidebar?: boolean;
+		component?:  JSX.Element;
+        children?: RoutesType[];
+		sidebar: boolean;
+		baseParent?: string;				
+		isGroup?: string;
+		groupItem?: RoutesType[];
 	}
 }
-
-// Set a default value for the 'key' property
-const defaultRoutesType: RoutesType = {
-	sidebar: true,
-};
