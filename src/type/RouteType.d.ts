@@ -11,11 +11,12 @@ declare global {
 		path?: string;
 		link?: JSX.Element;		
 		icon?: JSX.Element | string;
-		component?:  JSX.Element;
-        children?: RoutesType[];
+		component?:  JSX.Element;		
 		sidebar: boolean;
-		baseParent?: string;				
+		baseKey?: string;
+		baseParentKey?: string;				
 		isGroup?: string;
+        children?: RoutesType[];
 		groupItem?: RoutesType[];
 	}
 }

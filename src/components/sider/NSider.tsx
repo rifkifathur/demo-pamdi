@@ -62,91 +62,25 @@ type NSiderType = {
   isCollapsed: boolean;
   isResponsive: boolean;
   setIsResponsive: (isResponsive: boolean) => void;
+  activeMenuOnSide: string;
+  setActiveMenuOnSide: (activeMenuOnSide: string) => void;
+  openMenuOnSide: string;
+  getRoutes: any;
 };
 
-const NSider = ({ isCollapsed, isResponsive, setIsResponsive }: NSiderType) => {
+const NSider = ({
+  isCollapsed,
+  isResponsive,
+  setIsResponsive,
+  activeMenuOnSide,
+  setActiveMenuOnSide,
+  openMenuOnSide
+}: NSiderType) => {
   const location = useLocation();
-  const [selectedKey, setSelectedKey] = useState<string>(location.pathname);
-  const [openKey, setOpenKey] = useState<string>("");
-  const [isOpenKey, setIsOpenKey] = useState(false);
 
   const onClick: MenuProps["onClick"] = (e) => {
-    setSelectedKey(e.key);
+    setActiveMenuOnSide(e.key);
   };
-
-  // const getRoutes = (routes: RoutesType[]): any => {
-  //   for (let route of routes) {
-  //     if (route.children) {
-  //       const foundInChildren = getRoutes(route.children);
-  //       if (foundInChildren) {
-  //         return foundInChildren;
-  //       }
-  //     }
-
-  //     if (route.path && route.path === location.pathname) {
-  //       setIsOpenKey(true);
-  //       if (route.baseParent) {
-  //         setOpenKey(route.baseParent);                    
-  //       }
-  //     }
-
-  //     if (route.isGroup && route.groupItem) {
-  //       for (let groupItem of route.groupItem) {
-  //         if (groupItem.children) {
-  //           const foundInGroupChildren = getRoutes(groupItem.children);
-  //           if (foundInGroupChildren) {
-  //             return foundInGroupChildren;
-  //           }
-  //         }
-
-  //         if (groupItem.path && groupItem.path === location.pathname) {
-  //           return groupItem;
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   return null;
-  // };
-
-  const getRoutes = useCallback((routes: RoutesType[]): any => {
-      for (let route of routes) {
-      if (route.children) {
-        const foundInChildren = getRoutes(route.children);
-        if (foundInChildren) {
-          return foundInChildren;
-        }
-      }
-
-      if (route.path && route.path === location.pathname) {
-        setIsOpenKey(true);
-        if (route.baseParent) {
-          setOpenKey(route.baseParent);                    
-        }
-      }
-
-      if (route.isGroup && route.groupItem) {
-        for (let groupItem of route.groupItem) {
-          if (groupItem.children) {
-            const foundInGroupChildren = getRoutes(groupItem.children);
-            if (foundInGroupChildren) {
-              return foundInGroupChildren;
-            }
-          }
-
-          if (groupItem.path && groupItem.path === location.pathname) {
-            return groupItem;
-          }
-        }
-      }
-    }
-
-    return null;
-  }, [setIsOpenKey, setOpenKey, location.pathname]);
-  
-  useEffect(() => {
-    getRoutes(routes);
-  }, [getRoutes]);
 
   return (
     <Sider
@@ -180,19 +114,14 @@ const NSider = ({ isCollapsed, isResponsive, setIsResponsive }: NSiderType) => {
           </div>
         )}
       </div>
-      {
-        isOpenKey && 
-        (
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={[selectedKey]}
-            defaultOpenKeys={[openKey]}
-            items={items}
-            onClick={onClick}
-          />
-        )
-      }
+      <Menu
+        theme="dark"
+        mode="inline"
+        defaultSelectedKeys={[activeMenuOnSide]}
+        defaultOpenKeys={[openMenuOnSide]}
+        items={items}
+        onClick={onClick}
+      />
     </Sider>
   );
 };
