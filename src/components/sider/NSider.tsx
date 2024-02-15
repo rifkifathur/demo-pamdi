@@ -61,6 +61,7 @@ routes.map((route) => {
 type NSiderType = {
   isCollapsed: boolean;
   isResponsive: boolean;
+  setIsCollapsed: (isCollapsed: boolean) => void;
   setIsResponsive: (isResponsive: boolean) => void;
   activeMenuOnSide: string;
   setActiveMenuOnSide: (activeMenuOnSide: string) => void;
@@ -70,6 +71,7 @@ type NSiderType = {
 
 const NSider = ({
   isCollapsed,
+  setIsCollapsed,
   isResponsive,
   setIsResponsive,
   activeMenuOnSide,
@@ -88,9 +90,10 @@ const NSider = ({
       collapsed={isCollapsed}
       breakpoint="sm"
       collapsedWidth={isResponsive ? "0" : "70"}
-      onBreakpoint={(broken) => {
+      onBreakpoint={(broken) => {        
         if (broken) {
           setIsResponsive(!isResponsive);
+          setIsCollapsed(!isCollapsed);
         }
       }}
       onCollapse={(collapsed, type) => {
@@ -103,6 +106,7 @@ const NSider = ({
         left: 0,
         top: 0,
         bottom: 0,
+        zIndex: 100,
       }}
     >
       <div className={`mt-[30px] flex items-center px-5 pb-20 text-center`}>

@@ -10,6 +10,7 @@ type NBreadcrumbType = {
 const NBreadcrumb = ({ items }: NBreadcrumbType) => (
   <Breadcrumb
     items={items}
+    className="mb-8"
   />
 );
 

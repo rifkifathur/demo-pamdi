@@ -75,6 +75,7 @@ const AdminLayout = () => {
           <Layout>
             <NSider
               isCollapsed={isCollapsed}
+              setIsCollapsed={setIsCollapsed}
               isResponsive={isResponsive}
               setIsResponsive={setIsResponsive}
               activeMenuOnSide={activeMenuOnSide}
@@ -82,7 +83,7 @@ const AdminLayout = () => {
               openMenuOnSide={openMenuOnSide}
               getRoutes={getRoutes}
             />
-            <Layout style={{ marginLeft: isCollapsed ? (isResponsive ? 0 : 70) : 200 }}>
+            <Layout style={{ marginLeft: isCollapsed ? (isResponsive ? 0 : 70) : (isResponsive ? 0 : 200) }}>
               <NHeader isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
               <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
                 <div
