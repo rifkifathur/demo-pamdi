@@ -8,15 +8,15 @@ declare global {
 	interface RoutesType {
 		key: string;
 		name: string;
-		path: string;
+		path?: string;
 		link?: JSX.Element;		
 		icon?: JSX.Element | string;
 		component?:  JSX.Element;		
-        children?: {
-			name: string;
-			path: string;
-			icon: string;
-			component: JSX.Element;
-		}[];
+		sidebar: boolean;
+		baseKey?: string;
+		baseParentKey?: string;				
+		isGroup?: string;
+        children?: RoutesType[];
+		groupItem?: RoutesType[];
 	}
 }
