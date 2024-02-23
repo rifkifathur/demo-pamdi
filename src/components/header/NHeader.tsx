@@ -9,11 +9,12 @@ import {
 type NHeaderType = {
   isCollapsed: boolean;
   setIsCollapsed: (isCollapsed: boolean) => void;
+  isResponsive: boolean;
 };
 
 const { Header } = Layout;
 
-const NHeader = ({ isCollapsed, setIsCollapsed }: NHeaderType) => {
+const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive }: NHeaderType) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -55,16 +56,18 @@ const NHeader = ({ isCollapsed, setIsCollapsed }: NHeaderType) => {
           fontSize: "16px",
           width: 64,
           height: 64,
+          position: isResponsive ? 'absolute' : 'relative',
+          left: isResponsive ? (isCollapsed ? 0 : 200) : 0,
         }}
       />
-      <Dropdown overlay={profileMenu} trigger={["click"]}>
+      {/* <Dropdown overlay={profileMenu} trigger={["click"]}>
         <Avatar
           size={32}
           shape="circle"
           icon={<UserOutlined />}
           style={{ marginRight: 30 }}
         />
-      </Dropdown>
+      </Dropdown> */}
     </Header>
   );
 };

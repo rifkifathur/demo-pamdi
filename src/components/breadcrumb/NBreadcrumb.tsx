@@ -2,16 +2,22 @@ import React from 'react';
 import { Breadcrumb } from 'antd';
 
 type NBreadcrumbType = {
-    items?: {
-        title: JSX.Element | String;
-    }[];
+    separator?: String,
+    items?: {}[];
 }
 
-const NBreadcrumb = ({ items }: NBreadcrumbType) => (
-  <Breadcrumb
-    items={items}
-    className="mb-8"
-  />
-);
+const NBreadcrumb = ({ separator, items }: NBreadcrumbType) => {
+  const onClick = () => {
+
+  }
+  return (
+    <Breadcrumb
+      // onClick={onClick}
+      separator={separator}
+      items={items}
+      className="mb-8"
+    />
+  )
+};
 
 export default NBreadcrumb;

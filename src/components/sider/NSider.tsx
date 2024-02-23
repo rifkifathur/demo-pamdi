@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { Layout, Menu } from "antd";
 import type { MenuProps } from "antd";
 import routes from "../../routes";
-import { useLocation } from "react-router-dom";
 
 const { Sider } = Layout;
 
@@ -64,9 +63,7 @@ type NSiderType = {
   setIsCollapsed: (isCollapsed: boolean) => void;
   setIsResponsive: (isResponsive: boolean) => void;
   activeMenuOnSide: string;
-  setActiveMenuOnSide: (activeMenuOnSide: string) => void;
   openMenuOnSide: string;
-  getRoutes: any;
 };
 
 const NSider = ({
@@ -75,14 +72,9 @@ const NSider = ({
   isResponsive,
   setIsResponsive,
   activeMenuOnSide,
-  setActiveMenuOnSide,
   openMenuOnSide
 }: NSiderType) => {
-  const location = useLocation();
-
-  const onClick: MenuProps["onClick"] = (e) => {
-    setActiveMenuOnSide(e.key);
-  };
+  console.log(activeMenuOnSide);
 
   return (
     <Sider
@@ -120,11 +112,10 @@ const NSider = ({
       </div>
       <Menu
         theme="dark"
-        mode="inline"
-        defaultSelectedKeys={[activeMenuOnSide]}
+        mode="inline"        
+        selectedKeys={[activeMenuOnSide]}
         defaultOpenKeys={[openMenuOnSide]}
         items={items}
-        onClick={onClick}
       />
     </Sider>
   );

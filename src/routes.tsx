@@ -1,8 +1,15 @@
 import { PieChartOutlined, SettingOutlined } from "@ant-design/icons";
-import Dashboard from "./views/dashboard";
 import { Link } from "react-router-dom";
+
+import Dashboard from "./views/dashboard";
 import User from "./views/user";
 import ButtonPage from "./views/button";
+import TypographyPage from "./views/typography";
+import AnchorPage from "./views/anchor";
+import BreadcrumbPage from "./views/breadcrumb";
+import DropdownPage from "./views/dropdown";
+import PaginationPage from "./views/pagination";
+import StepPage from "./views/step";
 
 const routes: RoutesType[] = [
   {
@@ -97,16 +104,69 @@ const routes: RoutesType[] = [
             sidebar: true,
             baseKey: "/general",
           },
+          {
+            key: "/typography",
+            name: "Typography",
+            path: "/typography",
+            link: <Link to="/typography">Typography</Link>,
+            component: <TypographyPage />,
+            sidebar: true,
+            baseKey: "/general",
+          },
         ],
       },
       {
-        key: "/tes",
-        name: "tes",
-        path: "/tes",
-        link: <Link to="/tes">Button</Link>,
-        component: <ButtonPage />,
+        key: "/navigation",
+        name: "Navigation",
+        icon: <SettingOutlined />,
         sidebar: true,
-        // baseKey: "/general",
+        children: [
+          {
+            key: "/anchor",
+            name: "Anchor",
+            path: "/anchor",
+            link: <Link to="/anchor">Anchor</Link>,
+            component: <AnchorPage />,
+            sidebar: true,
+            baseKey: "/navigation",
+          },
+          {
+            key: "/breadcrumb",
+            name: "Breadcrumb",
+            path: "/breadcrumb",
+            link: <Link to="/breadcrumb">Breadcrumb</Link>,
+            component: <BreadcrumbPage />,
+            sidebar: true,
+            baseKey: "/navigation",
+          },
+          {
+            key: "/dropdown",
+            name: "Dropdown",
+            path: "/dropdown",
+            link: <Link to="/dropdown">Dropdown</Link>,
+            component: <DropdownPage />,
+            sidebar: true,
+            baseKey: "/navigation",
+          },
+          {
+            key: "/pagination",
+            name: "Pagination",
+            path: "/pagination",
+            link: <Link to="/pagination">Pagination</Link>,
+            component: <PaginationPage />,
+            sidebar: true,
+            baseKey: "/navigation",
+          },
+          {
+            key: "/step",
+            name: "Step",
+            path: "/step",
+            link: <Link to="/step">Step</Link>,
+            component: <StepPage />,
+            sidebar: true,
+            baseKey: "/navigation",
+          },
+        ],
       },
     ],
   },
