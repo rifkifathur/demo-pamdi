@@ -10,8 +10,27 @@ import BreadcrumbPage from "./views/breadcrumb";
 import DropdownPage from "./views/dropdown";
 import PaginationPage from "./views/pagination";
 import StepPage from "./views/step";
+import ProfilePage from "./views/profile";
+import EditProfilePage from "./views/profile/edit";
 
 const routes: RoutesType[] = [
+  {
+    key: "/profile",
+    name: "Profile",
+    path: "/profile",
+    component: <ProfilePage />,
+    sidebar: false,
+    children: [
+      {
+        key: "/profile/edit",
+        name: "Edit Profile",
+        path: "/profile/edit",
+        baseKey: "/profile",
+        component: <EditProfilePage />,
+        sidebar: false,
+      },
+    ],
+  },
   {
     key: "/",
     name: "Dashboard",

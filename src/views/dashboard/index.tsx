@@ -8,7 +8,7 @@ const Dashboard = () => {
   ]
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="Dashboard" items={breadcrumbItems} />
       <div>OKE</div>
     </>
   );

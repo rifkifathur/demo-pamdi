@@ -1,7 +1,8 @@
 import React from "react";
-import { Layout, Menu } from "antd";
+import { ConfigProvider, Layout, Menu } from "antd";
 import type { MenuProps } from "antd";
 import routes from "../../routes";
+import { FaCircle } from "react-icons/fa6";
 
 const { Sider } = Layout;
 
@@ -34,7 +35,7 @@ routes.map((route) => {
     const groupChildren = route.groupItem.map((item) => {
       const groupSubChildren = item.children
         ?.filter((sub) => sub.sidebar)
-        .map((sub) => getItem(sub.link, sub.key));
+        .map((sub) => getItem(sub.link, sub.key, <FaCircle style={{ fontSize:'5px', minWidth:0 }}/>));
       return getItem(item.name, item.key, item.icon, groupSubChildren);
     });
     const groupItem = getItem(
@@ -53,7 +54,9 @@ routes.map((route) => {
       children,
       route.isGroup ? "group" : ""
     );
-    return items.push(menuItem);
+    if (route.sidebar) {
+      return items.push(menuItem);
+    }
   }
 });
 
@@ -78,6 +81,7 @@ const NSider = ({
 
   return (
     <Sider
+      width="220"
       trigger={null}
       collapsed={isCollapsed}
       breakpoint="sm"
@@ -110,13 +114,23 @@ const NSider = ({
           </div>
         )}
       </div>
-      <Menu
-        theme="dark"
-        mode="inline"        
-        selectedKeys={[activeMenuOnSide]}
-        defaultOpenKeys={[openMenuOnSide]}
-        items={items}
-      />
+      <ConfigProvider
+        theme={{
+          components: {
+            Menu: {
+              darkSubMenuItemBg:"#001529",
+            },
+          },
+        }}
+      >        
+        <Menu
+          theme="dark"
+          mode="inline"        
+          selectedKeys={[activeMenuOnSide]}
+          defaultOpenKeys={[openMenuOnSide]}
+          items={items}
+        />
+      </ConfigProvider>
     </Sider>
   );
 };

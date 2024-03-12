@@ -1,10 +1,12 @@
-import React from "react";
-import { Layout, Button, Dropdown, Menu, Avatar, theme } from "antd";
+import React, { useState } from "react";
+import { Layout, Button, Dropdown, Menu, Avatar, theme, Row, Col, ConfigProvider } from "antd";
+import type { DropdownProps, MenuProps } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 type NHeaderType = {
   isCollapsed: boolean;
@@ -19,24 +21,57 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive }: NHeaderType) => 
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const [open, setOpen] = useState(false);
+
   const onCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const profileMenu = (
-    <Menu>
-      <Menu.Item key="profile">
-        <Avatar size={30} icon={<UserOutlined />} /> Nama Pengguna
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="myprofile">Profile</Menu.Item>
-      <Menu.Item key="settings">Pengaturan</Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="mode">Mode</Menu.Item>
-      <Menu.Item key="bahasa">Bahasa</Menu.Item>
-      <Menu.Item key="logout">Keluar</Menu.Item>
-    </Menu>
-  );
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+    if (e.key === '1') {
+      return false;
+    }
+  };
+  
+  const handleOpenChange: DropdownProps['onOpenChange'] = (nextOpen, info) => {
+    if (info.source === 'trigger' || nextOpen) {
+      setOpen(nextOpen);
+    }
+  };
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <Row>
+          <Col>
+            <Avatar size={40} icon={<UserOutlined />} />
+          </Col>
+          <Col className="px-4">
+            <span className="font-bold text-lg">John smith</span><br />
+            <span className="">Lorem ipsum</span>
+          </Col>
+        </Row>
+      ),
+    },  
+    {
+      type: "divider",
+    },
+    {
+      key: '2',
+      label: (
+        <Link to={"/profile"}>My Profile</Link>
+      ),
+    },
+    {
+      key: '4',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+          Logout
+        </a>
+      ),
+    },
+  ];
 
   return (
     <Header
@@ -54,20 +89,42 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive }: NHeaderType) => 
         onClick={onCollapse}
         style={{
           fontSize: "16px",
-          width: 64,
-          height: 64,
-          position: isResponsive ? 'absolute' : 'relative',
-          left: isResponsive ? (isCollapsed ? 0 : 200) : 0,
+          width: 38,
+          height: 38,
+          marginLeft: isResponsive ? (isCollapsed ? 0 : 200) : 0,
+          backgroundColor:"#fff",
+          padding:0,
+          zIndex:101
         }}
-      />
-      {/* <Dropdown overlay={profileMenu} trigger={["click"]}>
-        <Avatar
-          size={32}
-          shape="circle"
-          icon={<UserOutlined />}
-          style={{ marginRight: 30 }}
-        />
-      </Dropdown> */}
+      />   
+      <ConfigProvider
+        theme={{
+          components: {
+            Dropdown: {
+              paddingBlock:"8px",
+            },
+          },
+        }}
+      >        
+        <Dropdown
+          menu={{
+            items,
+            onClick: handleMenuClick,
+          }}
+          onOpenChange={handleOpenChange}
+          open={open}
+          trigger={['click']} 
+          placement="bottomRight" 
+          className="cursor-pointer"
+        >
+          <Avatar
+              size={40}
+              shape="circle"
+              icon={<UserOutlined />}
+              style={{ marginRight: 30 }}
+            />
+        </Dropdown>
+      </ConfigProvider>
     </Header>
   );
 };

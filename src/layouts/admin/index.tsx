@@ -87,7 +87,7 @@ const AdminLayout = () => {
           />
           <Layout
             style={{
-              marginLeft: isCollapsed ? (isResponsive ? 0 : 70) : (isResponsive ? 0 : 200),
+              marginLeft: isCollapsed ? (isResponsive ? 0 : 70) : (isResponsive ? 0 : 220),
             }}
           >
             <NHeader

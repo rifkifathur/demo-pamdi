@@ -11,7 +11,7 @@ const User = () => {
 
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="User" items={breadcrumbItems} />
       <Row className="mt-8">
         <Col span={24}>
           <NTable />
