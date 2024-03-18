@@ -21,7 +21,7 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <ConfigProvider theme={{ token: { colorPrimary: '#00b96b', fontFamily: "Inter, sans-serif" } }}>
+    <ConfigProvider theme={{ token: { colorPrimary: '#00b96b', fontFamily: "Roboto, sans-serif" } }}>
       <RouterProvider router={router} />
     </ConfigProvider>
   </React.StrictMode>

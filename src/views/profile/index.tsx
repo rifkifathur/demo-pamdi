@@ -37,9 +37,6 @@ const ProfilePage = () => {
                 <h2 className="m-0">John smith</h2>
                 <Flex wrap="wrap" className="justify-center md:justify-start">
                   <Flex align="center" className="mr-1">
-                    <FaCircleDot className="mr-1" /> Developer
-                  </Flex>
-                  <Flex align="center" className="mr-1">
                     <FaLocationDot className="mr-1" /> Indonesia
                   </Flex>
                   <Flex align="center" className="mr-1">
@@ -94,14 +91,6 @@ const ProfilePage = () => {
               </Col>
               <Col xs={24} lg={8}>
                 <span>John Smith</span>
-              </Col>
-            </Row>
-            <Row className="mb-4">
-              <Col xs={24} lg={8}>
-                <span className="text-slate-500/75">Job Title</span>
-              </Col>
-              <Col xs={24} lg={8}>
-                <span>Developer</span>
               </Col>
             </Row>
             <Row className="mb-4">

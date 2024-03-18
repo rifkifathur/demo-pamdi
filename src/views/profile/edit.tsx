@@ -18,9 +18,9 @@ import {
 import { FaCircleDot, FaEnvelope, FaLocationDot } from "react-icons/fa6";
 
 type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
+  name?: string;
+  email?: string;
+  location?: string;
 };
 
 const EditProfilePage = () => {
@@ -45,9 +45,6 @@ const EditProfilePage = () => {
               <Col className="px-4 text-center md:text-left">
                 <h2 className="m-0">John smith</h2>
                 <Flex wrap="wrap" className="justify-center md:justify-start">
-                  <Flex align="center" className="mr-1">
-                    <FaCircleDot className="mr-1" /> Developer
-                  </Flex>
                   <Flex align="center" className="mr-1">
                     <FaLocationDot className="mr-1" /> Indonesia
                   </Flex>
@@ -91,80 +88,48 @@ const EditProfilePage = () => {
             </Row>
           </Card>
         </Col>
-        <Col className="gutter-row" xs={24} lg={24}>
+        <Col className="gutter-row text-left" xs={24} lg={24}>
           <Card title="Profile Details">
-            {/* <Row className="mb-4">
-              <Col lg={8}>
-                <span>Name</span>
-              </Col>
-              <Col lg={8}>
-                <span>John Smith</span>
-              </Col>
-            </Row>
-            <Row className="mb-4">
-              <Col lg={8}>
-                <span>Job Title</span>
-              </Col>
-              <Col lg={8}>
-                <span>Developer</span>
-              </Col>
-            </Row>
-            <Row className="mb-4">
-              <Col lg={8}>
-                <span>E-mail</span>
-              </Col>
-              <Col lg={8}>
-                <span>john.smith@mail.com</span>
-              </Col>
-            </Row>
-            <Row className="mb-4">
-              <Col lg={8}>
-                <span>Location</span>
-              </Col>
-              <Col lg={8}>
-                <span>Indonesia</span>
-              </Col>
-            </Row>
-            <Divider />
-            <Flex justify="flex-end">
-              <Button className="mx-2" size="large">
-                Cancel
-              </Button>
-              <Button className="mx-2" size="large" type="primary">
-                Save
-              </Button>
-            </Flex> */}
             <Form
               name="basic"
-              labelCol={{ span: 2 }}
-              wrapperCol={{ span: 8, offset:4 }}
-              style={{ backgroundColor:"red" }}
-              initialValues={{ remember: true }}
+              labelAlign="left"
+              labelCol={{ xs: { span: 24 }, md: {span: 24}, lg: { span: 2 } }}
+              wrapperCol={{ xs: { span: 24 }, lg: { span: 8, offset: 4 } }}
+              // style={{ backgroundColor:"red" }}
               // onFinish={onFinish}
               // onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
               <Form.Item<FieldType>
-                label="Username"
-                name="username"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                label="Name"
+                name="name"
+                rules={[{ required: true, message: 'Please input your name!' }]}
               >
-                <Input />
+                <Input placeholder="Name" defaultValue={"John smith"} value={"John smith"}/>
               </Form.Item>
 
               <Form.Item<FieldType>
-                label="Password"
-                name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
+                label="Email"
+                name="email"
+                rules={[{ required: true, message: 'Please input your email!' }]}
               >
-                <Input.Password />
+                <Input placeholder="Email" defaultValue={"john.smith@mail.com"} value={"John smith"}/>
+              </Form.Item>
+              <Form.Item<FieldType>
+                label="Location"
+                name="location"
+                rules={[{ required: true, message: 'Please input your location!' }]}
+              >
+                <Input placeholder="Location" defaultValue={"Indonesia"} value={"John smith"}/>
               </Form.Item>
               <Divider />
-              <Form.Item wrapperCol={{ offset: 20 }}>
-                <Button type="primary">
-                  Cancel
-                </Button>
-                <Button type="primary" htmlType="submit">
+              <Form.Item wrapperCol={{ xs: { offset: 4 }, lg: { offset: 18 } }}>
+                <Link to={"/profile"}>
+                  <Button className="mx-1" type="primary">
+                    Cancel
+                  </Button>
+                </Link>
+                <Button className="mx-1" type="primary" htmlType="submit">
                   Submit
                 </Button>
               </Form.Item>
