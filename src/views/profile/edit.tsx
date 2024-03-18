@@ -5,17 +5,16 @@ import {
   Card,
   Col,
   Row,
-  Pagination,
-  PaginationProps,
   Image,
   Flex,
-  Tabs,
   Button,
   Divider,
   Form,
   Input,
+  type FormProps,
+  message
 } from "antd";
-import { FaCircleDot, FaEnvelope, FaLocationDot } from "react-icons/fa6";
+import { FaEnvelope, FaLocationDot } from "react-icons/fa6";
 
 type FieldType = {
   name?: string;
@@ -29,8 +28,17 @@ const EditProfilePage = () => {
     { title: <Link to={"/profile"}>Profile</Link> },
   ];
 
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    messageApi.open({
+      type: 'success',
+      content: 'This is a success message',
+    });
+  };
   return (
     <>
+      {contextHolder}
       <NBreadcrumb items={breadcrumbItems} />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" xs={24} lg={24}>
@@ -96,7 +104,12 @@ const EditProfilePage = () => {
               labelCol={{ xs: { span: 24 }, md: {span: 24}, lg: { span: 2 } }}
               wrapperCol={{ xs: { span: 24 }, lg: { span: 8, offset: 4 } }}
               // style={{ backgroundColor:"red" }}
-              // onFinish={onFinish}
+              initialValues={{
+                name: "John Smith",
+                email: "john.smith@mail.com",
+                location: "Indonesia"
+              }}
+              onFinish={onFinish}
               // onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
@@ -105,7 +118,7 @@ const EditProfilePage = () => {
                 name="name"
                 rules={[{ required: true, message: 'Please input your name!' }]}
               >
-                <Input placeholder="Name" defaultValue={"John smith"} value={"John smith"}/>
+                <Input placeholder="Name" />
               </Form.Item>
 
               <Form.Item<FieldType>
@@ -113,14 +126,14 @@ const EditProfilePage = () => {
                 name="email"
                 rules={[{ required: true, message: 'Please input your email!' }]}
               >
-                <Input placeholder="Email" defaultValue={"john.smith@mail.com"} value={"John smith"}/>
+                <Input placeholder="Email" />
               </Form.Item>
               <Form.Item<FieldType>
                 label="Location"
                 name="location"
                 rules={[{ required: true, message: 'Please input your location!' }]}
               >
-                <Input placeholder="Location" defaultValue={"Indonesia"} value={"John smith"}/>
+                <Input placeholder="Location" />
               </Form.Item>
               <Divider />
               <Form.Item wrapperCol={{ xs: { offset: 4 }, lg: { offset: 18 } }}>

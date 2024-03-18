@@ -12,6 +12,8 @@ import PaginationPage from "./views/pagination";
 import StepPage from "./views/step";
 import ProfilePage from "./views/profile";
 import EditProfilePage from "./views/profile/edit";
+import { FaKey } from "react-icons/fa6";
+import RolePage from "./views/role";
 
 const routes: RoutesType[] = [
   {
@@ -86,6 +88,33 @@ const routes: RoutesType[] = [
             baseKey: "/user-management",
             link: <Link to="/user">User</Link>,
             component: <User />,
+            sidebar: true,
+          },
+          {
+            key: "/user/create",
+            name: "Create User",
+            path: "/user/create",
+            baseKey: "/user-management",
+            baseParentKey: "/user",
+            link: <Link to="/user/create">User</Link>,
+            component: <User />,
+            sidebar: false,
+          },
+        ],
+      },
+      {
+        key: "/role-permission",
+        name: "Role & Permission",
+        icon: <FaKey />,
+        sidebar: true,
+        children: [
+          {
+            key: "/role",
+            name: "Role",
+            path: "/role",
+            baseKey: "/role-permission",
+            link: <Link to="/role">Role</Link>,
+            component: <RolePage />,
             sidebar: true,
           },
           {
