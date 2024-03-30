@@ -1,5 +1,5 @@
 import React from "react";
-import { NBreadcrumb, NTable } from "../../components";
+import { NBreadcrumb } from "../../components";
 import { Link } from "react-router-dom";
 import { Col, Row } from "antd";
 
@@ -14,7 +14,6 @@ const User = () => {
       <NBreadcrumb title="User" items={breadcrumbItems} />
       <Row className="mt-8">
         <Col span={24}>
-          <NTable />
         </Col>
       </Row>
     </>

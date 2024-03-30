@@ -66,9 +66,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive }: NHeaderType) => 
     {
       key: '4',
       label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-          Logout
-        </a>
+        <Link to={"/login"}>Logout</Link>
       ),
     },
   ];
@@ -91,7 +89,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive }: NHeaderType) => 
           fontSize: "16px",
           width: 38,
           height: 38,
-          marginLeft: isResponsive ? (isCollapsed ? 0 : 200) : 0,
+          marginLeft: isResponsive ? (isCollapsed ? 0 : 240) : 0,
           backgroundColor:"#fff",
           padding:0,
           zIndex:101

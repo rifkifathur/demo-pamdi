@@ -35,8 +35,8 @@ routes.map((route) => {
     const groupChildren = route.groupItem.map((item) => {
       const groupSubChildren = item.children
         ?.filter((sub) => sub.sidebar)
-        .map((sub) => getItem(sub.link, sub.key, <FaCircle style={{ fontSize:'5px', minWidth:0 }}/>));
-      return getItem(item.name, item.key, item.icon, groupSubChildren);
+        .map((sub) => getItem(sub.link, sub.key, <FaCircle style={{ fontSize:'4px', minWidth:0 }}/>));
+      return getItem(<span className="font-bold">{item.name}</span>, item.key, item.icon, groupSubChildren);
     });
     const groupItem = getItem(
       route.name,
@@ -48,7 +48,7 @@ routes.map((route) => {
     return items.push(groupItem);
   } else {
     const menuItem = getItem(
-      route.link ? route.link : route.name,
+      route.link ? <span className="font-bold">{route.link}</span> : route.name,
       route.key,
       route.icon,
       children,
@@ -58,6 +58,7 @@ routes.map((route) => {
       return items.push(menuItem);
     }
   }
+  return items;
 });
 
 type NSiderType = {
@@ -76,12 +77,11 @@ const NSider = ({
   setIsResponsive,
   activeMenuOnSide,
   openMenuOnSide
-}: NSiderType) => {
-  console.log(activeMenuOnSide);
+}: NSiderType) => {  
 
   return (
     <Sider
-      width="220"
+      width="260"
       trigger={null}
       collapsed={isCollapsed}
       breakpoint="sm"
@@ -103,6 +103,7 @@ const NSider = ({
         top: 0,
         bottom: 0,
         zIndex: 100,
+        // fontWeight: "600"
       }}
     >
       <div className={`mt-[30px] flex items-center px-5 pb-20 text-center`}>
@@ -118,7 +119,9 @@ const NSider = ({
         theme={{
           components: {
             Menu: {
-              darkSubMenuItemBg:"#001529",
+              darkItemBg: "#0d0e12",
+              darkSubMenuItemBg:"#0d0e12",
+              darkItemSelectedBg: "#1c1c21",              
             },
           },
         }}
