@@ -1,20 +1,22 @@
-import { PieChartOutlined, SettingOutlined } from "@ant-design/icons";
+import { PieChartOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import Dashboard from "./views/dashboard";
 import User from "./views/user";
-import ButtonPage from "./views/button";
-import TypographyPage from "./views/typography";
-import AnchorPage from "./views/anchor";
-import BreadcrumbPage from "./views/breadcrumb";
-import DropdownPage from "./views/dropdown";
-import PaginationPage from "./views/pagination";
-import StepPage from "./views/step";
+import ButtonPage from "./views/components/general/button";
+import TypographyPage from "./views/components/general/typography";
+import AnchorPage from "./views/components/navigation/anchor";
+import BreadcrumbPage from "./views/components/navigation/breadcrumb";
+import DropdownPage from "./views/components/navigation/dropdown";
+import PaginationPage from "./views/components/navigation/pagination";
+import StepPage from "./views/components/navigation/step";
 import ProfilePage from "./views/profile";
 import EditProfilePage from "./views/profile/edit";
-import { FaCompass, FaKey, FaListUl, FaPenToSquare, FaUserGear, FaUserLock, FaUserShield } from "react-icons/fa6";
+import { FaCompass, FaListUl, FaPenToSquare, FaUserGear, FaUserLock, FaUserShield } from "react-icons/fa6";
 import RolePage from "./views/role";
-import AutoCompletePage from "./views/autocomplete";
+import AutoCompletePage from "./views/components/data-entry/autocomplete";
+import CascaderPage from "./views/components/data-entry/cascader";
+import CheckboxPage from "./views/components/data-entry/checkbox";
 
 /*
   baseKey for open accordion sidebar
@@ -237,50 +239,50 @@ const routes: RoutesType[] = [
         sidebar: true,
         children: [
           {
-            key: "/components/navigation/autocomplete",
+            key: "/components/data-entry/autocomplete",
             name: "Auto Complete",
-            path: "/components/navigation/autocomplete",
-            link: <Link to="/components/navigation/autocomplete">Auto Complete</Link>,
+            path: "/components/data-entry/autocomplete",
+            link: <Link to="/components/data-entry/autocomplete">Auto Complete</Link>,
             component: <AutoCompletePage />,
             sidebar: true,
             baseKey: "/components/data-entry",
           },
           {
-            key: "/components/navigation/breadcrumb",
-            name: "Breadcrumb",
-            path: "/components/navigation/breadcrumb",
-            link: <Link to="/components/navigation/breadcrumb">Breadcrumb</Link>,
-            component: <BreadcrumbPage />,
+            key: "/components/data-entry/cascader",
+            name: "Cascader",
+            path: "/components/data-entry/cascader",
+            link: <Link to="/components/data-entry/cascader">Cascader</Link>,
+            component: <CascaderPage />,
             sidebar: true,
-            baseKey: "/components/navigation",
+            baseKey: "/components/data-entry",
           },
           {
-            key: "/components/navigation/dropdown",
-            name: "Dropdown",
-            path: "/components/navigation/dropdown",
-            link: <Link to="/components/navigation/dropdown">Dropdown</Link>,
-            component: <DropdownPage />,
+            key: "/components/data-entry/checkbox",
+            name: "Checkbox",
+            path: "/components/data-entry/checkbox",
+            link: <Link to="/components/data-entry/checkbox">Checkbox</Link>,
+            component: <CheckboxPage />,
             sidebar: true,
-            baseKey: "/components/navigation",
+            baseKey: "/components/data-entry",
           },
-          {
-            key: "/components/navigation/pagination",
-            name: "Pagination",
-            path: "/components/navigation/pagination",
-            link: <Link to="/components/navigation/pagination">Pagination</Link>,
-            component: <PaginationPage />,
-            sidebar: true,
-            baseKey: "/components/navigation",
-          },
-          {
-            key: "/components/navigation/step",
-            name: "Step",
-            path: "/components/navigation/step",
-            link: <Link to="/components/navigation/step">Step</Link>,
-            component: <StepPage />,
-            sidebar: true,
-            baseKey: "/components/navigation",
-          },
+          // {
+          //   key: "/components/navigation/pagination",
+          //   name: "Pagination",
+          //   path: "/components/navigation/pagination",
+          //   link: <Link to="/components/navigation/pagination">Pagination</Link>,
+          //   component: <PaginationPage />,
+          //   sidebar: true,
+          //   baseKey: "/components/navigation",
+          // },
+          // {
+          //   key: "/components/navigation/step",
+          //   name: "Step",
+          //   path: "/components/navigation/step",
+          //   link: <Link to="/components/navigation/step">Step</Link>,
+          //   component: <StepPage />,
+          //   sidebar: true,
+          //   baseKey: "/components/navigation",
+          // },
         ],
       },
     ],

@@ -1,5 +1,5 @@
 import React from "react";
-import { NBreadcrumb } from "../../components";
+import { NBreadcrumb } from "../../../../components";
 import { Link } from "react-router-dom";
 import {
   Card,

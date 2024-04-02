@@ -1,17 +1,9 @@
 import React, { useState } from "react";
-import { NBreadcrumb } from "../../components";
+import { NBreadcrumb } from "../../../../components";
 import { Link } from "react-router-dom";
-import { Button, Card, Col, Row, Tooltip, Radio, AutoComplete, Flex, Input } from "antd";
-import {
-  SearchOutlined,
-  DownloadOutlined,
-  PoweroffOutlined,
-} from "@ant-design/icons";
-import type {  ConfigProviderProps } from "antd";
+import { Card, Col, Row, AutoComplete, Input } from "antd";
 import type { DefaultOptionType } from 'antd/es/select';
 import { FaUser } from "react-icons/fa6";
-
-type SizeType = ConfigProviderProps["componentSize"];
 
 const mockVal = (str: string, repeat = 1) => ({
   value: str.repeat(repeat),
@@ -158,7 +150,7 @@ const AutoCompletePage = () => {
           </Card>
           <Card
             className="mb-8"
-            title="Loading Button"
+            title="Lookup Auto Complete"
             bordered={false}
             style={{ width: "auto" }}
           >
