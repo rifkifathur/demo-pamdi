@@ -4,7 +4,6 @@ import { FaGithub, FaGoogle } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const [loginFail, setLoginFail] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onFinish = (values: any) => {
@@ -12,8 +11,8 @@ const Register = () => {
     setTimeout(() => {
       if (values.username !== "" && values.email !== "" && values.password !== "") {
         navigate("/");
+        sessionStorage.setItem("auth", values.email);
       } else {
-        setLoginFail(true);
         setLoading(false);
       }
     }, 1500);
@@ -21,24 +20,18 @@ const Register = () => {
   return (
     <>
       <Flex justify="center" align="center" vertical className="bg-slate-100 h-[100vh]">
-        <Card className="w-[380px] text-center">          
-          <h1 className="m-0">Sign Up</h1>
-          <span className="mb-8">Sign Up to continue to ...</span>
-          <h3>Sign In with</h3>
-          <Button className="mx-1" icon={<FaGoogle className="text-orange-700" />}></Button>
-          <Button className="mx-1" icon={<FaGithub />}></Button>
-          <Divider plain style={{ color: "gray", fontSize: "12px" }}>Or with Email</Divider>
-          {loginFail && (
-            <Alert
-              className="p-2 mb-2 text-left"
-              description="Wrong Email Or Password"
-              type="error"
-              showIcon
-            />
-          )}
+        <Card className="w-[380px]">          
+          <div className="text-center">
+            <h1 className="m-0">Sign Up</h1>
+            <span className="mb-8">Sign Up to continue to ...</span>
+            <h3>Sign In with</h3>
+            <Button className="mx-1" icon={<FaGoogle className="text-orange-700" />}></Button>
+            <Button className="mx-1" icon={<FaGithub />}></Button>
+            <Divider plain style={{ color: "gray", fontSize: "12px" }}>Or with Email</Divider>
+          </div>
           <Form
-            name="normal_login"
-            className="login-form"
+            name="register"
+            className="login-form"            
             onFinish={onFinish}
           >
             <Form.Item
@@ -57,8 +50,7 @@ const Register = () => {
               name="password"
               rules={[{ required: true, message: 'Please input your Password!' }]}
             >
-              <Input
-                type="password"
+              <Input.Password 
                 placeholder="Password"
               />
             </Form.Item>

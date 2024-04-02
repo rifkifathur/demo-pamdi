@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Layout, Button, Dropdown, Menu, Avatar, theme, Row, Col, ConfigProvider } from "antd";
+import { Layout, Button, Dropdown, Avatar, theme, Row, Col, ConfigProvider } from "antd";
 import type { DropdownProps, MenuProps } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type NHeaderType = {
   isCollapsed: boolean;
@@ -22,7 +22,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive }: NHeaderType) => 
   } = theme.useToken();
 
   const [open, setOpen] = useState(false);
-
+  const navigate = useNavigate();
   const onCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -38,7 +38,11 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive }: NHeaderType) => 
       setOpen(nextOpen);
     }
   };
-
+  
+  const handleLogout = (): void => {
+    sessionStorage.clear();
+    navigate("/login");
+  }
   const items: MenuProps['items'] = [
     {
       key: '1',
@@ -66,7 +70,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive }: NHeaderType) => 
     {
       key: '4',
       label: (
-        <Link to={"/login"}>Logout</Link>
+        <div onClick={handleLogout}>Logout</div>
       ),
     },
   ];

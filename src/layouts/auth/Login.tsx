@@ -22,16 +22,18 @@ const Login = () => {
   return (
     <>
       <Flex justify="center" align="center" vertical className="bg-slate-100 h-[100vh]">
-        <Card className="w-[380px] text-center">          
-          <h1 className="m-0">Sign In</h1>
-          <span className="mb-8">Sign in to continue to ...</span>
-          <h3>Sign In with</h3>
-          <Button className="mx-1" icon={<FaGoogle className="text-orange-700" />}></Button>
-          <Button className="mx-1" icon={<FaGithub />}></Button>
-          <Divider plain style={{ color: "gray", fontSize: "12px" }}>Or with Email</Divider>
+        <Card className="w-[380px]">          
+          <div className="text-center">
+            <h1 className="m-0">Sign In</h1>
+            <span className="mb-8">Sign in to continue to ...</span>
+            <h3>Sign In with</h3>
+            <Button className="mx-1" icon={<FaGoogle className="text-orange-700" />}></Button>
+            <Button className="mx-1" icon={<FaGithub />}></Button>
+            <Divider plain style={{ color: "gray", fontSize: "12px" }}>Or with Email</Divider>
+          </div>
           {loginFail && (
             <Alert
-              className="p-2 mb-2 text-left"
+              className="p-2 mb-2"
               description="Wrong Email Or Password"
               type="error"
               showIcon
@@ -57,15 +59,14 @@ const Login = () => {
               name="password"
               rules={[{ required: true, message: 'Please input your Password!' }]}
             >
-              <Input
-                type="password"
+              <Input.Password 
                 placeholder="Password"
               />
             </Form.Item>
             <Form.Item className="mb-1 pb-1">
-              <a className="login-form-forgot float-right" href="">
+              <Link to={"/reset-password"} className="login-form-forgot float-right" >
                 Forgot password?
-              </a>
+              </Link>
             </Form.Item>
 
             <Form.Item>
