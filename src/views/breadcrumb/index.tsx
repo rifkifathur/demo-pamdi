@@ -7,12 +7,14 @@ import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 const BreadcrumbPage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
-    { title: <Link to={"/breadcrumb"}>Breadcrumb</Link> },
+    { title: "Components" },
+    { title: "Navigation" },
+    { title: <Link to={"/components/navigation/breadcrumb"}>Breadcrumb</Link> },
   ];
 
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="Breadcrumb" items={breadcrumbItems} />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" xs={24} lg={12}>
           <Card
@@ -27,7 +29,7 @@ const BreadcrumbPage = () => {
                   title: "Home",
                 },
                 {
-                  title: <a href="/user">Application Center</a>,
+                  title: <a href="">Application Center</a>,
                 },
                 {
                   title: <a href="">Application List</a>,

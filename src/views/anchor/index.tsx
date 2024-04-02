@@ -6,12 +6,14 @@ import { Card, Col, Row, Anchor } from "antd";
 const AnchorPage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
-    { title: <Link to={"/anchor"}>Anchor</Link> },
+    { title: "Components" },
+    { title: "Navigation" },
+    { title: <Link to={"/components/navigation/anchor"}>Anchor</Link> },
   ];
 
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="Anchor" items={breadcrumbItems} />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" xs={24}>
           <Card className="mb-8 w-auto " title="Basic Anchor" bordered={false}>

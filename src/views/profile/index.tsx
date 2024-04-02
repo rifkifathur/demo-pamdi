@@ -5,14 +5,11 @@ import {
   Card,
   Col,
   Row,
-  Pagination,
-  PaginationProps,
   Image,
   Flex,
-  Tabs,
   Button,
 } from "antd";
-import { FaCircleDot, FaEnvelope, FaLocationDot } from "react-icons/fa6";
+import { FaEnvelope, FaLocationDot } from "react-icons/fa6";
 
 const ProfilePage = () => {
   const breadcrumbItems = [

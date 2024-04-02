@@ -29,7 +29,7 @@ const items: MenuItem[] = [];
 routes.map((route) => {
   const children = route.children
     ?.filter((route) => route.sidebar)
-    .map((route) => getItem(route.link, route.key));
+    .map((route) => getItem(route.link, route.key, <FaCircle style={{ fontSize:'4px', minWidth:0 }}/>));
 
   if (route.groupItem) {
     const groupChildren = route.groupItem.map((item) => {

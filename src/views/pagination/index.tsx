@@ -12,7 +12,9 @@ import {
 const PaginationPage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
-    { title: <Link to={"/pagination"}>Pagination</Link> },
+    { title: "Components" },
+    { title: "Navigation" },
+    { title: <Link to={"/components/navigation/pagination"}>Pagination</Link> },
   ];
 
   const onChange: PaginationProps['onChange'] = (pageNumber) => {
@@ -21,7 +23,7 @@ const PaginationPage = () => {
 
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="Pagination" items={breadcrumbItems} />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" xs={24} lg={12}>
           <Card

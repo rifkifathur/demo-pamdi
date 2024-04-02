@@ -3,7 +3,6 @@ import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import { Button, ConfigProvider, Layout, Result, Spin } from "antd";
 import { NFooter, NSider, NHeader } from "../../components";
 import routes from "../../routes";
-import Login from "../auth/Login";
 
 const { Content } = Layout;
 
@@ -20,7 +19,7 @@ const AdminLayout = () => {
   const auth = sessionStorage.getItem('auth');
   const navigate = useNavigate();
   const getRoutes = useCallback(
-    (routes: RoutesType[]): any => {
+    (routes: RoutesType[]): any => {      
       for (let route of routes) {
         if (route.children) {
           const foundInChildren = getRoutes(route.children);
@@ -63,7 +62,7 @@ const AdminLayout = () => {
           }
         }
       }
-      setLoading(false);
+      setLoading(false);      
       return null;
     },
     [location.pathname]
@@ -74,10 +73,13 @@ const AdminLayout = () => {
     setTimeout(() => {
       if (auth === null) {
         navigate("/login");
-      } else {
-        getRoutes(routes);
-        setLoadingRoute(false);
-      }      
+      }
+
+      if (getRoutes(routes) == null) {
+        setIsGetRoute(false);
+      }
+      getRoutes(routes);
+      setLoadingRoute(false);     
     }, 1500);
   }, [getRoutes, navigate, auth]);  
 
@@ -125,7 +127,12 @@ const AdminLayout = () => {
                   <div className="content" />
                 </Spin>
               )}
-              <Content style={{ margin: "12px 16px 0", overflow: "initial", height:"100vh" }}>
+              <Content style={{ 
+                margin: "12px 16px 0", 
+                overflow: "initial", 
+                // height:"100vh" 
+              }}
+              >
                 <div
                   style={{
                     padding: 24,

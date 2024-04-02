@@ -17,7 +17,9 @@ import type { MenuProps } from "antd";
 const DropdownPage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
-    { title: <Link to={"/dropdown"}>Dropdown</Link> },
+    { title: "Components" },
+    { title: "Navigation" },
+    { title: <Link to={"/components/navigation/dropdown"}>Dropdown</Link> },
   ];
 
   const items1: MenuProps["items"] = [
@@ -183,7 +185,7 @@ const DropdownPage = () => {
   };
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="Dropdown" items={breadcrumbItems} />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" xs={24} lg={12}>
           <Card

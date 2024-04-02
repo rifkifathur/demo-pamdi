@@ -48,7 +48,9 @@ interface DataType {
 const RolePage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
-    { title: <Link to={"/"}>Role</Link> },
+    { title: "Pages" },
+    { title: "Role & Permission" },
+    { title: <Link to={"/pages/role-permission/role"}>Role</Link> },
   ];
   const initData: DataType[] = [
     {
@@ -142,7 +144,7 @@ const RolePage = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="text" className="p-0" onClick={() => handleEdit(record.key)}><FaPenToSquare className="text-yellow-400"/></Button>
+          <Button type="text" className="p-0" onClick={() => handleEdit(record.key)}><FaPenToSquare className="text-yellow-400" /></Button>
           <Popconfirm
             title="Delete the task"
             description="Are you sure to delete this task?"
@@ -201,13 +203,13 @@ const RolePage = () => {
       });
     };
   }
-  
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {      
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFilterData(data);
     if (event.target.value !== '') {
-      const temp = data.filter(item => item.name?.toLocaleLowerCase().includes(event.target.value.toLowerCase()));  
-      setFilterData(temp);    
-    }       
+      const temp = data.filter(item => item.name?.toLocaleLowerCase().includes(event.target.value.toLowerCase()));
+      setFilterData(temp);
+    }
   }
   return (
     <>
@@ -223,7 +225,7 @@ const RolePage = () => {
                 prefix={<FaMagnifyingGlass className="site-form-item-icon" />}
                 onChange={handleSearch}
               />
-              <Button size="large" type="primary" className="m-2" onClick={showModal}>
+              <Button type="primary" className="m-2" onClick={showModal}>
                 + Add Role
               </Button>
             </Flex>
@@ -270,14 +272,14 @@ const RolePage = () => {
               scroll={{ x: 360 }}
             />
           </Form.Item>
-          <Form.Item wrapperCol={{ xs: { offset: 5 }, lg: { offset: 15 } }}>
+          <Flex justify="end">
             <Button className="mx-1" type="default" onClick={handleCancel}>
               Cancel
             </Button>
             <Button className="mx-1" type="primary" htmlType="submit">
               Submit
             </Button>
-          </Form.Item>
+          </Flex>
         </Form>
       </Modal>
     </>

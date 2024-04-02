@@ -14,7 +14,9 @@ type SizeType = ConfigProviderProps["componentSize"];
 const ButtonPage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
-    { title: <Link to={"/button"}>Button</Link> },
+    { title: "Components" },
+    { title: "General" },
+    { title: <Link to={"/components/general/button"}>Button</Link> },
   ];
   const [size, setSize] = useState<SizeType>("large");
   const [loadings, setLoadings] = useState<boolean[]>([]);
@@ -37,7 +39,7 @@ const ButtonPage = () => {
 
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="Button" items={breadcrumbItems} />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" xs={24} lg={12}>
           <Card

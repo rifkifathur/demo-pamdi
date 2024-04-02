@@ -41,7 +41,9 @@ const customDot: StepsProps["progressDot"] = (dot, { status, index }) => (
 const StepPage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
-    { title: <Link to={"/step"}>Step</Link> },
+    { title: "Components" },
+    { title: "Navigation" },
+    { title: <Link to={"/components/navigation/step"}>Step</Link> },
   ];
 
   const { token } = theme.useToken();
@@ -73,7 +75,7 @@ const StepPage = () => {
   };
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="Step" items={breadcrumbItems} />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" xs={24}>
           <Card

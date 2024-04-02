@@ -13,7 +13,9 @@ const { Title, Text, Paragraph } = Typography;
 const TypographyPage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
-    { title: <Link to={"/typography"}>Typography</Link> },
+    { title: "Components" },
+    { title: "General" },
+    { title: <Link to={"/components/general/typography"}>Typography</Link> },
   ];
 
   const [editableStr, setEditableStr] = useState("This is an editable text.");
@@ -68,7 +70,7 @@ const TypographyPage = () => {
   }, [chooseTrigger]);
   return (
     <>
-      <NBreadcrumb items={breadcrumbItems} />
+      <NBreadcrumb title="Typography" items={breadcrumbItems} />
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col className="gutter-row" xs={24} lg={12}>
           <Card
