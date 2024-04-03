@@ -12,8 +12,9 @@ import PaginationPage from "./views/pagination";
 import StepPage from "./views/step";
 import ProfilePage from "./views/profile";
 import EditProfilePage from "./views/profile/edit";
-import { FaKey, FaUserGear, FaUserLock, FaUserShield } from "react-icons/fa6";
+import { FaCompass, FaKey, FaListUl, FaPenToSquare, FaUserGear, FaUserLock, FaUserShield } from "react-icons/fa6";
 import RolePage from "./views/role";
+import AutoCompletePage from "./views/autocomplete";
 
 /*
   baseKey for open accordion sidebar
@@ -153,7 +154,7 @@ const routes: RoutesType[] = [
       {
         key: "/components/general",
         name: "General",
-        icon: <SettingOutlined />,
+        icon: <FaListUl />,
         sidebar: true,
         children: [
           {
@@ -179,7 +180,7 @@ const routes: RoutesType[] = [
       {
         key: "/components/navigation",
         name: "Navigation",
-        icon: <SettingOutlined />,
+        icon: <FaCompass />,
         sidebar: true,
         children: [
           {
@@ -190,6 +191,59 @@ const routes: RoutesType[] = [
             component: <AnchorPage />,
             sidebar: true,
             baseKey: "/components/navigation",
+          },
+          {
+            key: "/components/navigation/breadcrumb",
+            name: "Breadcrumb",
+            path: "/components/navigation/breadcrumb",
+            link: <Link to="/components/navigation/breadcrumb">Breadcrumb</Link>,
+            component: <BreadcrumbPage />,
+            sidebar: true,
+            baseKey: "/components/navigation",
+          },
+          {
+            key: "/components/navigation/dropdown",
+            name: "Dropdown",
+            path: "/components/navigation/dropdown",
+            link: <Link to="/components/navigation/dropdown">Dropdown</Link>,
+            component: <DropdownPage />,
+            sidebar: true,
+            baseKey: "/components/navigation",
+          },
+          {
+            key: "/components/navigation/pagination",
+            name: "Pagination",
+            path: "/components/navigation/pagination",
+            link: <Link to="/components/navigation/pagination">Pagination</Link>,
+            component: <PaginationPage />,
+            sidebar: true,
+            baseKey: "/components/navigation",
+          },
+          {
+            key: "/components/navigation/step",
+            name: "Step",
+            path: "/components/navigation/step",
+            link: <Link to="/components/navigation/step">Step</Link>,
+            component: <StepPage />,
+            sidebar: true,
+            baseKey: "/components/navigation",
+          },
+        ],
+      },
+      {
+        key: "/components/data-entry",
+        name: "Data Entry",
+        icon: <FaPenToSquare />,
+        sidebar: true,
+        children: [
+          {
+            key: "/components/navigation/autocomplete",
+            name: "Auto Complete",
+            path: "/components/navigation/autocomplete",
+            link: <Link to="/components/navigation/autocomplete">Auto Complete</Link>,
+            component: <AutoCompletePage />,
+            sidebar: true,
+            baseKey: "/components/data-entry",
           },
           {
             key: "/components/navigation/breadcrumb",
