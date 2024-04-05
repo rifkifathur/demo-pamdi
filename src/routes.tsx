@@ -17,6 +17,10 @@ import RolePage from "./views/role";
 import AutoCompletePage from "./views/components/data-entry/autocomplete";
 import CascaderPage from "./views/components/data-entry/cascader";
 import CheckboxPage from "./views/components/data-entry/checkbox";
+import ColorPickerPage from "./views/components/data-entry/colorpicker";
+import DatePickerPage from "./views/components/data-entry/datepicker";
+import FormPage from "./views/components/data-entry/form";
+import InputPage from "./views/components/data-entry/input";
 
 /*
   baseKey for open accordion sidebar
@@ -265,24 +269,42 @@ const routes: RoutesType[] = [
             sidebar: true,
             baseKey: "/components/data-entry",
           },
-          // {
-          //   key: "/components/navigation/pagination",
-          //   name: "Pagination",
-          //   path: "/components/navigation/pagination",
-          //   link: <Link to="/components/navigation/pagination">Pagination</Link>,
-          //   component: <PaginationPage />,
-          //   sidebar: true,
-          //   baseKey: "/components/navigation",
-          // },
-          // {
-          //   key: "/components/navigation/step",
-          //   name: "Step",
-          //   path: "/components/navigation/step",
-          //   link: <Link to="/components/navigation/step">Step</Link>,
-          //   component: <StepPage />,
-          //   sidebar: true,
-          //   baseKey: "/components/navigation",
-          // },
+          {
+            key: "/components/data-entry/color-picker",
+            name: "Color Picker",
+            path: "/components/data-entry/color-picker",
+            link: <Link to="/components/data-entry/color-picker">Color Picker</Link>,
+            component: <ColorPickerPage />,
+            sidebar: true,
+            baseKey: "/components/data-entry",
+          },
+          {
+            key: "/components/data-entry/date-picker",
+            name: "Date Picker",
+            path: "/components/data-entry/date-picker",
+            link: <Link to="/components/data-entry/date-picker">Date Picker</Link>,
+            component: <DatePickerPage />,
+            sidebar: true,
+            baseKey: "/components/data-entry",
+          },
+          {
+            key: "/components/data-entry/form",
+            name: "Form",
+            path: "/components/data-entry/form",
+            link: <Link to="/components/data-entry/form">Form</Link>,
+            component: <FormPage />,
+            sidebar: true,
+            baseKey: "/components/data-entry",
+          },
+          {
+            key: "/components/data-entry/input",
+            name: "Input",
+            path: "/components/data-entry/input",
+            link: <Link to="/components/data-entry/input">Input</Link>,
+            component: <InputPage />,
+            sidebar: true,
+            baseKey: "/components/data-entry",
+          },
         ],
       },
     ],

@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { NBreadcrumb } from "../../../../components";
 import { Link } from "react-router-dom";
-import { Card, Col, Row, AutoComplete, Input, Checkbox } from "antd";
-import type { DefaultOptionType } from 'antd/es/select';
-import { FaUser } from "react-icons/fa6";
+import { Card, Col, Row, Checkbox, Button, Divider } from "antd";
+import type { CheckboxProps, GetProp } from 'antd';
 
-const mockVal = (str: string, repeat = 1) => ({
-  value: str.repeat(repeat),
-});
-const { TextArea } = Input;
+type CheckboxValueType = GetProp<typeof Checkbox.Group, 'value'>[number];
+const CheckboxGroup = Checkbox.Group;
+
 const CheckboxPage = () => {
   const breadcrumbItems = [
     { title: <Link to={"/"}>Dashboard</Link> },
@@ -16,88 +14,51 @@ const CheckboxPage = () => {
     { title: "Data Entry" },
     { title: <Link to={"/components/data-entry/checkbox"}>Checkbox</Link> },
   ];
-  const optionsCaseSensitive = [
-    { value: 'Burns Bay Road' },
-    { value: 'Downing Street' },
-    { value: 'Wall Street' },
+  const plainOptions = ['Apple', 'Pear', 'Orange'];
+  const defaultCheckedList = ['Apple', 'Orange'];
+
+  const options = [
+    { label: 'Apple', value: 'Apple' },
+    { label: 'Pear', value: 'Pear' },
+    { label: 'Orange', value: 'Orange' },
   ];
-  const [value, setValue] = useState('');
-  const [options1, setOptions1] = useState<{ value: string }[]>([]);
-  const [options2, setOptions2] = useState<{ value: string }[]>([]);
-  const [cusOptions, setCusOptions] = React.useState<DefaultOptionType[]>([]);
 
-  const getPanelValue = (searchText: string) =>
-    !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
-
-  const onSelect = (data: string) => {
-    console.log('onSelect', data);
-  };
-
-  const onChange = (data: string) => {
-    setValue(data);
-  };
-
-  const handleSearchCusOptions = (value: string) => {
-    setCusOptions(() => {
-      if (!value || value.includes('@')) {
-        return [];
-      }
-      return ['gmail.com', '163.com', 'qq.com'].map<DefaultOptionType>((domain) => ({
-        label: `${value}@${domain}`,
-        value: `${value}@${domain}`,
-      }));
-    });
-  };
-
-  const handleKeyPress = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    console.log('handleKeyPress', ev);
-  };
-
-  const renderTitle = (title: string) => (
-    <span>
-      {title}
-      <a
-        style={{ float: 'right' }}
-        href="https://www.google.com/search?q=antd"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        more
-      </a>
-    </span>
-  );
-  
-  const renderItem = (title: string, count: number) => ({
-    value: title,
-    label: (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        {title}
-        <span>
-          <FaUser /> {count}
-        </span>
-      </div>
-    ),
-  });
-  
-  const optionsLookup = [
-    {
-      label: renderTitle('Libraries'),
-      options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
-    },
-    {
-      label: renderTitle('Solutions'),
-      options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
-    },
-    {
-      label: renderTitle('Articles'),
-      options: [renderItem('AntDesign design language', 100000)],
-    },
+  const optionsWithDisabled = [
+    { label: 'Apple', value: 'Apple' },
+    { label: 'Pear', value: 'Pear' },
+    { label: 'Orange', value: 'Orange', disabled: false },
   ];
+  
+  const [checked, setChecked] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList);
+  
+  const toggleChecked = () => {
+    setChecked(!checked);
+  };
+
+  const toggleDisable = () => {
+    setDisabled(!disabled);
+  };
+
+  const onChange: CheckboxProps['onChange'] = (e) => {
+    console.log('checked = ', e.target.checked);
+    setChecked(e.target.checked);
+  };
+
+  const label = `${checked ? 'Checked' : 'Unchecked'}-${disabled ? 'Disabled' : 'Enabled'}`;
+  
+  const checkAll = plainOptions.length === checkedList.length;
+  const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length;
+
+  const onCheckAll = (list: CheckboxValueType[]) => {
+    setCheckedList(list);
+  };
+
+  const onCheckAllChange: CheckboxProps['onChange'] = (e) => {
+    setCheckedList(e.target.checked ? plainOptions : []);
+  };
+  
   return (
     <>
       <NBreadcrumb title="Checkbox" items={breadcrumbItems} />
@@ -113,23 +74,23 @@ const CheckboxPage = () => {
           </Card>
           <Card
             className="mb-8"
-            title="Customize Input Auto Complete"
+            title="Controlled Checkbox"
             bordered={false}
             style={{ width: "auto" }}
           >
-            <AutoComplete
-              options={options1}
-              style={{ width: "90%" }}
-              onSelect={onSelect}
-              onSearch={(text) => setOptions1(getPanelValue(text))}
-            >
-              <TextArea
-                placeholder="input here"
-                className="custom"
-                style={{ height: 50, }}
-                onKeyPress={handleKeyPress}
-              />
-            </AutoComplete>
+            <p style={{ marginBottom: '20px' }}>
+              <Checkbox checked={checked} disabled={disabled} onChange={onChange}>
+                {label}
+              </Checkbox>
+            </p>
+            <p>
+              <Button type="primary" size="small" onClick={toggleChecked}>
+                {!checked ? 'Check' : 'Uncheck'}
+              </Button>
+              <Button style={{ margin: '0 10px' }} type="primary" size="small" onClick={toggleDisable}>
+                {!disabled ? 'Disable' : 'Enable'}
+              </Button>
+            </p>
           </Card>
           <Card
             className="mb-8"
@@ -137,43 +98,40 @@ const CheckboxPage = () => {
             bordered={false}
             style={{ width: "auto" }}
           >
-            <AutoComplete
-              popupClassName="certain-category-search-dropdown"
-              popupMatchSelectWidth={500}
-              style={{ width: 250 }}
-              options={optionsLookup}
-            >
-              <Input.Search size="large" placeholder="input here" />
-            </AutoComplete>
+            <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
+              Check all
+            </Checkbox>
+            <Divider />
+            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onCheckAll} />
           </Card>
         </Col>
         <Col className="gutter-row" xs={24} lg={12}>
           <Card
             className="mb-8"
-            title="Customize Auto Complete"
+            title="Disbled Checkbox"
             bordered={false}
             style={{ width: "auto" }}
           >
-            <AutoComplete
-              style={{ width: "90%" }}
-              onSearch={handleSearchCusOptions}
-              placeholder="input here"
-              options={cusOptions}
-            />
+            <Checkbox className="mx-3" defaultChecked={false} disabled />            
+            <Checkbox className="mx-3" indeterminate disabled />            
+            <Checkbox className="mx-3" defaultChecked disabled />
           </Card>
           <Card
             className="mb-8"
-            title="Non-Case-Sensitive Auto Complete"
+            title="Checkbox Group"
             bordered={false}
             style={{ width: "auto" }}
           >
-            <AutoComplete
-              style={{ width: "90%" }}
-              options={optionsCaseSensitive}
-              placeholder="try to type `b`"
-              filterOption={(inputValue, option) =>
-                option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-              }
+            <Checkbox.Group options={plainOptions} defaultValue={['Apple']} />
+            <br />
+            <br />
+            <Checkbox.Group options={options} defaultValue={['Pear']} />
+            <br />
+            <br />
+            <Checkbox.Group
+              options={optionsWithDisabled}
+              disabled
+              defaultValue={['Apple']}
             />
           </Card>
         </Col>
