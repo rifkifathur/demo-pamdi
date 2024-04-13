@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NBreadcrumb } from "../../../../components";
 import { Link } from "react-router-dom";
-import { Card, Col, Row, Checkbox, Select, Form, type FormProps, Input, Button, Space, Radio } from "antd";
+import { Card, Col, Row, Checkbox, Select, Form, Input, Button, Space, Radio } from "antd";
 
 type FieldType = {
   username?: string;
@@ -17,7 +17,7 @@ const layout = {
 };
 
 const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
+  wrapperCol: { xs:{ offset: 2, span:4 }, lg:{ offset: 8, span: 16 } },
 };
 
 const FormPage = () => {

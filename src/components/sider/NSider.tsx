@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { ConfigProvider, Layout, Menu } from "antd";
 import type { MenuProps } from "antd";
 import routes from "../../routes";
 import { FaCircle } from "react-icons/fa6";
+import './NSider.css';
 
 const { Sider } = Layout;
 
@@ -26,40 +27,46 @@ function getItem(
 
 const items: MenuItem[] = [];
 
-routes.map((route) => {
+const buildMenuItem = (route: RoutesType): MenuItem => {
   const children = route.children
-    ?.filter((route) => route.sidebar)
-    .map((route) => getItem(route.link, route.key, <FaCircle style={{ fontSize:'4px', minWidth:0 }}/>));
+    ?.filter((child) => child.sidebar)
+    .map((child) => buildMenuItem(child));
 
-  if (route.groupItem) {
-    const groupChildren = route.groupItem.map((item) => {
-      const groupSubChildren = item.children
-        ?.filter((sub) => sub.sidebar)
-        .map((sub) => getItem(sub.link, sub.key, <FaCircle style={{ fontSize:'4px', minWidth:0 }}/>));
-      return getItem(<span className="font-bold">{item.name}</span>, item.key, item.icon, groupSubChildren);
-    });
-    const groupItem = getItem(
-      route.name,
-      route.key,
-      null,
-      groupChildren,
-      "group"
-    );
-    return items.push(groupItem);
-  } else {
-    const menuItem = getItem(
-      route.link ? <span className="font-bold">{route.link}</span> : route.name,
-      route.key,
-      route.icon,
-      children,
-      route.isGroup ? "group" : ""
-    );
-    if (route.sidebar) {
-      return items.push(menuItem);
+  return getItem(
+    route.link ? route.link : <span className="font-bold">{route.name}</span>,
+    route.key,
+    route.icon || <FaCircle style={{ fontSize: '4px', minWidth: 0 }} />,
+    children
+  );
+};
+
+const buildMenuGroup = (route: RoutesType): MenuItem => {
+  const groupChildren = route.groupItem
+    ?.filter((item) => item.sidebar)
+    .map((item) => buildMenuItem(item));
+
+  return getItem(
+    <span className="font-bold">{route.name}</span>,
+    route.key,
+    route.icon || null,
+    groupChildren,
+    "group"
+  );
+};
+
+const buildMenu = (routes: RoutesType[]) => {
+  routes.forEach((route) => {
+    if (route.groupItem) {
+      const groupItem = buildMenuGroup(route);
+      items.push(groupItem);
+    } else if (route.sidebar) {
+      const menuItem = buildMenuItem(route);
+      items.push(menuItem);
     }
-  }
-  return items;
-});
+  });
+};
+
+buildMenu(routes);
 
 type NSiderType = {
   isCollapsed: boolean;
@@ -77,64 +84,84 @@ const NSider = ({
   setIsResponsive,
   activeMenuOnSide,
   openMenuOnSide
-}: NSiderType) => {  
+}: NSiderType) => {
+
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const btnHide = document.querySelector(".btn-hide-sider span");
+
+    const outside = (e: any) => {
+      if (!isCollapsed && !ref.current?.contains(e.target) && !e.target.contains(btnHide) && window.innerWidth < 862) {
+        setIsCollapsed(!isCollapsed);
+      }
+    }
+    document.addEventListener("click", outside);
+
+    return () => {
+      document.removeEventListener("click", outside);
+    }
+  }, [isCollapsed, setIsCollapsed])
 
   return (
-    <Sider
-      width="260"
-      trigger={null}
-      collapsed={isCollapsed}
-      breakpoint="sm"
-      collapsedWidth={isResponsive ? "0" : "70"}
-      onBreakpoint={(broken) => {        
-        if (broken) {
-          setIsResponsive(!isResponsive);
-          setIsCollapsed(!isCollapsed);
-        }
-      }}
-      onCollapse={(collapsed, type) => {
-        return true;
-      }}
-      style={{
-        overflow: "auto",
-        height: "100vh",
-        position: "fixed",
-        left: 0,
-        top: 0,
-        bottom: 0,
-        zIndex: 100,
-        // fontWeight: "600"
+    <ConfigProvider
+      theme={{
+        components: {
+          Menu: {
+            darkItemBg: "#141414",
+            darkSubMenuItemBg: "#141414",
+            darkItemSelectedBg: "#1c1c21",
+            darkPopupBg: "#141414"
+          },
+        },
       }}
     >
-      <div className={`mt-[30px] flex items-center px-5 pb-20 text-center`}>
-        {isCollapsed ? (
-          ""
-        ) : (
-          <div className="mt-1 ml-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 text-white">
-            Nara <span className="font-medium">ANT D</span>
-          </div>
-        )}
-      </div>
-      <ConfigProvider
-        theme={{
-          components: {
-            Menu: {
-              darkItemBg: "#0d0e12",
-              darkSubMenuItemBg:"#0d0e12",
-              darkItemSelectedBg: "#1c1c21",              
-            },
-          },
+      <Sider
+        ref={ref}
+        width="260"
+        trigger={null}
+        collapsed={isCollapsed}
+        breakpoint="sm"
+        collapsedWidth={isResponsive ? "0" : "70"}
+        onBreakpoint={(broken) => {
+          if (broken) {
+            setIsResponsive(!isResponsive);
+            setIsCollapsed(!isCollapsed);
+          }
         }}
-      >        
-        <Menu
-          theme="dark"
-          mode="inline"        
-          selectedKeys={[activeMenuOnSide]}
-          defaultOpenKeys={[openMenuOnSide]}
-          items={items}
-        />
-      </ConfigProvider>
-    </Sider>
+        onCollapse={(collapsed, type) => {
+          return true;
+        }}
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          zIndex: 100,
+          background: "#141414",
+          borderRight: "solid 1px #1c1c21"
+        }}
+      >
+        <div className={`mt-[30px] flex items-center px-5 pb-20 text-center`}>
+          {isCollapsed ? (
+            ""
+          ) : (
+            <div className="mt-1 ml-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 text-white">
+              Nara <span className="font-medium">ANT D</span>
+            </div>
+          )}
+        </div>
+        <div className="custom-scroll-sider overflow-y-scroll invisible hover:visible max-h-[30rem]">
+          <Menu
+            className="pb-5 visible"
+            theme="dark"
+            mode="inline"
+            selectedKeys={[activeMenuOnSide]}
+            defaultOpenKeys={[openMenuOnSide]}
+            items={items}
+          />
+        </div>
+      </Sider>
+    </ConfigProvider>
   );
 };
 

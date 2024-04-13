@@ -1,13 +1,15 @@
 import React from 'react';
-import { Layout, Menu, theme, Button, Divider } from 'antd';
-const { Header, Content, Footer, Sider } = Layout;
+import { Layout } from 'antd';
+const { Footer } = Layout;
 
 const NFooter = () => {
   return (
     <Footer style={{
-      textAlign: 'center', margin: "0 auto",
+      textAlign: 'center', 
+      margin: "0 auto",
+      marginTop:"20px",
+      // background:"#fff",
       // position: 'absolute', 
-      backgroundColor: "#fff",
       // left: 0, 
       // bottom: 0, 
       width: '100%'

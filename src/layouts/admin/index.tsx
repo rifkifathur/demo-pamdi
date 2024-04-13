@@ -1,10 +1,11 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { Button, ConfigProvider, Layout, Result, Spin } from "antd";
+import { Button, ConfigProvider, Layout, Result, Spin, theme } from "antd";
 import { NFooter, NSider, NHeader } from "../../components";
 import routes from "../../routes";
 
 const { Content } = Layout;
+const { defaultAlgorithm, darkAlgorithm } = theme;
 
 const AdminLayout = () => {
   const location = useLocation();
@@ -16,10 +17,12 @@ const AdminLayout = () => {
   const [isGetRoute, setIsGetRoute] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingRoute, setLoadingRoute] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
   const auth = sessionStorage.getItem('auth');
   const navigate = useNavigate();
   const getRoutes = useCallback(
-    (routes: RoutesType[]): any => {      
+    (routes: RoutesType[]): any => {
       for (let route of routes) {
         if (route.children) {
           const foundInChildren = getRoutes(route.children);
@@ -62,7 +65,7 @@ const AdminLayout = () => {
           }
         }
       }
-      setLoading(false);      
+      setLoading(false);
       return null;
     },
     [location.pathname]
@@ -79,9 +82,9 @@ const AdminLayout = () => {
         setIsGetRoute(false);
       }
       getRoutes(routes);
-      setLoadingRoute(false);     
+      setLoadingRoute(false);
     }, 1500);
-  }, [getRoutes, navigate, auth]);  
+  }, [getRoutes, navigate, auth]);
 
   if (loading) {
     return (
@@ -90,63 +93,68 @@ const AdminLayout = () => {
       </Spin>
     )
   }
-  
+
   return (
-    <>
+    <ConfigProvider
+      theme={{
+        algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
+        token: {
+          fontFamily: "Inter, sans-serif",
+          controlHeight: 38,
+        },
+        components: {
+          Layout: {
+            siderBg: '#0d0e12'
+          },
+        },
+      }}
+    >
       {isGetRoute ? (
-        <ConfigProvider
-          theme={{
-            components: {
-              Layout: {
-                siderBg: '#0d0e12'
-              },
-            },
-          }}
-        >
-          <Layout>
-            <NSider
+        <Layout style={{ minHeight: '100vh' }}>
+          <NSider
+            isCollapsed={isCollapsed}
+            setIsCollapsed={setIsCollapsed}
+            isResponsive={isResponsive}
+            setIsResponsive={setIsResponsive}
+            activeMenuOnSide={activeMenuOnSide}
+            openMenuOnSide={openMenuOnSide}
+          />
+          <Layout
+            style={{
+              marginLeft: isCollapsed ? (isResponsive ? 0 : 70) : (isResponsive ? 0 : 260),
+            }}
+          >
+            <NHeader
               isCollapsed={isCollapsed}
               setIsCollapsed={setIsCollapsed}
               isResponsive={isResponsive}
-              setIsResponsive={setIsResponsive}
-              activeMenuOnSide={activeMenuOnSide}
-              openMenuOnSide={openMenuOnSide}
+              isDarkMode={isDarkMode}
+              setIsDarkMode={setIsDarkMode}
             />
-            <Layout
-              style={{
-                marginLeft: isCollapsed ? (isResponsive ? 0 : 70) : (isResponsive ? 0 : 260),
-              }}
+            <Content style={{
+              margin: "12px 16px 0",
+              overflow: "initial",
+            }}
             >
-              <NHeader
-                isCollapsed={isCollapsed}
-                setIsCollapsed={setIsCollapsed}
-                isResponsive={isResponsive}
-              />
-              {loadingRoute && (
-                <Spin tip="Loading" size="large" style={{ top: "250px" }}>
-                  <div className="content" />
-                </Spin>
-              )}
-              <Content style={{ 
-                margin: "12px 16px 0", 
-                overflow: "initial", 
-                // height:"100vh" 
-              }}
+              <div
+                style={{
+                  padding: 24,
+                }}
               >
-                <div
-                  style={{
-                    padding: 24,
-                  }}
-                >
+                {loadingRoute ? (
+                  <Spin tip="Loading" size="large">
+                    <div className="content" />
+                  </Spin>
+                ) : (
                   <Routes>
                     {renderRoute}
                   </Routes>
-                </div>
-              </Content>
-              <NFooter />
-            </Layout>
+                )}
+              </div>
+            </Content>
+            <NFooter />
           </Layout>
-        </ConfigProvider>
+        </Layout>
       ) : (
         <Result
           status="404"
@@ -155,7 +163,7 @@ const AdminLayout = () => {
           extra={<Link to={"/"}><Button type="primary">Back Home</Button></Link>}
         />
       )}
-    </>
+    </ConfigProvider>
   );
 };
 

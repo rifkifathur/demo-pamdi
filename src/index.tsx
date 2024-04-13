@@ -5,7 +5,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { ConfigProvider } from 'antd';
 import { AdminLayout } from './layouts/admin';
 import Login from './layouts/auth/Login';
 import Register from './layouts/auth/Register';
@@ -41,9 +40,7 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <ConfigProvider theme={{ token: { fontFamily: "Inter, sans-serif", controlHeight:38 } }}>
-      <RouterProvider router={router} />
-    </ConfigProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
