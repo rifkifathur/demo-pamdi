@@ -49,6 +49,9 @@ import ProgressPage from "./views/components/feedback/progress";
 import ResultPage from "./views/components/feedback/result";
 import SkeltonPage from "./views/components/feedback/skeleton";
 import SpinPage from "./views/components/feedback/spin";
+import { BsEnvelope } from "react-icons/bs";
+import Mail from "./views/mail";
+import MailPage from "./views/mail";
 
 /*
   baseKey for open accordion sidebar
@@ -81,41 +84,42 @@ const routes: RoutesType[] = [
     component: <Dashboard />,
     sidebar: true,
   },
+  // {
+  //   key: "/apps",
+  //   name: "Apps",
+  //   sidebar: true,
+  //   isGroup: "group",
+  //   groupItem: [
+  //     {
+  //       key: "/apps/mail",
+  //       name: "Mail",
+  //       path: "/apps/mail",
+  //       link: <Link to="/apps/mail">Mail</Link>,
+  //       icon: <PieChartOutlined />,
+  //       component: <Dashboard />,
+  //       sidebar: true,
+  //       children: [
+  //         {
+  //           key: "/apps/user-management/user",
+  //           name: "User",
+  //           path: "/apps/user-management/user",
+  //           baseKey: "/apps/user-management",
+  //           link: <Link to="/apps/user-management/user">User</Link>,
+  //           component: <User />,
+  //           sidebar: true,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },  
   {
-    key: "/setting",
-    name: "Authentication",
-    icon: <FaUserLock />,
+    key: "/apps/mail",
+    name: "Mail",
+    path: "/apps/mail",
+    link: <Link to="/apps/mail">Mail</Link>,
+    icon: <BsEnvelope />,
+    component: <MailPage />,
     sidebar: true,
-    children: [
-      {
-        key: "/login",
-        name: "Sign In",
-        path: "/login",
-        link: <Link to="/login">Sign In</Link>,
-        sidebar: true,
-      },
-      {
-        key: "/register",
-        name: "Register",
-        path: "/register",
-        link: <Link to="/register">Register</Link>,
-        sidebar: true,
-      },
-      {
-        key: "/reset-password",
-        name: "Reset Password",
-        path: "/reset-password",
-        link: <Link to="/reset-password">Reset Password</Link>,
-        sidebar: true,
-      },
-      {
-        key: "/new-password",
-        name: "New Password",
-        path: "/new-password",
-        link: <Link to="/new-password">New Password</Link>,
-        sidebar: true,
-      },
-    ],
   },
   {
     key: "/pages",
@@ -123,6 +127,42 @@ const routes: RoutesType[] = [
     sidebar: true,
     isGroup: "group",
     groupItem: [
+      {
+        key: "/authentication",
+        name: "Authentication",
+        icon: <FaUserLock />,
+        sidebar: true,
+        children: [
+          {
+            key: "/login",
+            name: "Sign In",
+            path: "/login",
+            link: <Link to="/login">Sign In</Link>,
+            sidebar: true,
+          },
+          {
+            key: "/register",
+            name: "Register",
+            path: "/register",
+            link: <Link to="/register">Register</Link>,
+            sidebar: true,
+          },
+          {
+            key: "/reset-password",
+            name: "Reset Password",
+            path: "/reset-password",
+            link: <Link to="/reset-password">Reset Password</Link>,
+            sidebar: true,
+          },
+          {
+            key: "/new-password",
+            name: "New Password",
+            path: "/new-password",
+            link: <Link to="/new-password">New Password</Link>,
+            sidebar: true,
+          },
+        ],
+      },
       {
         key: "/pages/user-management",
         name: "User Management",

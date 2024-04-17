@@ -13,8 +13,8 @@ type NHeaderType = {
   isCollapsed: boolean;
   setIsCollapsed: (isCollapsed: boolean) => void;
   isResponsive: boolean;
-  isDarkMode: boolean;
-  setIsDarkMode: (isCollapsed: boolean) => void;
+  isDarkMode: string|null;
+  setIsDarkMode: (isDarkMode: string|null) => void;
 };
 
 const { Header } = Layout;
@@ -49,6 +49,17 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive, isDarkMode, setIsD
     sessionStorage.clear();
     navigate("/login");
   }
+
+  const handleDarkMode = (): void => {
+    if (isDarkMode == 'no') {
+      setIsDarkMode("yes");
+      localStorage.setItem('isDarkMode', 'yes');
+    } else {
+      setIsDarkMode("no");
+      localStorage.setItem('isDarkMode', 'no');
+    }
+  }
+
   const items: MenuProps['items'] = [
     {
       key: '1',
@@ -174,8 +185,8 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive, isDarkMode, setIsD
             <Button
               className="mr-1"
               type="text"
-              icon={isDarkMode ? <BsMoon className="text-xl" /> : <BsSun className="text-xl" />}
-              onClick={() => setIsDarkMode(!isDarkMode)}
+              icon={isDarkMode == 'yes' ? <BsMoon className="text-xl" /> : <BsSun className="text-xl" />}
+              onClick={handleDarkMode}
             />
             <Dropdown
               menu={{

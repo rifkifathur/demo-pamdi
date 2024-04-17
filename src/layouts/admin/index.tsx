@@ -9,6 +9,10 @@ const { defaultAlgorithm, darkAlgorithm } = theme;
 
 const AdminLayout = () => {
   const location = useLocation();
+  const auth = sessionStorage.getItem('auth');
+  const navigate = useNavigate();
+  const defaultIsDarkMode = localStorage.getItem('isDarkMode');
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isResponsive, setIsResponsive] = useState(false);
   const [renderRoute, setRenderRoute] = useState<ReactElement>();
@@ -17,10 +21,8 @@ const AdminLayout = () => {
   const [isGetRoute, setIsGetRoute] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingRoute, setLoadingRoute] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState<string | null>(defaultIsDarkMode);
 
-  const auth = sessionStorage.getItem('auth');
-  const navigate = useNavigate();
   const getRoutes = useCallback(
     (routes: RoutesType[]): any => {
       for (let route of routes) {
@@ -97,7 +99,7 @@ const AdminLayout = () => {
   return (
     <ConfigProvider
       theme={{
-        algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
+        algorithm: isDarkMode === 'yes' ? darkAlgorithm : defaultAlgorithm,
         token: {
           fontFamily: "Inter, sans-serif",
           controlHeight: 38,

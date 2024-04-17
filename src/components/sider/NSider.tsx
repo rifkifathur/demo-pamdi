@@ -150,7 +150,7 @@ const NSider = ({
             </div>
           )}
         </div>
-        <div className="custom-scroll-sider overflow-y-scroll invisible hover:visible max-h-[30rem]">
+        <div className="custom-scroll-sider overflow-y-scroll invisible hover:visible max-h-[80vh]">
           <Menu
             className="pb-5 visible"
             theme="dark"
