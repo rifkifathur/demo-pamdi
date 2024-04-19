@@ -62,7 +62,22 @@ const AdminLayout = () => {
             }
 
             if (groupItem.path && groupItem.path === location.pathname) {
-              return groupItem;
+              setIsGetRoute(true);
+              setRenderRoute(
+                <Route
+                  path={`${groupItem.path}`}
+                  element={groupItem.component}
+                  key={groupItem.key}
+                />
+              );
+              setActiveMenuOnSide(groupItem.key);
+              if (groupItem.baseKey) {
+                setOpenMenuOnSide(groupItem.baseKey);
+              }
+
+              if (groupItem.baseParentKey) {
+                setActiveMenuOnSide(groupItem.baseParentKey);
+              }
             }
           }
         }
@@ -72,7 +87,7 @@ const AdminLayout = () => {
     },
     [location.pathname]
   );
-
+console.log(renderRoute);
   useEffect(() => {
     setLoadingRoute(true);
     setTimeout(() => {

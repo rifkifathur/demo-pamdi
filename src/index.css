@@ -10,6 +10,22 @@ code {
     monospace;
 }
 
+div.custom-scrollbar::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Handle */
+div.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgb(202, 202, 202);
+  border-radius: 20px;
+}
+
+/* Handle on hover */
+div.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6b6b6b;
+  border-radius: 20px;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
