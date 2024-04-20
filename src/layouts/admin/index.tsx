@@ -1,8 +1,9 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { Button, ConfigProvider, Layout, Result, Spin, theme } from "antd";
+import { Button, ConfigProvider, Flex, Layout, Result, theme } from "antd";
 import { NFooter, NSider, NHeader } from "../../components";
 import routes from "../../routes";
+import NLoading from "../../components/loading/NLoading";
 
 const { Content } = Layout;
 const { defaultAlgorithm, darkAlgorithm } = theme;
@@ -105,9 +106,9 @@ console.log(renderRoute);
 
   if (loading) {
     return (
-      <Spin tip="Loading" size="large" style={{ top: "250px" }}>
-        <div className="content" />
-      </Spin>
+      <Flex className="mt-[250px]" justify="center" align="center">
+        <NLoading />
+      </Flex>
     )
   }
 
@@ -159,9 +160,9 @@ console.log(renderRoute);
                 }}
               >
                 {loadingRoute ? (
-                  <Spin tip="Loading" size="large">
-                    <div className="content" />
-                  </Spin>
+                  <Flex className="mt-[150px]" justify="center" align="center">
+                    <NLoading />
+                  </Flex>
                 ) : (
                   <Routes>
                     {renderRoute}

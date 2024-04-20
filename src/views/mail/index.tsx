@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { NBreadcrumb } from "../../components";
 import { Link } from "react-router-dom";
-import { 
+import {
   MenuFoldOutlined,
-  MenuUnfoldOutlined, 
+  MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import type { MenuProps, TableColumnsType, TableProps } from 'antd';
 import { Button, Flex, Input, Layout, Menu, theme, Table } from 'antd';
-import { BsEnvelope, BsExclamationCircle, BsFileEarmark, BsPlus, BsSearch, BsSend, BsStar, BsTag, BsTrash } from "react-icons/bs";
+import { BsArrowCounterclockwise, BsEnvelope, BsExclamationCircle, BsFileEarmark, BsPlus, BsSearch, BsSend, BsStar, BsTag, BsTrash } from "react-icons/bs";
 
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -42,34 +42,9 @@ type TableRowSelection<T> = TableProps<T>['rowSelection'];
 
 interface DataType {
   key: React.Key;
-  name: string;
+  name: string | ReactElement;
   age: string;
   address: string;
-}
-
-const columns: TableColumnsType<DataType> = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-  },
-];
-
-const data: DataType[] = [];
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nisi arcu, a interdum erat iaculis a. Maecenas a finibus tellus. Aenean pharetra augue risus, pulvinar hendrerit nisi convallis ut. Nulla facilisi. Aenean justo eros, lobortis et tempus vel, tempus vel lacus. Suspendisse rhoncus iaculis auctor. Integer non velit ipsum. Sed ac dapibus eros. Fusce scelerisque augue massa, sit amet placerat felis ultricies eu. Donec mollis urna quis quam ultricies, et feugiat augue accumsan. Integer id risus ornare, tincidunt lorem at, tempor sem. Duis accumsan massa at ante iaculis blandit. Vivamus sed imperdiet eros. Maecenas magna eros, lobortis non justo eget, porttitor eleifend elit. Nam libero magna, consectetur quis ex non, lacinia mollis metus. Vivamus vel sapien sollicitudin, egestas turpis id, pretium est.",
-    address: `London, Park Lane no. ${i}`,
-  });
 }
 
 const MailPage = () => {
@@ -80,16 +55,55 @@ const MailPage = () => {
   const breadcrumbItems = [
     { title: <Link to={'/apps/mail'}>Mail</Link> },
   ]
-  
+
   const [collapsed, setCollapsed] = useState(false);
   const [responsive, setResponsive] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [action, setAction] = useState(false);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setAction(!action);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
+  const getActions = () => {
+    if (action) {
+      return (
+        <>
+          <Button type="text" icon={<BsStar />} />
+          <Button type="text" icon={<BsTag />} />
+          <Button type="text" icon={<BsExclamationCircle />} />
+          <Button type="text" icon={<BsTrash />} />
+        </>
+      );
+    }
+    return null;
+  }
+
+  const columns: TableColumnsType<DataType> = [
+    {
+      title: getActions(),
+      dataIndex: 'name',
+    },
+    {
+      title: 'Age',
+      dataIndex: 'age',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+    },
+  ];
+
+  const data: DataType[] = [];
+  for (let i = 0; i < 46; i++) {
+    data.push({
+      key: i,
+      name: `Edward King ${i}`,
+      age: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nisi arcu, a interdum erat iaculis a. Maecenas a finibus tellus. Aenean pharetra augue risus, pulvinar hendrerit nisi convallis ut. Nulla facilisi. Aenean justo eros, lobortis et tempus vel, tempus vel lacus. Suspendisse rhoncus iaculis auctor. Integer non velit ipsum. Sed ac dapibus eros. Fusce scelerisque augue massa, sit amet placerat felis ultricies eu. Donec mollis urna quis quam ultricies, et feugiat augue accumsan. Integer id risus ornare, tincidunt lorem at, tempor sem. Duis accumsan massa at ante iaculis blandit. Vivamus sed imperdiet eros. Maecenas magna eros, lobortis non justo eget, porttitor eleifend elit. Nam libero magna, consectetur quis ex non, lacinia mollis metus. Vivamus vel sapien sollicitudin, egestas turpis id, pretium est.",
+      address: `London, Park Lane no. ${i}`,
+    });
+  }
   const rowSelection: TableRowSelection<DataType> = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -131,63 +145,76 @@ const MailPage = () => {
     <>
       <NBreadcrumb title="Mail" items={breadcrumbItems} />
       <Layout>
-      <Content>
-        <Layout
-          style={{ 
-            padding: '0 0 20px', 
-            background: colorBgContainer,             
-          }}
-        >
-          <Sider
-            style={{ background: colorBgContainer }} 
-            width={200}
-            trigger={null}
-            collapsible
-            collapsed={collapsed}
-            collapsedWidth={0}
-            breakpoint="sm"
-            onBreakpoint={(broken) => {
-              if (broken) {
-                setResponsive(!responsive);
-                setCollapsed(!collapsed);
-              }
+        <Content>
+          <Layout
+            style={{
+              padding: '0 0 20px',
+              background: colorBgContainer,
             }}
           >
-            <Flex className="my-5" justify="center">
-              <Button type="primary">Compose</Button>
-            </Flex>
-            <div className="custom-scrollbar h-[380px] overflow-y-auto invisible hover:visible">              
-              <Menu       
-                className="visible"       
-                mode="inline"
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
-                style={{ height: '100%' }}
-                items={items}
-              />
-            </div>
-          </Sider>
-          <Layout>
-            <Header style={{ padding: 0, background: colorBgContainer }}>
-              {responsive && <Button
-                type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={() => setCollapsed(!collapsed)}
+            <Sider
+              style={{ background: colorBgContainer }}
+              width={200}
+              trigger={null}
+              collapsible
+              collapsed={collapsed}
+              collapsedWidth={0}
+              breakpoint="sm"
+              onBreakpoint={(broken) => {
+                if (broken) {
+                  setResponsive(!responsive);
+                  setCollapsed(!collapsed);
+                }
+              }}
+            >
+              <Flex className="my-5" justify="center">
+                <Button type="primary">Compose</Button>
+              </Flex>
+              <div className="custom-scrollbar h-[380px] overflow-y-auto invisible hover:visible">
+                <Menu
+                  className="visible"
+                  mode="inline"
+                  defaultSelectedKeys={['1']}
+                  defaultOpenKeys={['sub1']}
+                  style={{ height: '100%' }}
+                  items={items}
+                />
+              </div>
+            </Sider>
+            <Layout>
+              <Header
                 style={{
-                  fontSize: '16px',
-                  width: 64,
-                  height: 64,
+                  padding: 0,
+                  background: colorBgContainer,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
-              />}
-              <Input className="w-1/2 md:w-auto" placeholder="Search..." prefix={<BsSearch />} />
-            </Header>
-            <Content className="h-[380px]">
-              <Table rowSelection={rowSelection} columns={columns} dataSource={data} scroll={{ y: 270 }} />
-            </Content>
-          </Layout>          
-        </Layout>
-      </Content>
-    </Layout>
+              >
+                {responsive &&
+                  <Button
+                    type="text"
+                    icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                    onClick={() => setCollapsed(!collapsed)}
+                    style={{
+                      fontSize: '16px',
+                      width: 64,
+                      height: 64,
+                    }}
+                  />
+                }
+                <Flex className="w-full mx-5" justify="space-between">
+                  <Input className="w-1/2 md:w-auto" placeholder="Search..." prefix={<BsSearch />} />
+                  <Button  type="primary" icon={<BsArrowCounterclockwise />} />
+                </Flex>
+              </Header>
+              <Content className="h-[380px]">
+                <Table rowSelection={rowSelection} columns={columns} dataSource={data} scroll={{ y: 270 }} />
+              </Content>
+            </Layout>
+          </Layout>
+        </Content>
+      </Layout>
     </>
   );
 };

@@ -51,7 +51,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive, isDarkMode, setIsD
   }
 
   const handleDarkMode = (): void => {
-    if (isDarkMode == 'no') {
+    if (isDarkMode === 'no') {
       setIsDarkMode("yes");
       localStorage.setItem('isDarkMode', 'yes');
     } else {
@@ -185,7 +185,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive, isDarkMode, setIsD
             <Button
               className="mr-1"
               type="text"
-              icon={isDarkMode == 'yes' ? <BsMoon className="text-xl" /> : <BsSun className="text-xl" />}
+              icon={isDarkMode === 'yes' ? <BsMoon className="text-xl" /> : <BsSun className="text-xl" />}
               onClick={handleDarkMode}
             />
             <Dropdown
