@@ -6,8 +6,19 @@ import {
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import type { MenuProps, TableColumnsType, TableProps } from 'antd';
-import { Button, Flex, Input, Layout, Menu, theme, Table } from 'antd';
-import { BsArrowCounterclockwise, BsEnvelope, BsExclamationCircle, BsFileEarmark, BsPlus, BsSearch, BsSend, BsStar, BsTag, BsTrash } from "react-icons/bs";
+import { Button, Flex, Input, Layout, Menu, theme, Table, Row, Col } from 'antd';
+import { 
+  BsArrowCounterclockwise, 
+  BsEnvelope, 
+  BsExclamationCircle, 
+  BsFileEarmark, BsPlus, 
+  BsSearch, 
+  BsSend, 
+  BsStar, 
+  BsTag, 
+  BsTrash 
+} from "react-icons/bs";
+import NLoading from "../../components/loading/NLoading";
 
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -43,8 +54,9 @@ type TableRowSelection<T> = TableProps<T>['rowSelection'];
 interface DataType {
   key: React.Key;
   name: string | ReactElement;
-  age: string;
-  address: string;
+  star?: ReactElement;
+  age?: string;
+  address?: string;
 }
 
 const MailPage = () => {
@@ -60,11 +72,18 @@ const MailPage = () => {
   const [responsive, setResponsive] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [action, setAction] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setAction(!action);
     setSelectedRowKeys(newSelectedRowKeys);
   };
+  const handleRefresh = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }
 
   const getActions = () => {
     if (action) {
@@ -80,28 +99,46 @@ const MailPage = () => {
     return null;
   }
 
-  const columns: TableColumnsType<DataType> = [
+  const columns: TableColumnsType<DataType> = [    
+    // {
+    //   title: '',
+    //   dataIndex: 'star',
+    // },
     {
       title: getActions(),
       dataIndex: 'name',
     },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-    },
+    // {
+    //   title: '',
+    //   dataIndex: 'age',
+    // },
+    // {
+    //   title: '',
+    //   dataIndex: 'address',
+    // },
   ];
 
   const data: DataType[] = [];
   for (let i = 0; i < 46; i++) {
     data.push({
       key: i,
-      name: `Edward King ${i}`,
-      age: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nisi arcu, a interdum erat iaculis a. Maecenas a finibus tellus. Aenean pharetra augue risus, pulvinar hendrerit nisi convallis ut. Nulla facilisi. Aenean justo eros, lobortis et tempus vel, tempus vel lacus. Suspendisse rhoncus iaculis auctor. Integer non velit ipsum. Sed ac dapibus eros. Fusce scelerisque augue massa, sit amet placerat felis ultricies eu. Donec mollis urna quis quam ultricies, et feugiat augue accumsan. Integer id risus ornare, tincidunt lorem at, tempor sem. Duis accumsan massa at ante iaculis blandit. Vivamus sed imperdiet eros. Maecenas magna eros, lobortis non justo eget, porttitor eleifend elit. Nam libero magna, consectetur quis ex non, lacinia mollis metus. Vivamus vel sapien sollicitudin, egestas turpis id, pretium est.",
-      address: `London, Park Lane no. ${i}`,
+      name: (
+        <Row>  
+          <Col>
+            <BsStar />
+          </Col>     
+          <Col>
+            Title {i}
+          </Col>
+          <Col>
+            {("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nisi arcu, a interdum erat iaculis a. Maecenas a finibus tellus. Aenean pharetra augue risus, pulvinar hendrerit nisi convallis ut. Nulla facilisi. Aenean justo eros, lobortis et tempus vel, tempus vel lacus. Suspendisse rhoncus iaculis auctor. Integer non velit ipsum. Sed ac dapibus eros. Fusce scelerisque augue massa, sit amet placerat felis ultricies eu. Donec mollis urna quis quam ultricies, et feugiat augue accumsan. Integer id risus ornare, tincidunt lorem at, tempor sem. Duis accumsan massa at ante iaculis blandit. Vivamus sed imperdiet eros. Maecenas magna eros, lobortis non justo eget, porttitor eleifend elit. Nam libero magna, consectetur quis ex non, lacinia mollis metus. Vivamus vel sapien sollicitudin, egestas turpis id, pretium est.").substring(0, 70)}...
+          </Col>
+          <Col>
+            {i} Mar
+          </Col>
+        </Row>
+      ),
+      // star: <BsStar />
     });
   }
   const rowSelection: TableRowSelection<DataType> = {
@@ -205,11 +242,34 @@ const MailPage = () => {
                 }
                 <Flex className="w-full mx-5" justify="space-between">
                   <Input className="w-1/2 md:w-auto" placeholder="Search..." prefix={<BsSearch />} />
-                  <Button  type="primary" icon={<BsArrowCounterclockwise />} />
+                  <Button  type="primary" icon={<BsArrowCounterclockwise />} onClick={handleRefresh}/>
                 </Flex>
               </Header>
-              <Content className="h-[380px]">
-                <Table rowSelection={rowSelection} columns={columns} dataSource={data} scroll={{ y: 270 }} />
+              <Content className="h-[380px] bg-[#fff]">
+                {
+                  loading ? (
+                    <Flex className="h-full" justify="center" align="center">
+                      <NLoading />
+                    </Flex>
+                  ) : (
+                    <Table 
+                      rowSelection={rowSelection} 
+                      columns={columns} 
+                      dataSource={data} 
+                      scroll={{ y: 300 }} 
+                      pagination={{ 
+                        position: ["none", "bottomRight"], 
+                        size: "small",
+                        style: {
+                          // backgroundColor:"#fff",
+                          position:"absolute",
+                          top:0,
+                          right:0
+                        } 
+                      }}
+                    />
+                  )
+                }
               </Content>
             </Layout>
           </Layout>
