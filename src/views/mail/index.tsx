@@ -6,16 +6,19 @@ import {
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import type { MenuProps, TableColumnsType, TableProps } from 'antd';
-import { Button, Flex, Input, Layout, Menu, theme, Table, Row, Col } from 'antd';
+import { Button, Flex, Input, Layout, Menu, theme, Table, Rate, Avatar, Dropdown, Space } from 'antd';
 import { 
   BsArrowCounterclockwise, 
+  BsCaretDownFill, 
   BsEnvelope, 
   BsExclamationCircle, 
   BsFileEarmark, BsPlus, 
   BsSearch, 
   BsSend, 
   BsStar, 
+  BsStarFill, 
   BsTag, 
+  BsThreeDotsVertical, 
   BsTrash 
 } from "react-icons/bs";
 import NLoading from "../../components/loading/NLoading";
@@ -54,14 +57,11 @@ type TableRowSelection<T> = TableProps<T>['rowSelection'];
 interface DataType {
   key: React.Key;
   name: string | ReactElement;
-  star?: ReactElement;
-  age?: string;
-  address?: string;
 }
 
 const MailPage = () => {
   const {
-    token: { colorBgContainer },
+    token: { colorBgContainer, colorBgElevated, borderRadiusLG, boxShadowSecondary },
   } = theme.useToken();
 
   const breadcrumbItems = [
@@ -100,22 +100,10 @@ const MailPage = () => {
   }
 
   const columns: TableColumnsType<DataType> = [    
-    // {
-    //   title: '',
-    //   dataIndex: 'star',
-    // },
     {
       title: getActions(),
       dataIndex: 'name',
     },
-    // {
-    //   title: '',
-    //   dataIndex: 'age',
-    // },
-    // {
-    //   title: '',
-    //   dataIndex: 'address',
-    // },
   ];
 
   const data: DataType[] = [];
@@ -123,22 +111,19 @@ const MailPage = () => {
     data.push({
       key: i,
       name: (
-        <Row>  
-          <Col>
-            <BsStar />
-          </Col>     
-          <Col>
-            Title {i}
-          </Col>
-          <Col>
-            {("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nisi arcu, a interdum erat iaculis a. Maecenas a finibus tellus. Aenean pharetra augue risus, pulvinar hendrerit nisi convallis ut. Nulla facilisi. Aenean justo eros, lobortis et tempus vel, tempus vel lacus. Suspendisse rhoncus iaculis auctor. Integer non velit ipsum. Sed ac dapibus eros. Fusce scelerisque augue massa, sit amet placerat felis ultricies eu. Donec mollis urna quis quam ultricies, et feugiat augue accumsan. Integer id risus ornare, tincidunt lorem at, tempor sem. Duis accumsan massa at ante iaculis blandit. Vivamus sed imperdiet eros. Maecenas magna eros, lobortis non justo eget, porttitor eleifend elit. Nam libero magna, consectetur quis ex non, lacinia mollis metus. Vivamus vel sapien sollicitudin, egestas turpis id, pretium est.").substring(0, 70)}...
-          </Col>
-          <Col>
-            {i} Mar
-          </Col>
-        </Row>
+        <Flex justify="space-around" className="flex-wrap md:flex-nowrap font-bold">
+          <Flex align="center" className="w-full md:w-1/3">
+            <Rate count={1}/>
+            <p className="mx-2">Title {i}</p>
+          </Flex>
+          <Flex align="center" className="w-full md:w-1/2 -mt-5 md:m-0">
+            <p className="truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nisi arcu, a interdum erat iaculis a. Maecenas a finibus tellus. Aenean pharetra augue risus, pulvinar hendrerit nisi convallis ut. Nulla facilisi. Aenean justo eros, lobortis et tempus vel, tempus vel lacus. Suspendisse rhoncus iaculis auctor. Integer non velit ipsum. Sed ac dapibus eros. Fusce scelerisque augue massa, sit amet placerat felis ultricies eu. Donec mollis urna quis quam ultricies, et feugiat augue accumsan. Integer id risus ornare, tincidunt lorem at, tempor sem. Duis accumsan massa at ante iaculis blandit. Vivamus sed imperdiet eros. Maecenas magna eros, lobortis non justo eget, porttitor eleifend elit. Nam libero magna, consectetur quis ex non, lacinia mollis metus. Vivamus vel sapien sollicitudin, egestas turpis id, pretium est.</p>
+          </Flex>
+          <Flex align="center" className="w-full md:w-1/2 justify-start md:justify-end">
+            <span>{i} Mar</span>
+          </Flex>
+        </Flex>
       ),
-      // star: <BsStar />
     });
   }
   const rowSelection: TableRowSelection<DataType> = {
@@ -205,7 +190,7 @@ const MailPage = () => {
               }}
             >
               <Flex className="my-5" justify="center">
-                <Button type="primary">Compose</Button>
+                <Button type="primary">+ Compose</Button>
               </Flex>
               <div className="custom-scrollbar h-[380px] overflow-y-auto invisible hover:visible">
                 <Menu
@@ -245,29 +230,120 @@ const MailPage = () => {
                   <Button  type="primary" icon={<BsArrowCounterclockwise />} onClick={handleRefresh}/>
                 </Flex>
               </Header>
-              <Content className="h-[380px] bg-[#fff]">
+              <Content className="h-[380px]" style={{ backgroundColor: colorBgContainer }}>
                 {
                   loading ? (
                     <Flex className="h-full" justify="center" align="center">
                       <NLoading />
                     </Flex>
                   ) : (
-                    <Table 
-                      rowSelection={rowSelection} 
-                      columns={columns} 
-                      dataSource={data} 
-                      scroll={{ y: 300 }} 
-                      pagination={{ 
-                        position: ["none", "bottomRight"], 
-                        size: "small",
-                        style: {
-                          // backgroundColor:"#fff",
-                          position:"absolute",
-                          top:0,
-                          right:0
-                        } 
-                      }}
-                    />
+                    <>                      
+                      {/* <Table 
+                        rowSelection={rowSelection} 
+                        columns={columns} 
+                        dataSource={data} 
+                        scroll={{ y: 300 }} 
+                        pagination={{ 
+                          size: "small",
+                          style: {
+                            position:"absolute",
+                            top:0,
+                            right:0
+                          } 
+                        }}
+                      /> */}
+                      <div>
+                        <Flex>
+                          <Avatar className="mx-3" size={40}>USER</Avatar>
+                          <Flex className="w-full mr-8" justify="space-between">
+                            <Flex vertical>
+                              <span className="font-bold">Emma Smith</span>
+                              <Flex align="center">
+                                <span>to me</span>
+                                <Dropdown
+                                  trigger={['click']}
+                                  dropdownRender={() => (
+                                    <div 
+                                      style={{
+                                        backgroundColor: colorBgElevated,
+                                        borderRadius: borderRadiusLG,
+                                        boxShadow: boxShadowSecondary,
+                                        padding: 20
+                                      }}
+                                    >
+                                      <table className="table">
+                                        <tbody>
+                                            <tr>
+                                                <td className="py-3 w-[95px] text-muted">From</td>
+                                                <td>Emma Bold</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-3 text-muted">Date</td>
+                                                <td>20 Dec 2024, 6:05 pm</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-3 text-muted">Subject</td>
+                                                <td>Trip Reminder. Thank you for flying with us!</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-3 text-muted">Reply-to</td>
+                                                <td>emma@intenso.com</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                  )}
+                                >
+                                  {/* <a onClick={(e) => e.preventDefault()}> */}
+                                    <span className="cursor-pointer"><BsCaretDownFill /></span>
+                                  {/* </a> */}
+                                </Dropdown>
+                              </Flex>
+                            </Flex>
+                            <Flex align="center">
+                              <span>05 May 2024, 6:43 am</span>
+                              <Rate count={1} />
+                              <Dropdown
+                                  trigger={['click']}
+                                  dropdownRender={() => (
+                                    <div 
+                                      style={{
+                                        backgroundColor: colorBgElevated,
+                                        borderRadius: borderRadiusLG,
+                                        boxShadow: boxShadowSecondary,
+                                        padding: 20
+                                      }}
+                                    >
+                                      <table className="table">
+                                        <tbody>
+                                            <tr>
+                                                <td className="py-3 w-[95px] text-muted">From</td>
+                                                <td>Emma Bold</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-3 text-muted">Date</td>
+                                                <td>20 Dec 2024, 6:05 pm</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-3 text-muted">Subject</td>
+                                                <td>Trip Reminder. Thank you for flying with us!</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="py-3 text-muted">Reply-to</td>
+                                                <td>emma@intenso.com</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                  )}
+                                >                                  
+                                  <span className="cursor-pointer"><BsThreeDotsVertical /></span>                                  
+                                </Dropdown>
+                            </Flex>
+                          </Flex>
+                        </Flex>
+                      </div>
+                    </>
                   )
                 }
               </Content>
