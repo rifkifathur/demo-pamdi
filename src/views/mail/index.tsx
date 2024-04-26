@@ -6,21 +6,23 @@ import {
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import type { MenuProps, TableColumnsType, TableProps, CollapseProps  } from 'antd';
-import { Button, Flex, Input, Layout, Menu, theme, Table, Rate, Avatar, Dropdown, Space, Divider, Collapse, ConfigProvider } from 'antd';
+import { Button, Flex, Input, Layout, Menu, theme, Table, Rate, Avatar, Dropdown, Card, Space, Divider, Collapse, ConfigProvider, Upload } from 'antd';
 import { 
+  BsAirplane,
   BsArrowCounterclockwise, 
   BsArrowLeft, 
   BsCaretDownFill, 
   BsEnvelope, 
   BsExclamationCircle, 
-  BsFileEarmark, BsPlus, 
+  BsFileEarmark, BsPaperclip, BsPlus, 
   BsSearch, 
   BsSend, 
   BsStar, 
   BsStarFill, 
   BsTag, 
   BsThreeDotsVertical, 
-  BsTrash 
+  BsTrash, 
+  BsX
 } from "react-icons/bs";
 import NLoading from "../../components/loading/NLoading";
 
@@ -433,7 +435,7 @@ const MailPage = () => {
                     </Flex>
                   ) : (
                     <>                      
-                      {/* <Table 
+                      <Table 
                         rowSelection={rowSelection} 
                         columns={columns} 
                         dataSource={data} 
@@ -446,8 +448,8 @@ const MailPage = () => {
                             right:0
                           } 
                         }}
-                      /> */}
-                      <div>
+                      />
+                      {/* <div>
                         <Space size={0}>
                           <Button className="ml-1 mr-3" type="text" icon={<BsArrowLeft />} />
                           <Button type="text" icon={<BsStar />} />
@@ -467,10 +469,47 @@ const MailPage = () => {
                         >
                           <Collapse items={itemsCollapse} bordered={false} defaultActiveKey={['2']} />
                         </ConfigProvider>                                         
-                      </div>
+                      </div> */}
                     </>
                   )
                 }
+                <Card
+                  className="w-[650px] fixed bottom-0 right-16 drop-shadow-lg" 
+                  title="New Message" 
+                  extra={<Button type="text" icon={<BsX className="font-bold text-2xl" />}/>}                   
+                  bordered={false}
+                >
+                  <div className="border-solid border-0 border-b-2 border-gray-200 py-3">
+                    <Input 
+                      className="w-full -mx-3 -my-2"
+                      addonBefore="To:" 
+                      variant="borderless"
+                    />
+                  </div>
+                  <div className="border-solid border-0 border-b-2 border-gray-200 py-3">                    
+                    <Input 
+                      className="w-full -mx-3 -my-2"
+                      placeholder="Subject"                    
+                      variant="borderless"
+                    />
+                  </div>
+                  <Input.TextArea 
+                    className="w-full -mx-3"
+                    placeholder="Type Messages" 
+                    rows={16}                     
+                    maxLength={6} 
+                    variant="borderless"
+                    style={{
+                      resize: 'none'
+                    }}
+                  />
+                  <Space size={8}>
+                    <Button type="primary" >Send</Button>
+                    <Upload >
+                      <Button type="text" icon={<BsPaperclip className="font-bold text-xl" />} />
+                    </Upload>
+                  </Space>
+                </Card>
               </Content>
             </Layout>
           </Layout>
