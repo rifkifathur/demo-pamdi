@@ -1,30 +1,31 @@
-import React, { ReactElement, ReactHTMLElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { NBreadcrumb } from "../../components";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import type { MenuProps, TableColumnsType, TableProps, CollapseProps  } from 'antd';
-import { Button, Flex, Input, Layout, Menu, theme, Table, Rate, Avatar, Dropdown } from 'antd';
-import { 
+import { Button, Flex, Input, Layout, Menu, theme, Table, Rate, Avatar, Dropdown, Card, Space, Upload } from 'antd';
+import {   
   BsArrowCounterclockwise,
   BsCaretDownFill, 
   BsEnvelope, 
   BsExclamationCircle, 
-  BsFileEarmark, BsPlus, 
+  BsFileEarmark, BsPaperclip, BsPlus, 
   BsSearch, 
   BsSend, 
-  BsStar, 
+  BsStar,
   BsTag, 
   BsThreeDotsVertical, 
-  BsTrash,
+  BsTrash, 
+  BsX
 } from "react-icons/bs";
 import NLoading from "../../components/loading/NLoading";
-import Compose from "./components/Compose";
-import Show from "./components/Show";
+import Sent from "./components/Sent";
 
 const { Header, Content, Sider } = Layout;
+const baseURL = "apps/mail"
 type MenuItem = Required<MenuProps>['items'][number];
 function getItem(
   label: React.ReactNode,
@@ -43,8 +44,8 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('Inbox', '1', <BsEnvelope />),
-  getItem('Sent', '2', <BsSend />),
+  getItem(<Link to={baseURL+'/inbox'} >Inbox</Link>, '1', <BsEnvelope />),
+  getItem(<Link to={'sent'} relative="path">Sent</Link>, '2', <BsSend />),
   getItem('Draft', '3', <BsFileEarmark />),
   getItem('Starred', '4', <BsStar />),
   getItem('Important', '5', <BsTag />),
@@ -62,7 +63,7 @@ interface DataType {
 
 const MailPage = () => {
   const {
-    token: { colorBgContainer },
+    token: { colorBgContainer, colorBgElevated, borderRadiusLG, boxShadowSecondary },
   } = theme.useToken();
 
   const breadcrumbItems = [
@@ -74,36 +75,7 @@ const MailPage = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [action, setAction] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [addCompose, setAddCompose] = useState(false);
-  const [show, setShow] = useState(false);
 
-  const refBtn = useRef<HTMLDivElement | null>(null);
-  const refSider = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {    
-    const outside = (e: any) => {      
-      if (!collapsed && !refSider.current?.contains(e.target) && !refBtn.current?.contains(e.target) && window.innerWidth < 862) {
-        setCollapsed(!collapsed);
-      }      
-    }
-    document.addEventListener("click", outside);
-
-    return () => {
-      document.removeEventListener("click", outside);
-    }
-  }, [collapsed, setCollapsed])
-
-  const handleAddCompose = () => {
-    setAddCompose(true);
-  };
-
-  const handleShow = () => {
-    setShow(true);
-  };
-
-  const handleStar = (event: any) => {
-    // If you don't want click extra trigger collapse, you can prevent this:
-    event.stopPropagation();
-  }
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setAction(!action);
     setSelectedRowKeys(newSelectedRowKeys);
@@ -141,14 +113,12 @@ const MailPage = () => {
     data.push({
       key: i,
       name: (
-        <Flex justify="space-around" className="flex-wrap md:flex-nowrap font-bold cursor-pointer" onClick={handleShow}>
+        <Flex justify="space-around" className="flex-wrap md:flex-nowrap font-bold">
           <Flex align="center" className="w-full md:w-1/3">
-            <Button type="text" onClick={handleStar} className="p-0 m-0">
-              <Rate count={1} />
-            </Button>
+            <Rate count={1}/>
             <p className="mx-2">Title {i}</p>
           </Flex>
-          <Flex align="center" className="w-full md:w-1/2 -mt-5 md:m-0" >
+          <Flex align="center" className="w-full md:w-1/2 -mt-5 md:m-0">
             <p className="truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nisi arcu, a interdum erat iaculis a. Maecenas a finibus tellus. Aenean pharetra augue risus, pulvinar hendrerit nisi convallis ut. Nulla facilisi. Aenean justo eros, lobortis et tempus vel, tempus vel lacus. Suspendisse rhoncus iaculis auctor. Integer non velit ipsum. Sed ac dapibus eros. Fusce scelerisque augue massa, sit amet placerat felis ultricies eu. Donec mollis urna quis quam ultricies, et feugiat augue accumsan. Integer id risus ornare, tincidunt lorem at, tempor sem. Duis accumsan massa at ante iaculis blandit. Vivamus sed imperdiet eros. Maecenas magna eros, lobortis non justo eget, porttitor eleifend elit. Nam libero magna, consectetur quis ex non, lacinia mollis metus. Vivamus vel sapien sollicitudin, egestas turpis id, pretium est.</p>
           </Flex>
           <Flex align="center" className="w-full md:w-1/2 justify-start md:justify-end">
@@ -195,7 +165,200 @@ const MailPage = () => {
       },
     ],
   };
-  
+  const itemsCollapse: CollapseProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <Flex>
+          <Avatar className="mx-3" size={40}>USER</Avatar>
+          <Flex className="w-full mr-8" justify="space-between">
+            <Flex vertical>
+              <span className="font-bold">Emma Smith</span>
+              <Flex align="center">
+                <span>to me</span>                
+              </Flex>
+            </Flex>
+            <Flex align="center">
+              <span className="mx-2" >05 May 2024, 6:43 am</span>
+              <Rate className="mx-2" count={1} />
+              <span className="cursor-pointer"><BsThreeDotsVertical /></span>
+            </Flex>
+          </Flex>
+        </Flex>
+      ),
+      children: (
+        <>
+          <Flex className="py-5 ml-14 mr-8 bg-slate-400" justify="center">
+              <div>
+                  <p>Hi Bob,</p>
+                  <p>
+                      With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of
+                      any article is the title.Without a compelleing title, your reader won't even get to the first
+                      sentence.After the title, however, the first few sentences of your article are certainly
+                      the most important part.
+                  </p>
+                  <p>
+                      Jornalists call this critical, introductory section the "Lede," and when bridge properly executed,
+                      it's the that carries your reader from an headine try at attention-grabbing to the body of your
+                      blog post, if you want to get it right on of these 10 clever ways to omen your next blog posr with a bang
+                  </p>
+                  <p>
+                      Best regards,
+                  </p>
+                  <p className="mb-0">
+                      Jason Muller
+                  </p>
+              </div>
+          </Flex>
+        </>
+      ),
+      showArrow: false,
+      extra: (
+        <>
+          <Dropdown
+            trigger={['click']}
+            dropdownRender={() => (
+              <div 
+                style={{
+                  backgroundColor: colorBgElevated,
+                  borderRadius: borderRadiusLG,
+                  boxShadow: boxShadowSecondary,
+                  padding: 20,
+                }}
+              >
+                <table className="table">
+                  <tbody>
+                      <tr>
+                          <td className="py-3 w-[95px] text-muted">From</td>
+                          <td>Emma Bold</td>
+                      </tr>
+                      <tr>
+                          <td className="py-3 text-muted">Date</td>
+                          <td>20 Dec 2024, 6:05 pm</td>
+                      </tr>
+                      <tr>
+                          <td className="py-3 text-muted">Subject</td>
+                          <td>Trip Reminder. Thank you for flying with us!</td>
+                      </tr>
+                      <tr>
+                          <td className="py-3 text-muted">Reply-to</td>
+                          <td>emma@intenso.com</td>
+                      </tr>
+                  </tbody>
+              </table>
+              </div>
+            )}
+          >                                  
+            <span 
+              className="cursor-pointer absolute left-32 bottom-2" 
+              onClick={(event) => {
+                // If you don't want click extra trigger collapse, you can prevent this:
+                event.stopPropagation();
+              }}
+            >
+              <BsCaretDownFill />
+            </span>                                  
+          </Dropdown>
+        </>
+      )
+    },
+    {
+      key: '2',
+      label: (
+        <Flex>
+          <Avatar className="mx-3" size={40}>USER</Avatar>
+          <Flex className="w-full mr-8" justify="space-between">
+            <Flex vertical>
+              <span className="font-bold">Emma Smith</span>
+              <Flex align="center">
+                <span>to me</span>
+              </Flex>
+            </Flex>
+            <Flex align="center">
+              <span className="mx-2" >05 May 2024, 6:43 am</span>
+              <Rate className="mx-2" count={1} />
+              <span className="cursor-pointer"><BsThreeDotsVertical /></span>
+            </Flex>
+          </Flex>
+        </Flex>
+      ),
+      children: (
+        <>
+          <Flex className="py-5 ml-14 mr-8 bg-slate-400" justify="center">
+              <div>
+                  <p>Hi Bob,</p>
+                  <p>
+                      With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of
+                      any article is the title.Without a compelleing title, your reader won't even get to the first
+                      sentence.After the title, however, the first few sentences of your article are certainly
+                      the most important part.
+                  </p>
+                  <p>
+                      Jornalists call this critical, introductory section the "Lede," and when bridge properly executed,
+                      it's the that carries your reader from an headine try at attention-grabbing to the body of your
+                      blog post, if you want to get it right on of these 10 clever ways to omen your next blog posr with a bang
+                  </p>
+                  <p>
+                      Best regards,
+                  </p>
+                  <p className="mb-0">
+                      Jason Muller
+                  </p>
+              </div>
+          </Flex>
+        </>
+      ),
+      showArrow: false,
+      extra: (
+        <>
+          <Dropdown
+            trigger={['click']}
+            dropdownRender={() => (
+              <div 
+                style={{
+                  backgroundColor: colorBgElevated,
+                  borderRadius: borderRadiusLG,
+                  boxShadow: boxShadowSecondary,
+                  padding: 20,
+                }}
+              >
+                <table className="table">
+                  <tbody>
+                      <tr>
+                          <td className="py-3 w-[95px] text-muted">From</td>
+                          <td>Emma Bold</td>
+                      </tr>
+                      <tr>
+                          <td className="py-3 text-muted">Date</td>
+                          <td>20 Dec 2024, 6:05 pm</td>
+                      </tr>
+                      <tr>
+                          <td className="py-3 text-muted">Subject</td>
+                          <td>Trip Reminder. Thank you for flying with us!</td>
+                      </tr>
+                      <tr>
+                          <td className="py-3 text-muted">Reply-to</td>
+                          <td>emma@intenso.com</td>
+                      </tr>
+                  </tbody>
+              </table>
+              </div>
+            )}
+          >                                  
+            <span 
+              className="cursor-pointer absolute left-32 bottom-2" 
+              onClick={(event) => {
+                // If you don't want click extra trigger collapse, you can prevent this:
+                event.stopPropagation();
+              }}
+            >
+              <BsCaretDownFill />
+            </span>                                  
+          </Dropdown>
+        </>
+      )
+    },
+  ];
   return (
     <>
       <NBreadcrumb title="Mail" items={breadcrumbItems} />
@@ -208,16 +371,8 @@ const MailPage = () => {
             }}
           >
             <Sider
-              ref={refSider}              
-              style={{ 
-                background: colorBgContainer, 
-                position: responsive ? 'fixed' : 'relative',
-                top: responsive ? '0' : 'auto',
-                bottom: responsive ? '0' : 'auto',
-                left: responsive ? '0' : 'auto',
-                zIndex: responsive ? 102 : 0
-              }}
-              width={260}
+              style={{ background: colorBgContainer }}
+              width={200}
               trigger={null}
               collapsible
               collapsed={collapsed}
@@ -231,7 +386,7 @@ const MailPage = () => {
               }}
             >
               <Flex className="my-5" justify="center">
-                <Button type="primary" onClick={handleAddCompose}>+ Compose</Button>
+                <Button type="primary">+ Compose</Button>
               </Flex>
               <div className="custom-scrollbar h-[380px] overflow-y-auto invisible hover:visible">
                 <Menu
@@ -256,15 +411,13 @@ const MailPage = () => {
               >
                 {responsive &&
                   <Button
-                    ref={refBtn}
                     type="text"
-                    icon={<MenuUnfoldOutlined className="pointer-events-none" />}
+                    icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                     onClick={() => setCollapsed(!collapsed)}
                     style={{
                       fontSize: '16px',
                       width: 64,
                       height: 64,
-                      padding:0
                     }}
                   />
                 }
@@ -273,7 +426,7 @@ const MailPage = () => {
                   <Button  type="primary" icon={<BsArrowCounterclockwise />} onClick={handleRefresh}/>
                 </Flex>
               </Header>
-              <Content style={{ backgroundColor: colorBgContainer }}>
+              <Content className="" style={{ backgroundColor: colorBgContainer }}>
                 {
                   loading ? (
                     <Flex className="h-full" justify="center" align="center">
@@ -281,28 +434,47 @@ const MailPage = () => {
                     </Flex>
                   ) : (
                     <>                      
-                      {show ? (
-                        <Show setShow={setShow} />
-                      ) : (
-                        <Table 
-                          rowSelection={rowSelection} 
-                          columns={columns} 
-                          dataSource={data} 
-                          scroll={{ y: 300 }} 
-                          pagination={{ 
-                            size: "small",
-                            style: {
-                              position:"absolute",
-                              top:0,
-                              right:0
-                            } 
+                      <Table 
+                        rowSelection={rowSelection} 
+                        columns={columns} 
+                        dataSource={data} 
+                        scroll={{ y: 300 }} 
+                        pagination={{ 
+                          size: "small",
+                          style: {
+                            position:"absolute",
+                            top:0,
+                            right:0
+                          } 
+                        }}
+                      />
+                      {/* <div>
+                        <Space size={0}>
+                          <Button className="ml-1 mr-3" type="text" icon={<BsArrowLeft />} />
+                          <Button type="text" icon={<BsStar />} />
+                          <Button type="text" icon={<BsTag />} />
+                          <Button type="text" icon={<BsExclamationCircle />} />
+                          <Button type="text" icon={<BsTrash />} />
+                        </Space>
+                        <Divider className="my-2"/>
+                        <ConfigProvider
+                          theme={{
+                            components: {
+                              Collapse: {
+                                headerBg: colorBgContainer,
+                              },
+                            },
                           }}
-                        />
-                      )}
+                        >
+                          <Collapse items={itemsCollapse} bordered={false} defaultActiveKey={['2']} />
+                        </ConfigProvider>                                         
+                      </div> */}
+                      <Routes>                    
+                        <Route path="app/mail/sent" element={<Sent />} />
+                      </Routes>
                     </>
                   )
                 }
-                { addCompose && <Compose setAddCompose={setAddCompose} /> }
               </Content>
             </Layout>
           </Layout>

@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Button, ConfigProvider, Flex, Layout, Result, theme } from "antd";
 import { NFooter, NSider, NHeader } from "../../components";
@@ -15,14 +15,12 @@ const AdminLayout = () => {
   const defaultIsDarkMode = localStorage.getItem('isDarkMode');
 
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isResponsive, setIsResponsive] = useState(false);
-  const [renderRoute, setRenderRoute] = useState<ReactElement>();
-  const [activeMenuOnSide, setActiveMenuOnSide] = useState<string>("");
-  const [openMenuOnSide, setOpenMenuOnSide] = useState<string>("");
+  const [isResponsive, setIsResponsive] = useState(false);  
   const [isGetRoute, setIsGetRoute] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [loadingRoute, setLoadingRoute] = useState(true);
+  const [loadingContent, setLoadingContent] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState<string | null>(defaultIsDarkMode);
+  const [activeRoute, setActiveRoute] = useState<RoutesType | null>(null);
 
   const getRoutes = useCallback(
     (routes: RoutesType[]): any => {
@@ -35,22 +33,8 @@ const AdminLayout = () => {
         }
 
         if (route.path && route.path === location.pathname) {
-          setIsGetRoute(true);
-          setRenderRoute(
-            <Route
-              path={`${route.path}`}
-              element={route.component}
-              key={route.key}
-            />
-          );
-          setActiveMenuOnSide(route.key);
-          if (route.baseKey) {
-            setOpenMenuOnSide(route.baseKey);
-          }
-
-          if (route.baseParentKey) {
-            setActiveMenuOnSide(route.baseParentKey);
-          }
+          setActiveRoute(route);
+          setIsGetRoute(true);                    
         }
 
         if (route.isGroup && route.groupItem) {
@@ -63,22 +47,8 @@ const AdminLayout = () => {
             }
 
             if (groupItem.path && groupItem.path === location.pathname) {
-              setIsGetRoute(true);
-              setRenderRoute(
-                <Route
-                  path={`${groupItem.path}`}
-                  element={groupItem.component}
-                  key={groupItem.key}
-                />
-              );
-              setActiveMenuOnSide(groupItem.key);
-              if (groupItem.baseKey) {
-                setOpenMenuOnSide(groupItem.baseKey);
-              }
-
-              if (groupItem.baseParentKey) {
-                setActiveMenuOnSide(groupItem.baseParentKey);
-              }
+              setActiveRoute(groupItem);
+              setIsGetRoute(true);                          
             }
           }
         }
@@ -88,12 +58,12 @@ const AdminLayout = () => {
     },
     [location.pathname]
   );
-console.log(isCollapsed);
+
   useEffect(() => {
     if (isResponsive) {
       setIsCollapsed(true);
     }
-    setLoadingRoute(true);
+    setLoadingContent(true);
     setTimeout(() => {
       if (auth === null) {
         navigate("/login");
@@ -103,9 +73,9 @@ console.log(isCollapsed);
         setIsGetRoute(false);
       }
       getRoutes(routes);
-      setLoadingRoute(false);
+      setLoadingContent(false);
     }, 1500);
-  }, [getRoutes, navigate, auth]);
+  }, [getRoutes, navigate, auth, isResponsive]);
 
   if (loading) {
     return (
@@ -122,6 +92,7 @@ console.log(isCollapsed);
       document.querySelector("body")!.style.overflow = "scroll";
     }
   }
+  
   return (
     <ConfigProvider
       theme={{
@@ -149,8 +120,8 @@ console.log(isCollapsed);
             setIsCollapsed={setIsCollapsed}
             isResponsive={isResponsive}
             setIsResponsive={setIsResponsive}
-            activeMenuOnSide={activeMenuOnSide}
-            openMenuOnSide={openMenuOnSide}
+            activeMenuOnSide={activeRoute!.key}
+            openMenuOnSide={activeRoute!.baseKey || activeRoute!.baseParentKey || ''}
           />
           <Layout
             style={{
@@ -174,13 +145,17 @@ console.log(isCollapsed);
                   padding: 24,
                 }}
               >
-                {loadingRoute ? (
+                {loadingContent ? (
                   <Flex className="mt-[150px]" justify="center" align="center">
                     <NLoading />
                   </Flex>
                 ) : (
-                  <Routes>
-                    {renderRoute}
+                  <Routes>                    
+                    <Route
+                      path={`${activeRoute?.path}`}
+                      element={activeRoute?.component}
+                      key={activeRoute?.key}
+                    />
                   </Routes>
                 )}
               </div>
