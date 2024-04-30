@@ -97,7 +97,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive, isDarkMode, setIsD
       <Button
         className="btn-hide-sider"
         type="default"
-        icon={isCollapsed ? (isResponsive ? <FaBars className="text-lg btn-hide-sider" /> : <FaAngleRight className="btn-hide-sider" />) : <FaAngleLeft className="btn-hide-sider" />}
+        icon={isCollapsed ? (isResponsive ? <FaBars className="text-lg pointer-events-none" /> : <FaAngleRight />) : <FaAngleLeft />}
         onClick={() => setIsCollapsed(!isCollapsed)}
         style={{
           fontSize: "16px",

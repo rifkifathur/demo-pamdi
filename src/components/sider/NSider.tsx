@@ -88,12 +88,12 @@ const NSider = ({
 
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    const btnHide = document.querySelector(".btn-hide-sider span");
+    const btnHide = document.querySelector(".btn-hide-sider");
 
     const outside = (e: any) => {
-      if (!isCollapsed && !ref.current?.contains(e.target) && !e.target.contains(btnHide) && window.innerWidth < 862) {
+      if (!isCollapsed && !ref.current?.contains(e.target) && !btnHide?.contains(e.target) && window.innerWidth < 862) {
         setIsCollapsed(!isCollapsed);
-      }
+      }      
     }
     document.addEventListener("click", outside);
 

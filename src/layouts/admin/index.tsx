@@ -88,8 +88,11 @@ const AdminLayout = () => {
     },
     [location.pathname]
   );
-console.log(renderRoute);
+console.log(isCollapsed);
   useEffect(() => {
+    if (isResponsive) {
+      setIsCollapsed(true);
+    }
     setLoadingRoute(true);
     setTimeout(() => {
       if (auth === null) {
@@ -112,6 +115,13 @@ console.log(renderRoute);
     )
   }
 
+  if (isResponsive) {
+    if (!isCollapsed) {
+      document.querySelector("body")!.style.overflow = "hidden";
+    } else {
+      document.querySelector("body")!.style.overflow = "scroll";
+    }
+  }
   return (
     <ConfigProvider
       theme={{
@@ -127,8 +137,13 @@ console.log(renderRoute);
         },
       }}
     >
+      {isResponsive && !isCollapsed && <div className="h-[100vh] w-full fixed bg-[rgba(0,0,0,0.4)] z-[100]"></div>}
       {isGetRoute ? (
-        <Layout style={{ minHeight: '100vh' }}>
+        <Layout 
+          style={{ 
+            minHeight: '100vh',             
+          }}
+        >
           <NSider
             isCollapsed={isCollapsed}
             setIsCollapsed={setIsCollapsed}

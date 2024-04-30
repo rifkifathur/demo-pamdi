@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactHTMLElement, useState } from "react";
+import React, { ReactElement, ReactHTMLElement, useEffect, useRef, useState } from "react";
 import { NBreadcrumb } from "../../components";
 import { Link } from "react-router-dom";
 import {
@@ -62,7 +62,7 @@ interface DataType {
 
 const MailPage = () => {
   const {
-    token: { colorBgContainer, colorBgElevated, borderRadiusLG, boxShadowSecondary },
+    token: { colorBgContainer },
   } = theme.useToken();
 
   const breadcrumbItems = [
@@ -76,6 +76,21 @@ const MailPage = () => {
   const [loading, setLoading] = useState(false);
   const [addCompose, setAddCompose] = useState(false);
   const [show, setShow] = useState(false);
+
+  const refBtn = useRef<HTMLDivElement | null>(null);
+  const refSider = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {    
+    const outside = (e: any) => {      
+      if (!collapsed && !refSider.current?.contains(e.target) && !refBtn.current?.contains(e.target) && window.innerWidth < 862) {
+        setCollapsed(!collapsed);
+      }      
+    }
+    document.addEventListener("click", outside);
+
+    return () => {
+      document.removeEventListener("click", outside);
+    }
+  }, [collapsed, setCollapsed])
 
   const handleAddCompose = () => {
     setAddCompose(true);
@@ -193,8 +208,16 @@ const MailPage = () => {
             }}
           >
             <Sider
-              style={{ background: colorBgContainer }}
-              width={200}
+              ref={refSider}              
+              style={{ 
+                background: colorBgContainer, 
+                position: responsive ? 'fixed' : 'relative',
+                top: responsive ? '0' : 'auto',
+                bottom: responsive ? '0' : 'auto',
+                left: responsive ? '0' : 'auto',
+                zIndex: responsive ? 102 : 0
+              }}
+              width={260}
               trigger={null}
               collapsible
               collapsed={collapsed}
@@ -233,13 +256,15 @@ const MailPage = () => {
               >
                 {responsive &&
                   <Button
+                    ref={refBtn}
                     type="text"
-                    icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                    icon={<MenuUnfoldOutlined className="pointer-events-none" />}
                     onClick={() => setCollapsed(!collapsed)}
                     style={{
                       fontSize: '16px',
                       width: 64,
                       height: 64,
+                      padding:0
                     }}
                   />
                 }
@@ -248,7 +273,7 @@ const MailPage = () => {
                   <Button  type="primary" icon={<BsArrowCounterclockwise />} onClick={handleRefresh}/>
                 </Flex>
               </Header>
-              <Content className="" style={{ backgroundColor: colorBgContainer }}>
+              <Content style={{ backgroundColor: colorBgContainer }}>
                 {
                   loading ? (
                     <Flex className="h-full" justify="center" align="center">
