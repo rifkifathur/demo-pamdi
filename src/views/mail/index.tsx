@@ -1,38 +1,38 @@
 import React, { ReactElement, useState } from "react";
 import { NBreadcrumb } from "../../components";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-} from '@ant-design/icons';
-import type { MenuProps, TableColumnsType, TableProps, CollapseProps  } from 'antd';
-import { Button, Flex, Input, Layout, Menu, theme, Table, Rate, Avatar, Dropdown, Card, Space, Upload } from 'antd';
+} from "@ant-design/icons";
+import type { MenuProps, TableColumnsType, CollapseProps  } from "antd";
+import { Button, Flex, Input, Layout, Menu, theme, Rate, Avatar, Dropdown } from "antd";
 import {   
   BsArrowCounterclockwise,
   BsCaretDownFill, 
   BsEnvelope, 
   BsExclamationCircle, 
-  BsFileEarmark, BsPaperclip, BsPlus, 
+  BsFileEarmark, BsPlus, 
   BsSearch, 
   BsSend, 
   BsStar,
   BsTag, 
   BsThreeDotsVertical, 
   BsTrash, 
-  BsX
 } from "react-icons/bs";
 import NLoading from "../../components/loading/NLoading";
 import Sent from "./components/Sent";
+import Inbox from "./components/Inbox";
+import Show from "./components/Show";
 
 const { Header, Content, Sider } = Layout;
-const baseURL = "apps/mail"
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
-  type?: 'group',
+  type?: "group",
 ): MenuItem {
   return {
     key,
@@ -44,17 +44,15 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link to={baseURL+'/inbox'} >Inbox</Link>, '1', <BsEnvelope />),
-  getItem(<Link to={'sent'} relative="path">Sent</Link>, '2', <BsSend />),
-  getItem('Draft', '3', <BsFileEarmark />),
-  getItem('Starred', '4', <BsStar />),
-  getItem('Important', '5', <BsTag />),
-  getItem('Spam', '6', <BsExclamationCircle />),
-  getItem('Trash', '7', <BsTrash />),
-  getItem('Add Label', '8', <BsPlus />),
+  getItem("Inbox", "inbox", <BsEnvelope />),
+  getItem("Sent", "sent", <BsSend />),
+  getItem("Draft", "3", <BsFileEarmark />),
+  getItem("Starred", "4", <BsStar />),
+  getItem("Important", "5", <BsTag />),
+  getItem("Spam", "6", <BsExclamationCircle />),
+  getItem("Trash", "7", <BsTrash />),
+  getItem("Add Label", "8", <BsPlus />),
 ];
-
-type TableRowSelection<T> = TableProps<T>['rowSelection'];
 
 interface DataType {
   key: React.Key;
@@ -67,47 +65,9 @@ const MailPage = () => {
   } = theme.useToken();
 
   const breadcrumbItems = [
-    { title: <Link to={'/apps/mail'}>Mail</Link> },
+    { title: <Link to={"/apps/mail"}>Mail</Link> },
   ]
-
-  const [collapsed, setCollapsed] = useState(false);
-  const [responsive, setResponsive] = useState(false);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [action, setAction] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setAction(!action);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-  const handleRefresh = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  }
-
-  const getActions = () => {
-    if (action) {
-      return (
-        <>
-          <Button type="text" icon={<BsStar />} />
-          <Button type="text" icon={<BsTag />} />
-          <Button type="text" icon={<BsExclamationCircle />} />
-          <Button type="text" icon={<BsTrash />} />
-        </>
-      );
-    }
-    return null;
-  }
-
-  const columns: TableColumnsType<DataType> = [    
-    {
-      title: getActions(),
-      dataIndex: 'name',
-    },
-  ];
-
+  
   const data: DataType[] = [];
   for (let i = 0; i < 46; i++) {
     data.push({
@@ -128,46 +88,62 @@ const MailPage = () => {
       ),
     });
   }
-  const rowSelection: TableRowSelection<DataType> = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    selections: [
-      Table.SELECTION_ALL,
-      Table.SELECTION_INVERT,
-      Table.SELECTION_NONE,
-      {
-        key: 'odd',
-        text: 'Select Odd Row',
-        onSelect: (changeableRowKeys) => {
-          let newSelectedRowKeys = [];
-          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-            if (index % 2 !== 0) {
-              return false;
-            }
-            return true;
-          });
-          setSelectedRowKeys(newSelectedRowKeys);
-        },
-      },
-      {
-        key: 'even',
-        text: 'Select Even Row',
-        onSelect: (changeableRowKeys) => {
-          let newSelectedRowKeys = [];
-          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-            if (index % 2 !== 0) {
-              return true;
-            }
-            return false;
-          });
-          setSelectedRowKeys(newSelectedRowKeys);
-        },
-      },
-    ],
-  };
-  const itemsCollapse: CollapseProps['items'] = [
+  const [collapsed, setCollapsed] = useState(false);
+  const [responsive, setResponsive] = useState(false);
+  const [action, setAction] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [keyComponent, setKeyComponent] = useState<string>("inbox");
+  const [dataInbox, setDataInbox] = useState<DataType[]>(data);
+  
+  const getActions = () => {
+    if (action) {
+      return (
+        <>
+          <Button type="text" icon={<BsStar />} />
+          <Button type="text" icon={<BsTag />} />
+          <Button type="text" icon={<BsExclamationCircle />} />
+          <Button type="text" icon={<BsTrash />} />
+        </>
+      );
+    }
+    return null;
+  }
+
+  const columns: TableColumnsType<DataType> = [    
     {
-      key: '1',
+      title: getActions(),
+      dataIndex: "name",
+    },
+  ];
+
+  const components: any = [
+    { key: "inbox", item: <Inbox data={dataInbox} columns={columns} action={action} setAction={setAction}/>},
+    { key: "sent", item: <Sent />},
+    // { key: "show", item: <Show />}
+  ];
+  
+  const getComponent = (key: string = "inbox") => {
+    for (const component of components) {
+        if (component.key === keyComponent) {          
+          return component.item;
+        }
+    }
+    return null;
+  }
+  const handleMenu: MenuProps["onClick"] = (e) => {
+    setKeyComponent(e.key);           
+  };
+  
+  const handleRefresh = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }  
+
+  const itemsCollapse: CollapseProps["items"] = [
+    {
+      key: "1",
       label: (
         <Flex>
           <Avatar className="mx-3" size={40}>USER</Avatar>
@@ -193,13 +169,13 @@ const MailPage = () => {
                   <p>Hi Bob,</p>
                   <p>
                       With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of
-                      any article is the title.Without a compelleing title, your reader won't even get to the first
+                      any article is the title.Without a compelleing title, your reader won"t even get to the first
                       sentence.After the title, however, the first few sentences of your article are certainly
                       the most important part.
                   </p>
                   <p>
                       Jornalists call this critical, introductory section the "Lede," and when bridge properly executed,
-                      it's the that carries your reader from an headine try at attention-grabbing to the body of your
+                      it"s the that carries your reader from an headine try at attention-grabbing to the body of your
                       blog post, if you want to get it right on of these 10 clever ways to omen your next blog posr with a bang
                   </p>
                   <p>
@@ -216,7 +192,7 @@ const MailPage = () => {
       extra: (
         <>
           <Dropdown
-            trigger={['click']}
+            trigger={["click"]}
             dropdownRender={() => (
               <div 
                 style={{
@@ -252,7 +228,7 @@ const MailPage = () => {
             <span 
               className="cursor-pointer absolute left-32 bottom-2" 
               onClick={(event) => {
-                // If you don't want click extra trigger collapse, you can prevent this:
+                // If you don"t want click extra trigger collapse, you can prevent this:
                 event.stopPropagation();
               }}
             >
@@ -263,7 +239,7 @@ const MailPage = () => {
       )
     },
     {
-      key: '2',
+      key: "2",
       label: (
         <Flex>
           <Avatar className="mx-3" size={40}>USER</Avatar>
@@ -289,13 +265,13 @@ const MailPage = () => {
                   <p>Hi Bob,</p>
                   <p>
                       With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of
-                      any article is the title.Without a compelleing title, your reader won't even get to the first
+                      any article is the title.Without a compelleing title, your reader won"t even get to the first
                       sentence.After the title, however, the first few sentences of your article are certainly
                       the most important part.
                   </p>
                   <p>
                       Jornalists call this critical, introductory section the "Lede," and when bridge properly executed,
-                      it's the that carries your reader from an headine try at attention-grabbing to the body of your
+                      it"s the that carries your reader from an headine try at attention-grabbing to the body of your
                       blog post, if you want to get it right on of these 10 clever ways to omen your next blog posr with a bang
                   </p>
                   <p>
@@ -312,7 +288,7 @@ const MailPage = () => {
       extra: (
         <>
           <Dropdown
-            trigger={['click']}
+            trigger={["click"]}
             dropdownRender={() => (
               <div 
                 style={{
@@ -348,7 +324,7 @@ const MailPage = () => {
             <span 
               className="cursor-pointer absolute left-32 bottom-2" 
               onClick={(event) => {
-                // If you don't want click extra trigger collapse, you can prevent this:
+                // If you don"t want click extra trigger collapse, you can prevent this:
                 event.stopPropagation();
               }}
             >
@@ -366,7 +342,7 @@ const MailPage = () => {
         <Content>
           <Layout
             style={{
-              padding: '0 0 20px',
+              padding: "0 0 20px",
               background: colorBgContainer,
             }}
           >
@@ -390,11 +366,11 @@ const MailPage = () => {
               </Flex>
               <div className="custom-scrollbar h-[380px] overflow-y-auto invisible hover:visible">
                 <Menu
+                  onClick={handleMenu}
                   className="visible"
                   mode="inline"
-                  defaultSelectedKeys={['1']}
-                  defaultOpenKeys={['sub1']}
-                  style={{ height: '100%' }}
+                  defaultSelectedKeys={["inbox"]}
+                  style={{ height: "100%" }}
                   items={items}
                 />
               </div>
@@ -415,7 +391,7 @@ const MailPage = () => {
                     icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                     onClick={() => setCollapsed(!collapsed)}
                     style={{
-                      fontSize: '16px',
+                      fontSize: "16px",
                       width: 64,
                       height: 64,
                     }}
@@ -433,8 +409,9 @@ const MailPage = () => {
                       <NLoading />
                     </Flex>
                   ) : (
-                    <>                      
-                      <Table 
+                    <>        
+                      {getComponent()}              
+                      {/* <Table 
                         rowSelection={rowSelection} 
                         columns={columns} 
                         dataSource={data} 
@@ -447,7 +424,7 @@ const MailPage = () => {
                             right:0
                           } 
                         }}
-                      />
+                      /> */}
                       {/* <div>
                         <Space size={0}>
                           <Button className="ml-1 mr-3" type="text" icon={<BsArrowLeft />} />
@@ -466,12 +443,9 @@ const MailPage = () => {
                             },
                           }}
                         >
-                          <Collapse items={itemsCollapse} bordered={false} defaultActiveKey={['2']} />
+                          <Collapse items={itemsCollapse} bordered={false} defaultActiveKey={["2"]} />
                         </ConfigProvider>                                         
                       </div> */}
-                      <Routes>                    
-                        <Route path="app/mail/sent" element={<Sent />} />
-                      </Routes>
                     </>
                   )
                 }

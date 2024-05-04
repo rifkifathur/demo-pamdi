@@ -1,12 +1,74 @@
+import React, { ReactElement, useState } from "react";
 import { Table } from 'antd';
 import type { MenuProps, TableColumnsType, TableProps, CollapseProps  } from 'antd';
 
-const Inbox = () => {
+interface DataType {
+    key: React.Key;
+    name: string | ReactElement;
+}
+
+type InboxType = {
+    data: DataType[];
+    columns: TableColumnsType<DataType>;
+    action: boolean;
+    setAction: (action: boolean) => void;
+};
+
+type TableRowSelection<T> = TableProps<T>["rowSelection"];
+
+const Inbox = ({
+    data,
+    columns,
+    action,
+    setAction,
+}: InboxType) => {
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+        setAction(!action);
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+    const rowSelection: TableRowSelection<DataType> = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+        selections: [
+          Table.SELECTION_ALL,
+          Table.SELECTION_INVERT,
+          Table.SELECTION_NONE,
+          {
+            key: "odd",
+            text: "Select Odd Row",
+            onSelect: (changeableRowKeys) => {
+              let newSelectedRowKeys = [];
+              newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+                if (index % 2 !== 0) {
+                  return false;
+                }
+                return true;
+              });
+              setSelectedRowKeys(newSelectedRowKeys);
+            },
+          },
+          {
+            key: "even",
+            text: "Select Even Row",
+            onSelect: (changeableRowKeys) => {
+              let newSelectedRowKeys = [];
+              newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+                if (index % 2 !== 0) {
+                  return true;
+                }
+                return false;
+              });
+              setSelectedRowKeys(newSelectedRowKeys);
+            },
+          },
+        ],
+      };
     return (
         <Table 
-          // rowSelection={rowSelection}
-          // columns={columns} 
-          // dataSource={data} 
+          rowSelection={rowSelection}
+          columns={columns} 
+          dataSource={data}
           scroll={{ y: 300 }} 
           pagination={{ 
               size: "small",
