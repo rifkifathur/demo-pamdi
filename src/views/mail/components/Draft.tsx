@@ -1,6 +1,5 @@
 import { Flex, Empty } from 'antd';
 import React from 'react';
-import { BsEmojiSmile } from 'react-icons/bs';
 
 const Draft = () => {
   return (
