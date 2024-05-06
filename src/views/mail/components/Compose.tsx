@@ -3,7 +3,7 @@ import React from 'react'
 import { BsPaperclip, BsX } from 'react-icons/bs';
 
 type ComposeType = {
-    setAddCompose: (isCollapsed: boolean) => void;
+    setAddCompose: (addCompose: boolean) => void;
 };
 const Compose = ({
     setAddCompose,

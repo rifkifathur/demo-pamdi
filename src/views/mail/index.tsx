@@ -24,6 +24,11 @@ import NLoading from "../../components/loading/NLoading";
 import Sent from "./components/Sent";
 import Inbox from "./components/Inbox";
 import Show from "./components/Show";
+import Draft from "./components/Draft";
+import Important from "./components/Important";
+import Spam from "./components/Spam";
+import Trash from "./components/Trash";
+import Compose from "./components/Compose";
 
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
@@ -46,12 +51,11 @@ function getItem(
 const items: MenuItem[] = [
   getItem("Inbox", "inbox", <BsEnvelope />),
   getItem("Sent", "sent", <BsSend />),
-  getItem("Draft", "3", <BsFileEarmark />),
-  getItem("Starred", "4", <BsStar />),
-  getItem("Important", "5", <BsTag />),
-  getItem("Spam", "6", <BsExclamationCircle />),
-  getItem("Trash", "7", <BsTrash />),
-  getItem("Add Label", "8", <BsPlus />),
+  getItem("Draft", "draft", <BsFileEarmark />),
+  getItem("Starred", "starred", <BsStar />),
+  getItem("Important", "important", <BsTag />),
+  getItem("Spam", "spam", <BsExclamationCircle />),
+  getItem("Trash", "trash", <BsTrash />),
 ];
 
 interface DataType {
@@ -68,21 +72,30 @@ const MailPage = () => {
     { title: <Link to={"/apps/mail"}>Mail</Link> },
   ]
   
+  const handleStar = (event: any) => {
+    // If you don't want click extra trigger collapse, you can prevent this:
+    event.stopPropagation();
+  }
+
   const data: DataType[] = [];
   for (let i = 0; i < 46; i++) {
     data.push({
       key: i,
       name: (
-        <Flex justify="space-around" className="flex-wrap md:flex-nowrap font-bold">
-          <Flex align="center" className="w-full md:w-1/3">
-            <Rate count={1}/>
-            <p className="mx-2">Title {i}</p>
+        <Flex justify="space-around" className={`flex-wrap md:flex-nowrap ${i % 2 == 0 && 'font-bold'} cursor-pointer`} onClick={() => setKeyComponent("show")} >
+          <Flex align="center" className="w-full md:w-1/3" >
+            <Button type="text" onClick={handleStar} className="p-0 m-0">
+              <Rate count={1} />
+            </Button>
+            <p className="mx-2">Trip Reminder. {i+1}</p>
           </Flex>
           <Flex align="center" className="w-full md:w-1/2 -mt-5 md:m-0">
-            <p className="truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nisi arcu, a interdum erat iaculis a. Maecenas a finibus tellus. Aenean pharetra augue risus, pulvinar hendrerit nisi convallis ut. Nulla facilisi. Aenean justo eros, lobortis et tempus vel, tempus vel lacus. Suspendisse rhoncus iaculis auctor. Integer non velit ipsum. Sed ac dapibus eros. Fusce scelerisque augue massa, sit amet placerat felis ultricies eu. Donec mollis urna quis quam ultricies, et feugiat augue accumsan. Integer id risus ornare, tincidunt lorem at, tempor sem. Duis accumsan massa at ante iaculis blandit. Vivamus sed imperdiet eros. Maecenas magna eros, lobortis non justo eget, porttitor eleifend elit. Nam libero magna, consectetur quis ex non, lacinia mollis metus. Vivamus vel sapien sollicitudin, egestas turpis id, pretium est.</p>
+            <p className="truncate">With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of any article is the title.Without a compelleing title, your reader won"t even get to the first
+            sentence.After the title, however, the first few sentences of your article are certainly
+            the most important part.</p>
           </Flex>
           <Flex align="center" className="w-full md:w-1/2 justify-start md:justify-end">
-            <span>{i} Mar</span>
+            <span>17 Mar</span>
           </Flex>
         </Flex>
       ),
@@ -93,6 +106,7 @@ const MailPage = () => {
   const [action, setAction] = useState(false);
   const [loading, setLoading] = useState(false);
   const [keyComponent, setKeyComponent] = useState<string>("inbox");
+  const [addCompose, setAddCompose] = useState(false);
   const [dataInbox, setDataInbox] = useState<DataType[]>(data);
   
   const getActions = () => {
@@ -117,9 +131,15 @@ const MailPage = () => {
   ];
 
   const components: any = [
-    { key: "inbox", item: <Inbox data={dataInbox} columns={columns} action={action} setAction={setAction}/>},
+    { key: "inbox", item: <Inbox data={dataInbox} columns={columns} action={action} setAction={setAction}/>},    
+    { key: "show", item: <Show setKeyComponent={setKeyComponent} />},
     { key: "sent", item: <Sent />},
-    // { key: "show", item: <Show />}
+    { key: "draft", item: <Draft />},
+    // { key: "starred", item: <Starred />},
+    { key: "draft", item: <Draft />},
+    { key: "important", item: <Important />},
+    { key: "spam", item: <Spam />},
+    { key: "trash", item: <Trash />},
   ];
   
   const getComponent = (key: string = "inbox") => {
@@ -131,7 +151,11 @@ const MailPage = () => {
     return null;
   }
   const handleMenu: MenuProps["onClick"] = (e) => {
-    setKeyComponent(e.key);           
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setKeyComponent(e.key);
+    }, 1500);
   };
   
   const handleRefresh = () => {
@@ -139,202 +163,8 @@ const MailPage = () => {
     setTimeout(() => {
       setLoading(false);
     }, 1500);
-  }  
-
-  const itemsCollapse: CollapseProps["items"] = [
-    {
-      key: "1",
-      label: (
-        <Flex>
-          <Avatar className="mx-3" size={40}>USER</Avatar>
-          <Flex className="w-full mr-8" justify="space-between">
-            <Flex vertical>
-              <span className="font-bold">Emma Smith</span>
-              <Flex align="center">
-                <span>to me</span>                
-              </Flex>
-            </Flex>
-            <Flex align="center">
-              <span className="mx-2" >05 May 2024, 6:43 am</span>
-              <Rate className="mx-2" count={1} />
-              <span className="cursor-pointer"><BsThreeDotsVertical /></span>
-            </Flex>
-          </Flex>
-        </Flex>
-      ),
-      children: (
-        <>
-          <Flex className="py-5 ml-14 mr-8 bg-slate-400" justify="center">
-              <div>
-                  <p>Hi Bob,</p>
-                  <p>
-                      With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of
-                      any article is the title.Without a compelleing title, your reader won"t even get to the first
-                      sentence.After the title, however, the first few sentences of your article are certainly
-                      the most important part.
-                  </p>
-                  <p>
-                      Jornalists call this critical, introductory section the "Lede," and when bridge properly executed,
-                      it"s the that carries your reader from an headine try at attention-grabbing to the body of your
-                      blog post, if you want to get it right on of these 10 clever ways to omen your next blog posr with a bang
-                  </p>
-                  <p>
-                      Best regards,
-                  </p>
-                  <p className="mb-0">
-                      Jason Muller
-                  </p>
-              </div>
-          </Flex>
-        </>
-      ),
-      showArrow: false,
-      extra: (
-        <>
-          <Dropdown
-            trigger={["click"]}
-            dropdownRender={() => (
-              <div 
-                style={{
-                  backgroundColor: colorBgElevated,
-                  borderRadius: borderRadiusLG,
-                  boxShadow: boxShadowSecondary,
-                  padding: 20,
-                }}
-              >
-                <table className="table">
-                  <tbody>
-                      <tr>
-                          <td className="py-3 w-[95px] text-muted">From</td>
-                          <td>Emma Bold</td>
-                      </tr>
-                      <tr>
-                          <td className="py-3 text-muted">Date</td>
-                          <td>20 Dec 2024, 6:05 pm</td>
-                      </tr>
-                      <tr>
-                          <td className="py-3 text-muted">Subject</td>
-                          <td>Trip Reminder. Thank you for flying with us!</td>
-                      </tr>
-                      <tr>
-                          <td className="py-3 text-muted">Reply-to</td>
-                          <td>emma@intenso.com</td>
-                      </tr>
-                  </tbody>
-              </table>
-              </div>
-            )}
-          >                                  
-            <span 
-              className="cursor-pointer absolute left-32 bottom-2" 
-              onClick={(event) => {
-                // If you don"t want click extra trigger collapse, you can prevent this:
-                event.stopPropagation();
-              }}
-            >
-              <BsCaretDownFill />
-            </span>                                  
-          </Dropdown>
-        </>
-      )
-    },
-    {
-      key: "2",
-      label: (
-        <Flex>
-          <Avatar className="mx-3" size={40}>USER</Avatar>
-          <Flex className="w-full mr-8" justify="space-between">
-            <Flex vertical>
-              <span className="font-bold">Emma Smith</span>
-              <Flex align="center">
-                <span>to me</span>
-              </Flex>
-            </Flex>
-            <Flex align="center">
-              <span className="mx-2" >05 May 2024, 6:43 am</span>
-              <Rate className="mx-2" count={1} />
-              <span className="cursor-pointer"><BsThreeDotsVertical /></span>
-            </Flex>
-          </Flex>
-        </Flex>
-      ),
-      children: (
-        <>
-          <Flex className="py-5 ml-14 mr-8 bg-slate-400" justify="center">
-              <div>
-                  <p>Hi Bob,</p>
-                  <p>
-                      With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of
-                      any article is the title.Without a compelleing title, your reader won"t even get to the first
-                      sentence.After the title, however, the first few sentences of your article are certainly
-                      the most important part.
-                  </p>
-                  <p>
-                      Jornalists call this critical, introductory section the "Lede," and when bridge properly executed,
-                      it"s the that carries your reader from an headine try at attention-grabbing to the body of your
-                      blog post, if you want to get it right on of these 10 clever ways to omen your next blog posr with a bang
-                  </p>
-                  <p>
-                      Best regards,
-                  </p>
-                  <p className="mb-0">
-                      Jason Muller
-                  </p>
-              </div>
-          </Flex>
-        </>
-      ),
-      showArrow: false,
-      extra: (
-        <>
-          <Dropdown
-            trigger={["click"]}
-            dropdownRender={() => (
-              <div 
-                style={{
-                  backgroundColor: colorBgElevated,
-                  borderRadius: borderRadiusLG,
-                  boxShadow: boxShadowSecondary,
-                  padding: 20,
-                }}
-              >
-                <table className="table">
-                  <tbody>
-                      <tr>
-                          <td className="py-3 w-[95px] text-muted">From</td>
-                          <td>Emma Bold</td>
-                      </tr>
-                      <tr>
-                          <td className="py-3 text-muted">Date</td>
-                          <td>20 Dec 2024, 6:05 pm</td>
-                      </tr>
-                      <tr>
-                          <td className="py-3 text-muted">Subject</td>
-                          <td>Trip Reminder. Thank you for flying with us!</td>
-                      </tr>
-                      <tr>
-                          <td className="py-3 text-muted">Reply-to</td>
-                          <td>emma@intenso.com</td>
-                      </tr>
-                  </tbody>
-              </table>
-              </div>
-            )}
-          >                                  
-            <span 
-              className="cursor-pointer absolute left-32 bottom-2" 
-              onClick={(event) => {
-                // If you don"t want click extra trigger collapse, you can prevent this:
-                event.stopPropagation();
-              }}
-            >
-              <BsCaretDownFill />
-            </span>                                  
-          </Dropdown>
-        </>
-      )
-    },
-  ];
+  }    
+  
   return (
     <>
       <NBreadcrumb title="Mail" items={breadcrumbItems} />
@@ -362,7 +192,7 @@ const MailPage = () => {
               }}
             >
               <Flex className="my-5" justify="center">
-                <Button type="primary">+ Compose</Button>
+                <Button type="primary" onClick={() => setAddCompose(true)}>+ Compose</Button>
               </Flex>
               <div className="custom-scrollbar h-[380px] overflow-y-auto invisible hover:visible">
                 <Menu
@@ -449,6 +279,7 @@ const MailPage = () => {
                     </>
                   )
                 }
+                { addCompose && <Compose setAddCompose={setAddCompose} /> }
               </Content>
             </Layout>
           </Layout>

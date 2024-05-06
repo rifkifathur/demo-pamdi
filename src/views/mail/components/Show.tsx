@@ -3,11 +3,11 @@ import type { MenuProps, TableColumnsType, TableProps, CollapseProps  } from 'an
 import { BsArrowLeft, BsCaretDownFill, BsExclamation, BsExclamationCircle, BsStar, BsTag, BsThreeDotsVertical, BsTrash } from 'react-icons/bs';
 
 type ShowType = {
-  setShow: (isCollapsed: boolean) => void;
+  setKeyComponent: (keyComponent: string) => void;
 };
 
 const Show = ({
-  setShow
+  setKeyComponent
 }: ShowType) => {
   const {
     token: { colorBgContainer, colorBgElevated, borderRadiusLG, boxShadowSecondary },
@@ -207,7 +207,7 @@ const Show = ({
     },
   ];
     const handleShow = () => {
-      setShow(false);
+      setKeyComponent("inbox");
     };
     return (
         <div>
