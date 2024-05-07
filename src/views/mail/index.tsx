@@ -29,6 +29,7 @@ import Important from "./components/Important";
 import Spam from "./components/Spam";
 import Trash from "./components/Trash";
 import Compose from "./components/Compose";
+import Starred from "./components/Starred";
 
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
@@ -60,7 +61,9 @@ const items: MenuItem[] = [
 
 interface DataType {
   key: React.Key;
+  starredElm: ReactElement;
   name: string | ReactElement;
+  starred: boolean;
 }
 
 const MailPage = () => {
@@ -72,21 +75,32 @@ const MailPage = () => {
     { title: <Link to={"/apps/mail"}>Mail</Link> },
   ]
   
-  const handleStar = (event: any) => {
-    // If you don't want click extra trigger collapse, you can prevent this:
-    event.stopPropagation();
-  }
+  
 
-  const data: DataType[] = [];
-  for (let i = 0; i < 46; i++) {
-    data.push({
+  const dataDummy: DataType[] = [];
+  
+  const [collapsed, setCollapsed] = useState(false);
+  const [responsive, setResponsive] = useState(false);
+  const [action, setAction] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [keyComponent, setKeyComponent] = useState<string>("inbox");
+  const [addCompose, setAddCompose] = useState(false);
+  const [data, setData] = useState<DataType[]>(dataDummy);
+
+  for (let i = 0; i < 5; i++) {
+    dataDummy.push({
       key: i,
+      starredElm: (
+        <Button type="text" onClick={(e)=>handleStar(e, i)} className="p-0 m-0">
+          <Rate count={1} value={0}/>
+        </Button>
+      ),
       name: (
         <Flex justify="space-around" className={`flex-wrap md:flex-nowrap ${i % 2 == 0 && 'font-bold'} cursor-pointer`} onClick={() => setKeyComponent("show")} >
           <Flex align="center" className="w-full md:w-1/3" >
-            <Button type="text" onClick={handleStar} className="p-0 m-0">
-              <Rate count={1} />
-            </Button>
+            {/* <Button type="text" onClick={(e)=>handleStar(e, i)} className="p-0 m-0">
+              <Rate count={1} value={vStar}/>
+            </Button> */}
             <p className="mx-2">Trip Reminder. {i+1}</p>
           </Flex>
           <Flex align="center" className="w-full md:w-1/2 -mt-5 md:m-0">
@@ -99,16 +113,30 @@ const MailPage = () => {
           </Flex>
         </Flex>
       ),
+      starred: false,
     });
   }
-  const [collapsed, setCollapsed] = useState(false);
-  const [responsive, setResponsive] = useState(false);
-  const [action, setAction] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [keyComponent, setKeyComponent] = useState<string>("inbox");
-  const [addCompose, setAddCompose] = useState(false);
-  const [dataInbox, setDataInbox] = useState<DataType[]>(data);
-  
+
+  const handleStar = (event: any, key: React.Key) => {
+    // If you don't want click extra trigger collapse, you can prevent this:
+    event.stopPropagation();
+    setData(prevData => {
+        return prevData.map(data => {
+            if (data.key === key) {                              
+                return { ...data,
+                  starredElm: (
+                    <Button type="text" onClick={(e)=>handleStar(e, key)} className="p-0 m-0">
+                      <Rate count={1} value={!data.starred ? 1 : 0}/>
+                    </Button>
+                  ), 
+                  starred: !data.starred, 
+                };
+            }
+            return data;
+        });
+    });
+  }
+  console.log(data);
   const getActions = () => {
     if (action) {
       return (
@@ -125,17 +153,21 @@ const MailPage = () => {
 
   const columns: TableColumnsType<DataType> = [    
     {
+      title:'',
+      dataIndex: "starredElm",
+    },
+    {
       title: getActions(),
       dataIndex: "name",
     },
   ];
 
   const components: any = [
-    { key: "inbox", item: <Inbox data={dataInbox} columns={columns} action={action} setAction={setAction}/>},    
+    { key: "inbox", item: <Inbox data={data} columns={columns} action={action} setAction={setAction}/>},    
     { key: "show", item: <Show setKeyComponent={setKeyComponent} />},
     { key: "sent", item: <Sent />},
     { key: "draft", item: <Draft />},
-    // { key: "starred", item: <Starred />},
+    { key: "starred", item: <Starred data={data} columns={columns} />},
     { key: "draft", item: <Draft />},
     { key: "important", item: <Important />},
     { key: "spam", item: <Spam />},

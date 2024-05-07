@@ -3,8 +3,11 @@ import { Table } from 'antd';
 import type { MenuProps, TableColumnsType, TableProps, CollapseProps  } from 'antd';
 
 interface DataType {
-    key: React.Key;
-    name: string | ReactElement;
+  key: React.Key;
+  starredElm: ReactElement;
+  name: string | ReactElement;
+  starred: boolean;
+
 }
 
 type InboxType = {
