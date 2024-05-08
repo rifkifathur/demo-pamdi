@@ -1,12 +1,12 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { NBreadcrumb } from "../../components";
 import { Link } from "react-router-dom";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import type { MenuProps, TableColumnsType, CollapseProps  } from "antd";
-import { Button, Flex, Input, Layout, Menu, theme, Rate, Avatar, Dropdown } from "antd";
+import type { MenuProps, TableColumnsType, CollapseProps, TableProps  } from "antd";
+import { Button, Flex, Input, Layout, Menu, theme, Rate, Table, Avatar, Dropdown } from "antd";
 import {   
   BsArrowCounterclockwise,
   BsCaretDownFill, 
@@ -65,7 +65,7 @@ interface DataType {
   name: string | ReactElement;
   starred: boolean;
 }
-
+type TableRowSelection<T> = TableProps<T>["rowSelection"];
 const MailPage = () => {
   const {
     token: { colorBgContainer, colorBgElevated, borderRadiusLG, boxShadowSecondary },
@@ -86,7 +86,8 @@ const MailPage = () => {
   const [keyComponent, setKeyComponent] = useState<string>("inbox");
   const [addCompose, setAddCompose] = useState(false);
   const [data, setData] = useState<DataType[]>(dataDummy);
-
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  
   for (let i = 0; i < 5; i++) {
     dataDummy.push({
       key: i,
@@ -97,10 +98,7 @@ const MailPage = () => {
       ),
       name: (
         <Flex justify="space-around" className={`flex-wrap md:flex-nowrap ${i % 2 == 0 && 'font-bold'} cursor-pointer`} onClick={() => setKeyComponent("show")} >
-          <Flex align="center" className="w-full md:w-1/3" >
-            {/* <Button type="text" onClick={(e)=>handleStar(e, i)} className="p-0 m-0">
-              <Rate count={1} value={vStar}/>
-            </Button> */}
+          <Flex align="center" className="w-full md:w-1/3" >            
             <p className="mx-2">Trip Reminder. {i+1}</p>
           </Flex>
           <Flex align="center" className="w-full md:w-1/2 -mt-5 md:m-0">
@@ -117,6 +115,53 @@ const MailPage = () => {
     });
   }
 
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {    
+    setSelectedRowKeys(newSelectedRowKeys);    
+  };
+  const rowSelection: TableRowSelection<DataType> = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [
+      Table.SELECTION_ALL,
+      Table.SELECTION_INVERT,
+      Table.SELECTION_NONE,
+      {
+        key: "odd",
+        text: "Select Odd Row",
+        onSelect: (changeableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+            if (index % 2 !== 0) {
+              return false;
+            }
+            return true;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+      {
+        key: "even",
+        text: "Select Even Row",
+        onSelect: (changeableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+            if (index % 2 !== 0) {
+              return true;
+            }
+            return false;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+    ],
+  };
+  useEffect(() => {
+    if (selectedRowKeys.length > 0) {
+      setAction(true);
+    } else {
+      setAction(false);
+    }
+  },[selectedRowKeys, setAction]);
   const handleStar = (event: any, key: React.Key) => {
     // If you don't want click extra trigger collapse, you can prevent this:
     event.stopPropagation();
@@ -136,7 +181,7 @@ const MailPage = () => {
         });
     });
   }
-  console.log(data);
+  
   const getActions = () => {
     if (action) {
       return (
@@ -155,19 +200,21 @@ const MailPage = () => {
     {
       title:'',
       dataIndex: "starredElm",
+      // width: '2%',
     },
     {
       title: getActions(),
       dataIndex: "name",
+      width: '92%',
     },
   ];
 
   const components: any = [
-    { key: "inbox", item: <Inbox data={data} columns={columns} action={action} setAction={setAction}/>},    
+    { key: "inbox", item: <Inbox data={data} columns={columns} rowSelection={rowSelection} />},    
     { key: "show", item: <Show setKeyComponent={setKeyComponent} />},
     { key: "sent", item: <Sent />},
     { key: "draft", item: <Draft />},
-    { key: "starred", item: <Starred data={data} columns={columns} />},
+    { key: "starred", item: <Starred data={data} columns={columns} rowSelection={rowSelection} />},
     { key: "draft", item: <Draft />},
     { key: "important", item: <Important />},
     { key: "spam", item: <Spam />},
@@ -182,6 +229,7 @@ const MailPage = () => {
     }
     return null;
   }
+
   const handleMenu: MenuProps["onClick"] = (e) => {
     setLoading(true);
     setTimeout(() => {

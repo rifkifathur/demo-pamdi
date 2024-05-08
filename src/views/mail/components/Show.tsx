@@ -27,15 +27,17 @@ const Show = ({
             </Flex>
             <Flex align="center">
               <span className="mx-2" >05 May 2024, 6:43 am</span>
-              <Rate className="mx-2" count={1} />
-              <span className="cursor-pointer"><BsThreeDotsVertical /></span>
+              <Button type="text" className="p-0 m-0" onClick={(e) => e.stopPropagation()} >
+                <Rate count={1} />
+              </Button>
+              <span className="cursor-pointer" onClick={(e) => e.stopPropagation()}><BsThreeDotsVertical /></span>
             </Flex>
           </Flex>
         </Flex>
       ),
       children: (
         <>
-          <Flex className="py-5 ml-14 mr-8 bg-slate-400" justify="center">
+          <Flex className="py-5 ml-14 mr-8" justify="center">
               <div>
                   <p>Hi Bob,</p>
                   <p>
@@ -123,15 +125,17 @@ const Show = ({
             </Flex>
             <Flex align="center">
               <span className="mx-2" >05 May 2024, 6:43 am</span>
-              <Rate className="mx-2" count={1} />
-              <span className="cursor-pointer"><BsThreeDotsVertical /></span>
+              <Button type="text" className="p-0 m-0" onClick={(e) => e.stopPropagation()} >
+                <Rate count={1} />
+              </Button>
+              <span className="cursor-pointer" onClick={(e) => e.stopPropagation()}><BsThreeDotsVertical /></span>
             </Flex>
           </Flex>
         </Flex>
       ),
       children: (
         <>
-          <Flex className="py-5 ml-14 mr-8 bg-slate-400" justify="center">
+          <Flex className="py-5 ml-14 mr-8" justify="center">
               <div>
                   <p>Hi Bob,</p>
                   <p>

@@ -9,64 +9,19 @@ interface DataType {
   starred: boolean;
 
 }
-
+type TableRowSelection<T> = TableProps<T>["rowSelection"];
 type InboxType = {
     data: DataType[];
     columns: TableColumnsType<DataType>;
-    action: boolean;
-    setAction: (action: boolean) => void;
+    rowSelection: TableRowSelection<DataType>,
 };
-
-type TableRowSelection<T> = TableProps<T>["rowSelection"];
 
 const Inbox = ({
     data,
     columns,
-    action,
-    setAction,
+    rowSelection
 }: InboxType) => {
-    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-        setAction(!action);
-        setSelectedRowKeys(newSelectedRowKeys);
-    };
-    const rowSelection: TableRowSelection<DataType> = {
-        selectedRowKeys,
-        onChange: onSelectChange,
-        selections: [
-          Table.SELECTION_ALL,
-          Table.SELECTION_INVERT,
-          Table.SELECTION_NONE,
-          {
-            key: "odd",
-            text: "Select Odd Row",
-            onSelect: (changeableRowKeys) => {
-              let newSelectedRowKeys = [];
-              newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-                if (index % 2 !== 0) {
-                  return false;
-                }
-                return true;
-              });
-              setSelectedRowKeys(newSelectedRowKeys);
-            },
-          },
-          {
-            key: "even",
-            text: "Select Even Row",
-            onSelect: (changeableRowKeys) => {
-              let newSelectedRowKeys = [];
-              newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-                if (index % 2 !== 0) {
-                  return true;
-                }
-                return false;
-              });
-              setSelectedRowKeys(newSelectedRowKeys);
-            },
-          },
-        ],
-      };
+  
     return (
         <Table 
           rowSelection={rowSelection}

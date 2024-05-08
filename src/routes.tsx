@@ -52,6 +52,7 @@ import SpinPage from "./views/components/feedback/spin";
 import { BsEnvelope } from "react-icons/bs";
 import Mail from "./views/mail";
 import MailPage from "./views/mail";
+import ChatPage from "./views/chat";
 
 /*
   baseKey for open accordion sidebar
@@ -97,6 +98,15 @@ const routes: RoutesType[] = [
         link: <Link to="/apps/mail">Mail</Link>,
         icon: <BsEnvelope />,
         component: <MailPage />,
+        sidebar: true,
+      },
+      {
+        key: "/apps/chat",
+        name: "Chat",
+        path: "/apps/chat",
+        link: <Link to="/apps/chat">Chat</Link>,
+        icon: <BsEnvelope />,
+        component: <ChatPage />,
         sidebar: true,
       },
     ],
