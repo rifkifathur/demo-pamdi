@@ -66,7 +66,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive, isDarkMode, setIsD
       label: (
         <Row>
           <Col>
-            <Avatar size={40} icon={<UserOutlined />} />
+            <Avatar size={40} src="https://xsgames.co/randomusers/assets/avatars/male/52.jpg" />
           </Col>
           <Col className="px-4">
             <span className="font-bold text-lg">John smith</span><br />
@@ -202,7 +202,7 @@ const NHeader = ({ isCollapsed, setIsCollapsed, isResponsive, isDarkMode, setIsD
               <Avatar
                 size={40}
                 shape="circle"
-                icon={<BsPerson />}
+                src="https://xsgames.co/randomusers/assets/avatars/male/52.jpg"
                 style={{ marginRight: 30 }}
               />
             </Dropdown>

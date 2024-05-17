@@ -47,7 +47,7 @@ const EditProfilePage = () => {
               <Col className="mx-auto md:mx-0">
                 <Image
                   width={180}
-                  src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                  src="https://xsgames.co/randomusers/assets/avatars/male/52.jpg"
                 />
               </Col>
               <Col className="px-4 text-center md:text-left">

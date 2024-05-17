@@ -30,6 +30,7 @@ import Spam from "./components/Spam";
 import Trash from "./components/Trash";
 import Compose from "./components/Compose";
 import Starred from "./components/Starred";
+import { faker } from '@faker-js/faker/locale/id_ID';
 
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
@@ -99,15 +100,13 @@ const MailPage = () => {
       name: (
         <Flex justify="space-around" className={`flex-wrap md:flex-nowrap ${i % 2 == 0 && 'font-bold'} cursor-pointer`} onClick={() => setKeyComponent("show")} >
           <Flex align="center" className="w-full md:w-1/3" >            
-            <p className="mx-2">Trip Reminder. {i+1}</p>
+            <p className="mx-2">{faker.lorem.sentence({min: 1, max:2})}</p>
           </Flex>
           <Flex align="center" className="w-full md:w-1/2 -mt-5 md:m-0">
-            <p className="truncate">With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of any article is the title.Without a compelleing title, your reader won"t even get to the first
-            sentence.After the title, however, the first few sentences of your article are certainly
-            the most important part.</p>
+            <p className="truncate">{faker.lorem.paragraph()}</p>
           </Flex>
           <Flex align="center" className="w-full md:w-1/2 justify-start md:justify-end">
-            <span>17 Mar</span>
+            <span>{10+i} Mar</span>
           </Flex>
         </Flex>
       ),
@@ -200,12 +199,11 @@ const MailPage = () => {
     {
       title:'',
       dataIndex: "starredElm",
-      // width: '2%',
     },
     {
       title: getActions(),
       dataIndex: "name",
-      width: '92%',
+      width: '90%',
     },
   ];
 
