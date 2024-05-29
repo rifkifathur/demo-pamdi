@@ -54,6 +54,8 @@ import Mail from "./views/mail";
 import MailPage from "./views/mail";
 import ChatPage from "./views/chat";
 import PricingPage from "./views/pricing";
+import EcommercePage from "./views/e_commerce";
+import CreateEcommercePage from "./views/e_commerce/create";
 
 /*
   baseKey for open accordion sidebar
@@ -110,17 +112,34 @@ const routes: RoutesType[] = [
         component: <ChatPage />,
         sidebar: true,
       },
+      {
+        key: "/apps/e-commerce",
+        name: "E-commerce",
+        icon: <FaUserGear />,
+        sidebar: true,
+        children: [          
+          {
+            key: "/apps/e-commerce/product",
+            name: "List Product",
+            path: "/apps/e-commerce/product",
+            link: <Link to="/apps/e-commerce/product">List Product</Link>,
+            baseKey: "/apps/e-commerce",
+            component: <EcommercePage />,
+            sidebar: true,
+          },          
+          {
+            key: "/apps/e-commerce/product/create",
+            name: "E-commerce",
+            path: "/apps/e-commerce/product/create",
+            link: <Link to="/apps/e-commerce/product/create">Create Product</Link>,            
+            baseKey: "/apps/e-commerce",
+            component: <CreateEcommercePage />,
+            sidebar: true,
+          },
+        ],
+      },
     ],
   },  
-  // {
-  //   key: "/apps/mail",
-  //   name: "Mail",
-  //   path: "/apps/mail",
-  //   link: <Link to="/apps/mail">Mail</Link>,
-  //   icon: <BsEnvelope />,
-  //   component: <MailPage />,
-  //   sidebar: true,
-  // },
   {
     key: "/pages",
     name: "Pages",
