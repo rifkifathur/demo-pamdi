@@ -5,19 +5,17 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import type { MenuProps, TableColumnsType, CollapseProps, TableProps  } from "antd";
-import { Button, Flex, Input, Layout, Menu, theme, Rate, Table, Avatar, Dropdown } from "antd";
+import type { MenuProps, TableColumnsType, TableProps  } from "antd";
+import { Button, Flex, Input, Layout, Menu, theme, Rate, Table } from "antd";
 import {   
   BsArrowCounterclockwise,
-  BsCaretDownFill, 
   BsEnvelope, 
   BsExclamationCircle, 
-  BsFileEarmark, BsPlus, 
+  BsFileEarmark,
   BsSearch, 
   BsSend, 
   BsStar,
   BsTag, 
-  BsThreeDotsVertical, 
   BsTrash, 
 } from "react-icons/bs";
 import NLoading from "../../components/loading/NLoading";
@@ -69,7 +67,7 @@ interface DataType {
 type TableRowSelection<T> = TableProps<T>["rowSelection"];
 const MailPage = () => {
   const {
-    token: { colorBgContainer, colorBgElevated, borderRadiusLG, boxShadowSecondary },
+    token: { colorBgContainer },
   } = theme.useToken();
 
   const breadcrumbItems = [
@@ -98,7 +96,7 @@ const MailPage = () => {
         </Button>
       ),
       name: (
-        <Flex justify="space-around" className={`flex-wrap md:flex-nowrap ${i % 2 == 0 && 'font-bold'} cursor-pointer`} onClick={() => setKeyComponent("show")} >
+        <Flex justify="space-around" className={`flex-wrap md:flex-nowrap ${i % 2 === 0 && 'font-bold'} cursor-pointer`} onClick={() => setKeyComponent("show")} >
           <Flex align="center" className="w-full md:w-1/3" >            
             <p className="mx-2">{faker.lorem.sentence({min: 1, max:2})}</p>
           </Flex>
