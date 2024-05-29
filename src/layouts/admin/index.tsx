@@ -12,14 +12,13 @@ const AdminLayout = () => {
   const location = useLocation();
   const auth = sessionStorage.getItem('auth');
   const navigate = useNavigate();
-  const defaultIsDarkMode = localStorage.getItem('isDarkMode');
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isResponsive, setIsResponsive] = useState(false);  
   const [isGetRoute, setIsGetRoute] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadingContent, setLoadingContent] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState<string | null>(defaultIsDarkMode);
+  const [isDarkMode, setIsDarkMode] = useState<string | null>("no");
   const [activeRoute, setActiveRoute] = useState<RoutesType | null>(null);
 
   const getRoutes = useCallback(

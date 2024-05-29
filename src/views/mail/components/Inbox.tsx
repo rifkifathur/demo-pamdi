@@ -1,6 +1,6 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Table } from 'antd';
-import type { MenuProps, TableColumnsType, TableProps, CollapseProps  } from 'antd';
+import type { TableColumnsType, TableProps  } from 'antd';
 
 interface DataType {
   key: React.Key;

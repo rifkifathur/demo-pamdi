@@ -1,4 +1,4 @@
-import { Button, Card, Input, Space, Upload, theme } from 'antd';
+import { Button, Card, Input, Space, Upload } from 'antd';
 import React from 'react'
 import { BsPaperclip, BsX } from 'react-icons/bs';
 

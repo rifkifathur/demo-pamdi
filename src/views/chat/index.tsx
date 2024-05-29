@@ -111,7 +111,7 @@ const ChatPage = () => {
   };
   
   const handleMenuChat = (key: string) => {
-    const tempData = chatMenuList.filter(item => item.key == key);
+    const tempData = chatMenuList.filter(item => item.key === key);
     setActiveChat(tempData[0]);
     setShowChat(true);
   }
@@ -136,7 +136,7 @@ const ChatPage = () => {
                   dataSource={chatMenuList}
                   renderItem={(item, index) => (
                     <List.Item className="cursor-pointer" onClick={() => handleMenuChat(item.key)} style={{
-                      backgroundColor: item.key == activeChat?.key ? colorFillSecondary : colorBgContainer,
+                      backgroundColor: item.key === activeChat?.key ? colorFillSecondary : colorBgContainer,
                     }}>
                       <List.Item.Meta      
                         className="px-5"        

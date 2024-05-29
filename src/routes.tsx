@@ -53,6 +53,7 @@ import { BsEnvelope } from "react-icons/bs";
 import Mail from "./views/mail";
 import MailPage from "./views/mail";
 import ChatPage from "./views/chat";
+import PricingPage from "./views/pricing";
 import EcommercePage from "./views/e_commerce";
 import CreateEcommercePage from "./views/e_commerce/create";
 
@@ -234,6 +235,15 @@ const routes: RoutesType[] = [
             sidebar: false,
           },
         ],
+      },
+      {
+        key: "/pages/pricing",
+        name: "Pricing",
+        path: "/pages/pricing",
+        link: <Link to="/pages/pricing">Pricing</Link>,
+        icon: <PieChartOutlined />,
+        component: <PricingPage />,
+        sidebar: true,
       },
     ],
   },
