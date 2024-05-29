@@ -1,52 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NBreadcrumb } from "../../components";
 import { Link } from "react-router-dom";
 import {
   Button,
   Card,
-  Checkbox,
-  Col,
   Flex,
   Form,
   Input,
-  Modal,
-  Row,
-  Space,
-  Table,
-  Popconfirm,
   message,
   Upload,
-  Divider
+  Divider,
+  Select
 } from "antd";
-import {
-  FaMagnifyingGlass,
-  FaPenToSquare,
-  FaRegTrashCan
-} from "react-icons/fa6";
 import type {
-  TableProps,
-  TableColumnsType,
-  CheckboxProps,
   FormProps,
   UploadProps 
 } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 type FieldType = {
   key?: string;
-  name?: string;
-  role?: [];
-};
-interface DataPermissionType {
-  key: React.Key;
+  photo: string
   name: string;
-  read?: JSX.Element | String;
-  write?: JSX.Element | String;
-  create?: JSX.Element | String;
-}
-interface DataType {
-  key?: string;
-  name?: string;
-}
+  category: string;
+  description: string;
+  price: string;
+  stock: string;
+  weight: string;
+  height: string;
+  width: string;
+  fee: string;
+};
 
 const { Dragger } = Upload;
 
@@ -75,168 +58,20 @@ const CreateEcommercePage = () => {
     { title: <Link to={"/"}>Dashboard</Link> },
     { title: "Apps" },
     { title: "E-commerce" },
-    { title: "Product" },
-    { title: <Link to={"/pages/e-commerce/product/create"}>Create</Link> },
+    { title: <Link to={"/apps/e-commerce/product"}>Product</Link> },
+    { title: <Link to={"/apps/e-commerce/product/create"}>Create</Link> },
   ];
-  const initData: DataType[] = [
-    {
-      key: new Date().getTime().toString() + 200,
-      name: 'Super Administrator',
-    },
-    {
-      key: new Date().getTime().toString() + 100,
-      name: 'Administrator',
-    },
-  ];
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const [data, setData] = useState<DataType[]>(initData);
-  const [filter, setFilterData] = useState<DataType[]>();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
-  useEffect(() => {
-    setFilterData(data);
-  }, [data])
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const onChangeChecked: CheckboxProps['onChange'] = (e) => {
-    setChecked(e.target.checked);
-  };
-  const columns: TableColumnsType<DataPermissionType> = [
-    {
-      title: 'Administrator Access',
-      dataIndex: 'name',
-      render: (text: string) => <span>{text}</span>,
-    },
-    {
-      title: (
-        <>
-          <Checkbox onChange={onChangeChecked}>Selected All</Checkbox>
-        </>
-      ),
-      dataIndex: 'read',
-    },
-    {
-      title: '',
-      dataIndex: 'write',
-    },
-    {
-      title: '',
-      dataIndex: 'create',
-    },
-  ];
-  const dataPermisson: DataPermissionType[] = [
-    {
-      key: '1',
-      name: 'Dashboard',
-      read: (
-        <>
-          <Checkbox checked={checked} >Read</Checkbox>
-        </>
-      ),
-    },
-    {
-      key: '2',
-      name: 'User Management',
-      read: (
-        <>
-          <Checkbox checked={checked} >Read</Checkbox>
-        </>
-      ),
-      write: (
-        <>
-          <Checkbox checked={checked} >Write</Checkbox>
-        </>
-      ),
-      create: (
-        <>
-          <Checkbox checked={checked} >Create</Checkbox>
-        </>
-      ),
-    },
-  ];
-  const columns2: TableProps<DataType>['columns'] = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button type="text" className="p-0" onClick={() => handleEdit(record.key)}><FaPenToSquare className="text-yellow-400" /></Button>
-          <Popconfirm
-            title="Delete the task"
-            description="Are you sure to delete this task?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={() => handleDelete(record.key)}
-          >
-            <Button danger type="text" className="p-0" ><FaRegTrashCan /></Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ];
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    let newData: DataType = {
-      key: values.key || new Date().getTime().toString(),
-      name: values.name,
-    }
-    setData(prev => {
-      const isDataExists = prev.find(item => item.key === values.key);
-      if (isDataExists) {
-        return prev.map(item => (item.key === values.key ? newData : item));
-      }
-      return [...prev, newData]
-    });
-    setIsModalOpen(false);
+    
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {        
     form.resetFields();
     messageApi.open({
       type: 'success',
       content: 'Data succesfully create',
     });
   };
-
-  const handleDelete = (key?: string): void => {
-    setData(prev => {
-      return prev.filter(item =>
-        item.key !== key
-      )
-    });
-
-    messageApi.open({
-      type: 'success',
-      content: 'Delete data succesfully',
-    });
-  }
-
-  const handleEdit = (key?: string): void => {
-    let getDetail = data.find(item => item.key === key);
-    if (getDetail) {
-      form.setFieldsValue(getDetail);
-      setIsModalOpen(true);
-    } else {
-      messageApi.open({
-        type: 'warning',
-        content: 'data not found',
-      });
-    };
-  }
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setFilterData(data);
-    if (event.target.value !== '') {
-      const temp = data.filter(item => item.name?.toLocaleLowerCase().includes(event.target.value.toLowerCase()));
-      setFilterData(temp);
-    }
-  }
+  
   return (
     <>
       {contextHolder}
@@ -246,14 +81,15 @@ const CreateEcommercePage = () => {
           form={form}
           name="basic"
           labelAlign="left"
-          labelCol={{ lg: { span: 24 } }}
-          wrapperCol={{ lg: { span: 24 } }}
+          labelCol={{ lg: { span: 6 } }}
+          wrapperCol={{ lg: { span: 18 } }}
           autoComplete="off"
           onFinish={onFinish}
         >
+          <h3>Product Info</h3>
           <Form.Item<FieldType>
             label="Photo product"
-            name="role"
+            // name="role"
           >
             <Dragger {...props}>
               <p className="ant-upload-drag-icon">
@@ -275,44 +111,72 @@ const CreateEcommercePage = () => {
           </Form.Item>   
           <Form.Item<FieldType>
             label="Category"
-            name="name"
-            rules={[{ required: true, message: 'Please input your product name!' }]}
+            name="category"
+            rules={[{ required: true, message: 'Please input your category!' }]}
           >
-            <Input />
+            <Select>
+              <Select.Option value="demo">Demo</Select.Option>
+            </Select>
           </Form.Item>
           <Form.Item<FieldType>
-            label="Category"
-            name="name"
-            rules={[{ required: true, message: 'Please input your product name!' }]}
+            label="Description"
+            name="description"
+            rules={[{ required: true, message: 'Please input your product description!' }]}
           >
             <Input.TextArea rows={4} />
           </Form.Item>  
           <Divider />
+          <h3>Pricing Info</h3>
           <Form.Item<FieldType>
-            label="Product Name"
-            name="name"
-            rules={[{ required: true, message: 'Please input your product name!' }]}
+            label="Pricing"
+            name="price"
+            rules={[{ required: true, message: 'Please input your product price!' }]}
           >
             <Input />
           </Form.Item>   
           <Form.Item<FieldType>
-            label="Category"
-            name="name"
-            rules={[{ required: true, message: 'Please input your product name!' }]}
+            label="Stock"
+            name="stock"
+            rules={[{ required: true, message: 'Please input your product stock!' }]}
           >
             <Input />
+          </Form.Item> 
+          <Divider />
+          <h3>Shipping Info</h3>
+          <Form.Item<FieldType>
+            label="Weight"
+            name="weight"
+            rules={[{ required: true, message: 'Please input your product weight!' }]}
+          >
+            <Input addonAfter="kg" />
+          </Form.Item>   
+          <Form.Item<FieldType>
+            label="Height"
+            name="height"
+            rules={[{ required: true, message: 'Please input your product height!' }]}
+          >
+            <Input addonAfter="cm" />
           </Form.Item>
           <Form.Item<FieldType>
-            label="Category"
-            name="name"
-            rules={[{ required: true, message: 'Please input your product name!' }]}
+            label="Width"
+            name="width"
+            rules={[{ required: true, message: 'Please input your product width!' }]}
           >
-            <Input.TextArea rows={4} />
-          </Form.Item>    
+            <Input addonAfter="cm" />
+          </Form.Item>  
+          <Form.Item<FieldType>
+            label="Shipping fees"
+            name="fee"
+            rules={[{ required: true, message: 'Please input your product fee!' }]}
+          >
+            <Input />
+          </Form.Item> 
           <Flex justify="end">
-            <Button className="mx-1" type="default" onClick={handleCancel}>
-              Cancel
-            </Button>
+            <Link to="/apps/e-commerce/product">
+              <Button className="mx-1" type="default" >
+                Cancel
+              </Button>
+            </Link>
             <Button className="mx-1" type="primary" htmlType="submit">
               Submit
             </Button>

@@ -4,12 +4,10 @@ import { Link } from "react-router-dom";
 import {
   Button,
   Card,
-  Checkbox,
   Col,
   Flex,
   Form,
   Input,
-  Modal,
   Row,
   Space,
   Table,
@@ -23,26 +21,13 @@ import {
 } from "react-icons/fa6";
 import type {
   TableProps,
-  TableColumnsType,
-  CheckboxProps,
-  FormProps
 } from 'antd';
 
-type FieldType = {
-  key?: string;
-  name?: string;
-  role?: [];
-};
-interface DataPermissionType {
-  key: React.Key;
-  name: string;
-  read?: JSX.Element | String;
-  write?: JSX.Element | String;
-  create?: JSX.Element | String;
-}
+
 interface DataType {
   key?: string;
   name?: string;
+  category: string;
 }
 
 const EcommercePage = () => {
@@ -50,92 +35,42 @@ const EcommercePage = () => {
     { title: <Link to={"/"}>Dashboard</Link> },
     { title: "Apps" },
     { title: "E-Commerce" },
-    { title: <Link to={"/pages/e-commerce/product"}>Product</Link> },
+    { title: <Link to={"/apps/e-commerce/product"}>Product</Link> },
   ];
   const initData: DataType[] = [
     {
       key: new Date().getTime().toString() + 200,
-      name: 'Super Administrator',
+      name: 'Product',
+      category: "Test",
     },
-    {
-      key: new Date().getTime().toString() + 100,
-      name: 'Administrator',
-    },
-  ];
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [checked, setChecked] = useState(false);
+  ];  
+  
   const [data, setData] = useState<DataType[]>(initData);
   const [filter, setFilterData] = useState<DataType[]>();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   useEffect(() => {
     setFilterData(data);
-  }, [data])
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const onChangeChecked: CheckboxProps['onChange'] = (e) => {
-    setChecked(e.target.checked);
-  };
-  const columns: TableColumnsType<DataPermissionType> = [
-    {
-      title: 'Administrator Access',
-      dataIndex: 'name',
-      render: (text: string) => <span>{text}</span>,
-    },
-    {
-      title: (
-        <>
-          <Checkbox onChange={onChangeChecked}>Selected All</Checkbox>
-        </>
-      ),
-      dataIndex: 'read',
-    },
-    {
-      title: '',
-      dataIndex: 'write',
-    },
-    {
-      title: '',
-      dataIndex: 'create',
-    },
-  ];
-  const dataPermisson: DataPermissionType[] = [
-    {
-      key: '1',
-      name: 'Dashboard',
-      read: (
-        <>
-          <Checkbox checked={checked} >Read</Checkbox>
-        </>
-      ),
-    },
-    {
-      key: '2',
-      name: 'User Management',
-      read: (
-        <>
-          <Checkbox checked={checked} >Read</Checkbox>
-        </>
-      ),
-      write: (
-        <>
-          <Checkbox checked={checked} >Write</Checkbox>
-        </>
-      ),
-      create: (
-        <>
-          <Checkbox checked={checked} >Create</Checkbox>
-        </>
-      ),
-    },
-  ];
+  }, [data])    
+  
   const columns2: TableProps<DataType>['columns'] = [
     {
-      title: 'Name',
+      title: 'Product',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Category',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Price',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Stock',
       dataIndex: 'name',
       key: 'name',
     },
@@ -157,26 +92,7 @@ const EcommercePage = () => {
         </Space>
       ),
     },
-  ];
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    let newData: DataType = {
-      key: values.key || new Date().getTime().toString(),
-      name: values.name,
-    }
-    setData(prev => {
-      const isDataExists = prev.find(item => item.key === values.key);
-      if (isDataExists) {
-        return prev.map(item => (item.key === values.key ? newData : item));
-      }
-      return [...prev, newData]
-    });
-    setIsModalOpen(false);
-    form.resetFields();
-    messageApi.open({
-      type: 'success',
-      content: 'Data succesfully create',
-    });
-  };
+  ];  
 
   const handleDelete = (key?: string): void => {
     setData(prev => {
@@ -194,8 +110,7 @@ const EcommercePage = () => {
   const handleEdit = (key?: string): void => {
     let getDetail = data.find(item => item.key === key);
     if (getDetail) {
-      form.setFieldsValue(getDetail);
-      setIsModalOpen(true);
+      form.setFieldsValue(getDetail);      
     } else {
       messageApi.open({
         type: 'warning',
@@ -225,13 +140,17 @@ const EcommercePage = () => {
                 prefix={<FaMagnifyingGlass className="site-form-item-icon" />}
                 onChange={handleSearch}
               />
-              <Link to={"/apps/e-commerce/create"}>
+              <Link to={"/apps/e-commerce/product/create"}>
                 <Button type="primary" className="m-2">
                     + Add Product
                 </Button>
               </Link>
             </Flex>
             <Table
+              rowSelection={{
+                // type: selectionType,
+                // ...rowSelection,
+              }}
               columns={columns2}
               dataSource={filter}
               pagination={false}
@@ -239,51 +158,6 @@ const EcommercePage = () => {
           </Card>
         </Col>
       </Row>
-      <Modal title="Form Role" open={isModalOpen} footer={false} onCancel={handleCancel}>
-        <Form
-          form={form}
-          name="basic"
-          labelAlign="left"
-          labelCol={{ lg: { span: 24 } }}
-          wrapperCol={{ lg: { span: 24 } }}
-          autoComplete="off"
-          onFinish={onFinish}
-        >
-          <Form.Item<FieldType>
-            label="key"
-            name="key"
-            hidden={true}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: 'Please input your name!' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Role Permissons"
-            name="role"
-          >
-            <Table
-              columns={columns}
-              dataSource={dataPermisson}
-              pagination={false}
-              scroll={{ x: 360 }}
-            />
-          </Form.Item>
-          <Flex justify="end">
-            <Button className="mx-1" type="default" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button className="mx-1" type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Flex>
-        </Form>
-      </Modal>
     </>
   );
 };
