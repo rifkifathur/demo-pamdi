@@ -56,6 +56,7 @@ import ChatPage from "./views/chat";
 import PricingPage from "./views/pricing";
 import EcommercePage from "./views/e_commerce";
 import CreateEcommercePage from "./views/e_commerce/create";
+import FAQPage from "./views/faq";
 
 /*
   baseKey for open accordion sidebar
@@ -138,6 +139,50 @@ const routes: RoutesType[] = [
           },
         ],
       },
+      {
+        key: "/apps/user-management",
+        name: "User Management",
+        icon: <FaUserGear />,
+        sidebar: true,
+        children: [
+          {
+            key: "/apps/user-management/user",
+            name: "User",
+            path: "/apps/user-management/user",
+            baseKey: "/apps/user-management",
+            link: <Link to="/apps/user-management/user">User</Link>,
+            component: <User />,
+            sidebar: true,
+          },
+          {
+            key: "/apps/user-management/user/create",
+            name: "Create User",
+            path: "/apps/user-management/user/create",
+            baseKey: "/apps/user-management",
+            baseParentKey: "/apps/user-management/user",
+            link: <Link to="/apps/user-management/user/create">User</Link>,
+            component: <User />,
+            sidebar: false,
+          },
+        ],
+      },
+      {
+        key: "/apps/role-permission",
+        name: "Role & Permission",
+        icon: <FaUserShield />,
+        sidebar: true,
+        children: [
+          {
+            key: "/apps/role-permission/role",
+            name: "Role",
+            path: "/apps/role-permission/role",
+            baseKey: "/apps/role-permission",
+            link: <Link to="/apps/role-permission/role">Role</Link>,
+            component: <RolePage />,
+            sidebar: true,
+          },
+        ],
+      },
     ],
   },  
   {
@@ -181,61 +226,7 @@ const routes: RoutesType[] = [
             sidebar: true,
           },
         ],
-      },
-      {
-        key: "/pages/user-management",
-        name: "User Management",
-        icon: <FaUserGear />,
-        sidebar: true,
-        children: [
-          {
-            key: "/pages/user-management/user",
-            name: "User",
-            path: "/pages/user-management/user",
-            baseKey: "/pages/user-management",
-            link: <Link to="/pages/user-management/user">User</Link>,
-            component: <User />,
-            sidebar: true,
-          },
-          {
-            key: "/pages/user-management/user/create",
-            name: "Create User",
-            path: "/pages/user-management/user/create",
-            baseKey: "/pages/user-management",
-            baseParentKey: "/pages/user-management/user",
-            link: <Link to="/pages/user-management/user/create">User</Link>,
-            component: <User />,
-            sidebar: false,
-          },
-        ],
-      },
-      {
-        key: "/pages/role-permission",
-        name: "Role & Permission",
-        icon: <FaUserShield />,
-        sidebar: true,
-        children: [
-          {
-            key: "/pages/role-permission/role",
-            name: "Role",
-            path: "/pages/role-permission/role",
-            baseKey: "/pages/role-permission",
-            link: <Link to="/pages/role-permission/role">Role</Link>,
-            component: <RolePage />,
-            sidebar: true,
-          },
-          {
-            key: "/user/create",
-            name: "Create User",
-            path: "/user/create",
-            baseKey: "/user-management",
-            baseParentKey: "/user",
-            link: <Link to="/user/create">User</Link>,
-            component: <User />,
-            sidebar: false,
-          },
-        ],
-      },
+      },      
       {
         key: "/pages/pricing",
         name: "Pricing",
@@ -243,6 +234,15 @@ const routes: RoutesType[] = [
         link: <Link to="/pages/pricing">Pricing</Link>,
         icon: <PieChartOutlined />,
         component: <PricingPage />,
+        sidebar: true,
+      },
+      {
+        key: "/pages/faq",
+        name: "FAQ",
+        path: "/pages/faq",
+        link: <Link to="/pages/faq">FAQ</Link>,
+        icon: <PieChartOutlined />,
+        component: <FAQPage />,
         sidebar: true,
       },
     ],
