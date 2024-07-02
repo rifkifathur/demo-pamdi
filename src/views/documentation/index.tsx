@@ -19,15 +19,6 @@ import {
   BsTrash, 
 } from "react-icons/bs";
 import NLoading from "../../components/loading/NLoading";
-import Sent from "./components/Sent";
-import Inbox from "./components/Inbox";
-import Show from "./components/Show";
-import Draft from "./components/Draft";
-import Important from "./components/Important";
-import Spam from "./components/Spam";
-import Trash from "./components/Trash";
-import Compose from "./components/Compose";
-import Starred from "./components/Starred";
 import { faker } from '@faker-js/faker/locale/id_ID';
 
 const { Header, Content, Sider } = Layout;
@@ -65,7 +56,7 @@ interface DataType {
   starred: boolean;
 }
 type TableRowSelection<T> = TableProps<T>["rowSelection"];
-const MailPage = () => {
+const Documentation = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -205,26 +196,26 @@ const MailPage = () => {
     },
   ];
 
-  const components: any = [
-    { key: "inbox", item: <Inbox data={data} columns={columns} rowSelection={rowSelection} />},    
-    { key: "show", item: <Show setKeyComponent={setKeyComponent} />},
-    { key: "sent", item: <Sent />},
-    { key: "draft", item: <Draft />},
-    { key: "starred", item: <Starred data={data} columns={columns} rowSelection={rowSelection} />},
-    { key: "draft", item: <Draft />},
-    { key: "important", item: <Important />},
-    { key: "spam", item: <Spam />},
-    { key: "trash", item: <Trash />},
-  ];
+  // const components: any = [
+  //   { key: "inbox", item: <Inbox data={data} columns={columns} rowSelection={rowSelection} />},    
+  //   { key: "show", item: <Show setKeyComponent={setKeyComponent} />},
+  //   { key: "sent", item: <Sent />},
+  //   { key: "draft", item: <Draft />},
+  //   { key: "starred", item: <Starred data={data} columns={columns} rowSelection={rowSelection} />},
+  //   { key: "draft", item: <Draft />},
+  //   { key: "important", item: <Important />},
+  //   { key: "spam", item: <Spam />},
+  //   { key: "trash", item: <Trash />},
+  // ];
   
-  const getComponent = (key: string = "inbox") => {
-    for (const component of components) {
-        if (component.key === keyComponent) {          
-          return component.item;
-        }
-    }
-    return null;
-  }
+  // const getComponent = (key: string = "inbox") => {
+  //   for (const component of components) {
+  //       if (component.key === keyComponent) {          
+  //         return component.item;
+  //       }
+  //   }
+  //   return null;
+  // }
 
   const handleMenu: MenuProps["onClick"] = (e) => {
     setLoading(true);
@@ -267,9 +258,6 @@ const MailPage = () => {
                 }
               }}
             >
-              <Flex className="my-5" justify="center">
-                <Button type="primary" onClick={() => setAddCompose(true)}>+ Compose</Button>
-              </Flex>
               <div className="custom-scrollbar h-[380px] overflow-y-auto invisible hover:visible">
                 <Menu
                   onClick={handleMenu}
@@ -282,32 +270,6 @@ const MailPage = () => {
               </div>
             </Sider>
             <Layout>
-              <Header
-                style={{
-                  padding: 0,
-                  background: colorBgContainer,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                {responsive &&
-                  <Button
-                    type="text"
-                    icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                    onClick={() => setCollapsed(!collapsed)}
-                    style={{
-                      fontSize: "16px",
-                      width: 64,
-                      height: 64,
-                    }}
-                  />
-                }
-                <Flex className="w-full mx-5" justify="space-between">
-                  <Input className="w-1/2 md:w-auto" placeholder="Search..." prefix={<BsSearch />} />
-                  <Button  type="primary" icon={<BsArrowCounterclockwise />} onClick={handleRefresh}/>
-                </Flex>
-              </Header>
               <Content className="" style={{ backgroundColor: colorBgContainer }}>
                 {
                   loading ? (
@@ -316,11 +278,10 @@ const MailPage = () => {
                     </Flex>
                   ) : (
                     <>        
-                      {getComponent()}
+                      {/* {getComponent()} */}
                     </>
                   )
                 }
-                { addCompose && <Compose setAddCompose={setAddCompose} /> }
               </Content>
             </Layout>
           </Layout>
@@ -330,4 +291,4 @@ const MailPage = () => {
   );
 };
 
-export default MailPage;
+export default Documentation;

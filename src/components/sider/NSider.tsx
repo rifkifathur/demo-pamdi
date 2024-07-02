@@ -160,6 +160,15 @@ const NSider = ({
             items={items}
           />
         </div>
+        <div className={`absolute bottom-0 flex items-center bg-black w-full p-5 text-center`}>
+          {isCollapsed ? (
+            ""
+          ) : (
+            <div className="font-poppins font-bold uppercase text-navy-700 text-white">
+              Nara <span className="font-medium">Doc</span>
+            </div>
+          )}
+        </div>
       </Sider>
     </ConfigProvider>
   );

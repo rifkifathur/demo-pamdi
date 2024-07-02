@@ -57,6 +57,8 @@ import PricingPage from "./views/pricing";
 import EcommercePage from "./views/e_commerce";
 import CreateEcommercePage from "./views/e_commerce/create";
 import FAQPage from "./views/faq";
+import CreateUserPage from "./views/user/create";
+import Documentation from "./views/documentation";
 
 /*
   baseKey for open accordion sidebar
@@ -88,6 +90,13 @@ const routes: RoutesType[] = [
     icon: <PieChartOutlined />,
     component: <Dashboard />,
     sidebar: true,
+  },
+  {
+    key: "/doc",
+    name: "Documentation",
+    path: "/doc",
+    component: <Documentation />,
+    sidebar: false,
   },
   {
     key: "/apps",
@@ -150,7 +159,7 @@ const routes: RoutesType[] = [
             name: "User",
             path: "/apps/user-management/user",
             baseKey: "/apps/user-management",
-            link: <Link to="/apps/user-management/user">User</Link>,
+            link: <Link to="/apps/user-management/user">List User</Link>,
             component: <User />,
             sidebar: true,
           },
@@ -160,9 +169,9 @@ const routes: RoutesType[] = [
             path: "/apps/user-management/user/create",
             baseKey: "/apps/user-management",
             baseParentKey: "/apps/user-management/user",
-            link: <Link to="/apps/user-management/user/create">User</Link>,
-            component: <User />,
-            sidebar: false,
+            link: <Link to="/apps/user-management/user/create">Create User</Link>,
+            component: <CreateUserPage />,
+            sidebar: true,
           },
         ],
       },
