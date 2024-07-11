@@ -20,6 +20,9 @@ import {
 } from "react-icons/bs";
 import NLoading from "../../components/loading/NLoading";
 import { faker } from '@faker-js/faker/locale/id_ID';
+import Introduction from "./components/Introduction";
+import FolderStructure from "./components/FolderStructure";
+import Installation from "./components/Installation";
 
 const { Header, Content, Sider } = Layout;
 type MenuItem = Required<MenuProps>["items"][number];
@@ -40,9 +43,9 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Inbox", "inbox", <BsEnvelope />),
-  getItem("Sent", "sent", <BsSend />),
-  getItem("Draft", "draft", <BsFileEarmark />),
+  getItem("Introduction", "introduction", <BsEnvelope />),
+  getItem("Folder Structure", "folder-structure", <BsSend />),
+  getItem("Installation", "installation", <BsFileEarmark />),
   getItem("Starred", "starred", <BsStar />),
   getItem("Important", "important", <BsTag />),
   getItem("Spam", "spam", <BsExclamationCircle />),
@@ -196,26 +199,26 @@ const Documentation = () => {
     },
   ];
 
-  // const components: any = [
-  //   { key: "inbox", item: <Inbox data={data} columns={columns} rowSelection={rowSelection} />},    
-  //   { key: "show", item: <Show setKeyComponent={setKeyComponent} />},
-  //   { key: "sent", item: <Sent />},
-  //   { key: "draft", item: <Draft />},
-  //   { key: "starred", item: <Starred data={data} columns={columns} rowSelection={rowSelection} />},
-  //   { key: "draft", item: <Draft />},
-  //   { key: "important", item: <Important />},
-  //   { key: "spam", item: <Spam />},
-  //   { key: "trash", item: <Trash />},
-  // ];
+  const components: any = [
+    { key: "introduction", item: <Introduction />},    
+    { key: "folder-structure", item: <FolderStructure />},
+    { key: "installation", item: <Installation />},
+    // { key: "draft", item: <Draft />},
+    // { key: "starred", item: <Starred data={data} columns={columns} rowSelection={rowSelection} />},
+    // { key: "draft", item: <Draft />},
+    // { key: "important", item: <Important />},
+    // { key: "spam", item: <Spam />},
+    // { key: "trash", item: <Trash />},
+  ];
   
-  // const getComponent = (key: string = "inbox") => {
-  //   for (const component of components) {
-  //       if (component.key === keyComponent) {          
-  //         return component.item;
-  //       }
-  //   }
-  //   return null;
-  // }
+  const getComponent = (key: string = "inbox") => {
+    for (const component of components) {
+        if (component.key === keyComponent) {          
+          return component.item;
+        }
+    }
+    return null;
+  }
 
   const handleMenu: MenuProps["onClick"] = (e) => {
     setLoading(true);
@@ -270,7 +273,7 @@ const Documentation = () => {
               </div>
             </Sider>
             <Layout>
-              <Content className="" style={{ backgroundColor: colorBgContainer }}>
+              <Content className="p-8" style={{ backgroundColor: colorBgContainer }}>
                 {
                   loading ? (
                     <Flex className="h-full" justify="center" align="center">
@@ -278,7 +281,7 @@ const Documentation = () => {
                     </Flex>
                   ) : (
                     <>        
-                      {/* {getComponent()} */}
+                      {getComponent()}
                     </>
                   )
                 }
