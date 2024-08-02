@@ -5,21 +5,24 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { AdminLayout } from './layouts/admin';
+// import { AdminLayout } from './layouts/admin';
 import Login from './layouts/auth/Login';
 import Register from './layouts/auth/Register';
 import ResetPassword from './layouts/auth/ResetPassword';
 import NewPassword from './layouts/auth/NewPassword';
+import Pamdi1 from './views/Pamdi1';
+import { ConfigProvider } from 'antd';
+import Pamdi2 from './views/Pamdi2';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 const router = createBrowserRouter([
-  {
-    path: "/*",
-    element: <AdminLayout />
-  },
+  // {
+  //   path: "/*",
+  //   element: <AdminLayout />
+  // },
   {
     path: "/login",
     element: <Login />
@@ -27,6 +30,14 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />
+  },
+  {
+    path: "/register-pamdi",
+    element: <Pamdi1 />
+  },
+  {
+    path: "/lomba-pamdi",
+    element: <Pamdi2 />
   },
   {
     path: "/reset-password",
@@ -40,7 +51,16 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ConfigProvider
+      theme={{
+        token: {
+          fontFamily: "Poppins, sans-serif",
+          controlHeight: 38,
+        },
+      }}
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
   </React.StrictMode>
 );
 
