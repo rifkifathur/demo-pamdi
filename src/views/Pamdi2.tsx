@@ -2,7 +2,7 @@ import { Alert, Button, Card, Checkbox, Divider, Flex, Form, Image, Input, Radio
 import React, { useState } from 'react';
 import { FaGithub, FaGoogle, FaUpload } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
-import pamdi from '../assets/pamdi.jpg';
+import bannerLomba from '../assets/banner-lomba.png';
 import type { RadioChangeEvent } from 'antd';
 
 const Pamdi2 = () => {
@@ -35,8 +35,8 @@ const Pamdi2 = () => {
           <div className="text-center">
           <Image
             preview={false}
-            width={200}
-            src={pamdi}
+            width={"auto"}
+            src={bannerLomba}
           />
             <h1 className="mb-8">Formulir Pendaftaran Lomba Cipta Lagu Dangdut PAMDI 6 Tingkat Nasional – Tema Percintaan</h1>      
           </div>
